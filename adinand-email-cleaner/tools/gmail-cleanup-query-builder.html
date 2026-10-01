@@ -1,0 +1,360 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Gmail Cleanup Query Builder — Adinand Email Cleaner</title>
+<meta name="description" content="Tick what you want to find and get the exact Gmail search to paste into the search box — size, age, category, attachments, sender. Every operator is Gmail's own, documented by Google. Runs entirely in your browser.">
+<link rel="canonical" href="https://adinandemail.com/tools/gmail-cleanup-query-builder">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://adinandemail.com/#app",
+  "name": "Adinand Email Cleaner",
+  "alternateName": ["Zen Inbox Cleaner"],
+  "url": "https://adinandemail.com/",
+  "image": "https://adinandemail.com/assets/og-image.png",
+  "description": "Adinand Email Cleaner groups your Gmail by sender so you can trash hundreds of newsletters and promos at once, unsubscribe in one tap, and set auto-trash rules. Privacy-first: metadata only, no servers, no tracking. iOS & Android.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "iOS, Android",
+  "installUrl": [
+    "https://apps.apple.com/app/adinand-email-cleaner/id6778240674",
+    "https://play.google.com/store/apps/details?id=com.jyoti.zeninboxcleaner"
+  ],
+  "sameAs": [
+    "https://apps.apple.com/app/adinand-email-cleaner/id6778240674",
+    "https://play.google.com/store/apps/details?id=com.jyoti.zeninboxcleaner",
+    "https://www.youtube.com/@adinandemail",
+    "https://www.wikidata.org/wiki/Q141499234",
+    "https://alternativeto.net/software/adinand-email-cleaner/about/"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "description": "Free to download; a Pro upgrade is sold as an in-app purchase."
+  },
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://www.adinand.com/#organization",
+    "name": "Adinand Innovations",
+    "email": "support@adinandemail.com",
+    "sameAs": ["https://play.google.com/store/apps/developer?id=Adinand+Innovations", "https://www.wikidata.org/wiki/Q141499227"]
+  }
+}
+</script>
+<link rel="stylesheet" href="/styles.css">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Adinand Email Cleaner">
+<meta property="og:title" content="Gmail Cleanup Query Builder">
+<meta property="og:description" content="Tick what you want to find. Get the exact Gmail search to paste into the search box — the honest, manual way to hunt down clutter.">
+<meta property="og:url" content="https://adinandemail.com/tools/gmail-cleanup-query-builder">
+<meta property="og:image" content="https://adinandemail.com/assets/og-image.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Gmail Cleanup Query Builder",
+  "description": "Tick the clutter you want to find — size, age, category, attachments, sender, unread — and get the exact Gmail search operator string to paste into Gmail's search box. Every operator is documented by Google. Runs entirely in the browser.",
+  "url": "https://adinandemail.com/tools/gmail-cleanup-query-builder",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "publisher": { "@type": "Organization", "name": "Adinand Innovations" }
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="/">
+      <img src="/assets/favicon-64.png" alt="" width="36" height="36">
+      Adinand Email Cleaner
+    </a>
+    <nav class="site-nav" aria-label="Site">
+      <a href="/#how-it-works">How it works</a>
+      <a href="/#features">Features</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/#privacy">Privacy</a>
+      <a href="/security">Security</a>
+      <a href="/support">Support</a>
+      <a href="/answers/">Answers</a>
+      <a href="/tools/" aria-current="page">Tools</a>
+      <a class="nav-cta" href="/#get">Get the app</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap narrow prose">
+<h1>Gmail Cleanup Query Builder</h1>
+<p class="updated">Last reviewed: September 23, 2026 · <a href="/tools/gmail-cleanup-query-builder.md">Markdown version</a></p>
+
+<p>Tick what you want to find. Get the exact Gmail search to paste into the search box — the honest, manual way to hunt down clutter.</p>
+
+<div class="calc">
+  <fieldset class="calc-mix">
+    <legend>Bigger than</legend>
+    <div class="calc-chips" role="group" aria-label="Bigger than">
+      <button type="button" class="calc-chip" data-group="larger" data-value="5M" aria-pressed="false">5 MB</button>
+      <button type="button" class="calc-chip" data-group="larger" data-value="10M" aria-pressed="false">10 MB</button>
+      <button type="button" class="calc-chip" data-group="larger" data-value="25M" aria-pressed="false">25 MB</button>
+    </div>
+  </fieldset>
+
+  <fieldset class="calc-mix">
+    <legend>Older than</legend>
+    <div class="calc-chips" role="group" aria-label="Older than">
+      <button type="button" class="calc-chip" data-group="older" data-value="6m" aria-pressed="false">6 months</button>
+      <button type="button" class="calc-chip" data-group="older" data-value="1y" aria-pressed="false">1 year</button>
+      <button type="button" class="calc-chip" data-group="older" data-value="2y" aria-pressed="false">2 years</button>
+      <button type="button" class="calc-chip" data-group="older" data-value="3y" aria-pressed="false">3 years</button>
+    </div>
+  </fieldset>
+
+  <fieldset class="calc-mix">
+    <legend>Gmail category</legend>
+    <div class="calc-chips" role="group" aria-label="Gmail category">
+      <button type="button" class="calc-chip" data-group="category" data-value="promotions" aria-pressed="false">Promotions</button>
+      <button type="button" class="calc-chip" data-group="category" data-value="social" aria-pressed="false">Social</button>
+      <button type="button" class="calc-chip" data-group="category" data-value="updates" aria-pressed="false">Updates</button>
+      <button type="button" class="calc-chip" data-group="category" data-value="forums" aria-pressed="false">Forums</button>
+    </div>
+  </fieldset>
+
+  <fieldset class="calc-mix">
+    <legend>Attachments</legend>
+    <label class="calc-radio"><input type="checkbox" id="qb-attach"> <span>Has an attachment <small>adds <code>has:attachment</code></small></span></label>
+    <div class="calc-chips" role="group" aria-label="Attachment type">
+      <button type="button" class="calc-chip" data-group="filename" data-value="pdf" aria-pressed="false">PDF</button>
+      <button type="button" class="calc-chip" data-group="filename" data-value="zip" aria-pressed="false">ZIP</button>
+      <button type="button" class="calc-chip" data-group="filename" data-value="mp4" aria-pressed="false">MP4</button>
+    </div>
+    <p class="calc-note">Pick none for any file type.</p>
+  </fieldset>
+
+  <fieldset class="calc-mix">
+    <legend>From sender</legend>
+    <label class="calc-label calc-sr-only" for="qb-from">Sender address or domain</label>
+    <input class="calc-input calc-input-text" id="qb-from" type="text" inputmode="email" autocomplete="off" spellcheck="false" placeholder="e.g. newsletter@example.com">
+  </fieldset>
+
+  <fieldset class="calc-mix">
+    <legend>Also</legend>
+    <label class="calc-radio"><input type="checkbox" id="qb-unread"> <span>Only unread <small>adds <code>is:unread</code></small></span></label>
+    <label class="calc-radio"><input type="checkbox" id="qb-anywhere"> <span>Include Spam &amp; Trash <small>adds <code>in:anywhere</code></small></span></label>
+    <p class="calc-note">Careful: <code>in:anywhere</code> includes Spam and Trash — check what you're deleting.</p>
+  </fieldset>
+
+  <p class="calc-note">Runs entirely in your browser — nothing you type is sent anywhere, and nothing is stored.</p>
+
+  <noscript>
+    <p class="calc-note"><strong>The builder needs JavaScript.</strong> Every operator it can produce is listed in the reference table below, with Google's own documented meaning and an example — so you can write the same search by hand.</p>
+  </noscript>
+</div>
+
+<section class="calc-result" id="qb-result" hidden>
+  <p class="calc-big">Your Gmail search</p>
+  <p class="qb-empty" id="qb-empty">Tick anything above and the search appears here.</p>
+  <pre class="qb-query" id="qb-query-wrap" aria-live="polite" hidden><code id="qb-query"></code></pre>
+
+  <p id="qb-actions" hidden><button type="button" class="calc-share" id="qb-copy">Copy the search</button>
+  <span class="calc-sr-only" id="qb-copy-status" role="status" aria-live="polite"></span></p>
+
+  <p id="qb-open-wrap" hidden><a class="calc-open" id="qb-open" href="https://mail.google.com/mail/u/0/#search/" target="_blank" rel="noopener noreferrer">Open this search in Gmail</a> <span class="calc-sub">(signed in to more than one Google account? It may open in the wrong one — if so, paste the copied search into the right one)</span></p>
+
+  <p class="calc-honesty">Search finds — it never deletes. You still review and delete yourself. Deleted mail moves to Gmail's Trash and the storage frees only after Trash clears (30 days, or empty it now): see <a href="/answers/does-deleting-emails-free-up-storage">Does deleting emails actually free up storage?</a></p>
+</section>
+
+<h2>What each operator means</h2>
+<p>Nothing here is invented. Each operator below, and the description beside it, comes from Google's own operator table (<a href="https://support.google.com/mail/answer/7190"><em>Refine searches in Gmail</em>, Gmail Help</a>, read 23 September 2026) — the builder above only assembles them for you. That page lists more operators than the builder uses.</p>
+
+<div class="table-scroll">
+<table>
+  <tr><th>Operator</th><th>What it finds</th><th>Example</th></tr>
+  <tr><td><code>larger:</code></td><td>Find emails by their size.</td><td><code>larger:10M</code></td></tr>
+  <tr><td><code>older_than:</code><br><code>newer_than:</code></td><td>Search for emails older or newer than a time period. Use <code>d</code> (day), <code>m</code> (month), or <code>y</code> (year).</td><td><code>older_than:1y</code></td></tr>
+  <tr><td><code>before:</code><br><code>after:</code></td><td>Search for emails received during a certain time period.</td><td><code>after:2004/04/16</code></td></tr>
+  <tr><td><code>has:attachment</code></td><td>Find emails that include attachments.</td><td><code>has:attachment</code></td></tr>
+  <tr><td><code>filename:</code></td><td>Find emails that have attachments with a certain name or file type.</td><td><code>filename:pdf</code></td></tr>
+  <tr><td><code>category:</code></td><td>If you use inbox categories, find emails under one of the categories. Documented values: <code>primary</code>, <code>social</code>, <code>promotions</code>, <code>updates</code>, <code>forums</code>, <code>reservations</code>, <code>purchases</code>.</td><td><code>category:promotions</code></td></tr>
+  <tr><td><code>from:</code></td><td>Find emails sent from a specific person.</td><td><code>from:newsletter@example.com</code></td></tr>
+  <tr><td><code>is:unread</code></td><td>Search for emails by their status — here, unread.</td><td><code>is:unread</code></td></tr>
+  <tr><td><code>in:anywhere</code></td><td>Find emails across Gmail. This includes emails in Spam and Trash.</td><td><code>in:anywhere</code></td></tr>
+</table>
+</div>
+
+<p>Google's page says you "can also combine operators to filter your results even more", and its own examples do it by writing them one after another with spaces (<code>is:muted subject:team celebration</code>). The builder joins its parts the same way, one condition after another. The operator table has <strong>no unsubscribe operator</strong>: search can find the mail a sender keeps sending you, but it cannot stop the sending.</p>
+
+<h2>Two searches worth running first</h2>
+<ul>
+  <li><code>category:promotions older_than:1y</code> — a year and more of marketing mail you have already ignored once.</li>
+  <li><code>has:attachment larger:10M older_than:2y</code> — the heavy old messages. Google's own storage advice is to "Find and delete one or two emails with very large attachments you no longer need", and it suggests <code>has:attachment larger:10M</code> for the job (<a href="https://support.google.com/drive/answer/6374270"><em>Manage your storage in Drive, Gmail &amp; Photos</em>, Google Drive Help</a>, read 23 September 2026).</li>
+</ul>
+
+<p>Search finds — it never deletes. When you delete what it found, Gmail moves it to Trash, where it stays for up to 30 days unless you empty Trash first (<a href="https://support.google.com/mail/answer/7401"><em>Delete messages in Gmail</em>, Gmail Help</a>, read 23 September 2026). Not sure email is your storage problem at all? Start with the <a href="/tools/storage-diagnoser">one-minute diagnosis</a>.</p>
+
+<section class="calc-cta">
+  <h2>Or do it in taps instead of queries.</h2>
+  <p>A search finds one slice at a time. Adinand Email Cleaner shows your whole Gmail grouped by sender instead, so a sender's backlog goes to Trash in one tap, and unsubscribing from that sender is one more. The app requests headers, not message bodies or attachments, and the work happens on your device. Nothing it removes is deleted permanently — it lands in Gmail's Trash, same as a delete you make yourself.</p>
+  <p class="calc-cta-links"><a class="calc-btn" href="/#get">Get the app</a> <a href="/#how-it-works">How it works</a></p>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap cols">
+    <span>© 2026 Adinand Innovations · Adinand Email Cleaner</span>
+    <nav aria-label="Footer">
+      <a href="/answers/">Answers</a>
+      <a href="/tools/">Tools</a>
+      <a href="/security">Security</a>
+      <a href="/support">Support</a>
+      <a href="/privacy-policy">Privacy Policy</a>
+      <a href="/terms-of-service">Terms of Service</a>
+      <a href="mailto:support@adinandemail.com">Contact</a>
+    </nav>
+  </div>
+  <div class="wrap legal">
+    Adinand Email Cleaner is an independent application and is not affiliated with, endorsed by, or sponsored by Google LLC. Gmail and Google are trademarks of Google LLC. Apple, the Apple logo, and App Store are trademarks of Apple Inc., registered in the U.S. and other countries and regions. Google Play and the Google Play logo are trademarks of Google LLC. Adinand™ is a trademark of Adinand Innovations (registration pending). Use of information received from Google APIs adheres to the Google API Services User Data Policy, including the Limited Use requirements.
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var GMAIL_SEARCH = "https://mail.google.com/mail/u/0/#search/";
+
+  // Pure, testable: the whole query model lives here. Order is fixed so the
+  // same selection always produces the same string.
+  function buildQuery(parts) {
+    var out = [];
+    if (parts.larger)        out.push("larger:" + parts.larger);
+    if (parts.olderThan)     out.push("older_than:" + parts.olderThan);
+    if (parts.category)      out.push("category:" + parts.category);
+    if (parts.hasAttachment) out.push("has:attachment");
+    if (parts.filename)      out.push("filename:" + parts.filename);
+    if (parts.from) {
+      var fv = parts.from.replace(/\s+/g, " ");
+      out.push("from:" + (fv.indexOf(" ") >= 0 ? '"' + fv + '"' : fv));
+    }
+    if (parts.unread)        out.push("is:unread");
+    if (parts.anywhere)      out.push("in:anywhere");
+    return out.join(" ");
+  }
+
+  function gmailSearchUrl(query) {
+    return GMAIL_SEARCH + encodeURIComponent(query);
+  }
+
+  // Single-select chip groups: clicking the pressed chip clears the group.
+  var selected = { larger: "", older: "", category: "", filename: "" };
+  var chips = document.querySelectorAll(".calc-chip[data-group]");
+
+  var attach = document.getElementById("qb-attach");
+  var unread = document.getElementById("qb-unread");
+  var anywhere = document.getElementById("qb-anywhere");
+  var from = document.getElementById("qb-from");
+
+  var result = document.getElementById("qb-result");
+  var empty = document.getElementById("qb-empty");
+  var queryWrap = document.getElementById("qb-query-wrap");
+  var queryEl = document.getElementById("qb-query");
+  var actions = document.getElementById("qb-actions");
+  var openWrap = document.getElementById("qb-open-wrap");
+  var openLink = document.getElementById("qb-open");
+  var copyBtn = document.getElementById("qb-copy");
+  var copyStatus = document.getElementById("qb-copy-status");
+  var copyTimer = null;
+  var currentQuery = "";
+
+  function render() {
+    currentQuery = buildQuery({
+      larger: selected.larger,
+      olderThan: selected.older,
+      category: selected.category,
+      hasAttachment: attach.checked,
+      filename: selected.filename,
+      from: from.value.trim(),
+      unread: unread.checked,
+      anywhere: anywhere.checked
+    });
+
+    var has = currentQuery.length > 0;
+    queryEl.textContent = currentQuery;
+    queryWrap.hidden = !has;
+    actions.hidden = !has;
+    openWrap.hidden = !has;
+    empty.hidden = has;
+    if (has) openLink.href = gmailSearchUrl(currentQuery);
+  }
+
+  for (var i = 0; i < chips.length; i++) {
+    chips[i].addEventListener("click", function () {
+      var group = this.getAttribute("data-group");
+      var value = this.getAttribute("data-value");
+      var next = selected[group] === value ? "" : value;
+      selected[group] = next;
+      var peers = document.querySelectorAll('.calc-chip[data-group="' + group + '"]');
+      for (var p = 0; p < peers.length; p++) {
+        peers[p].setAttribute("aria-pressed", peers[p].getAttribute("data-value") === next ? "true" : "false");
+      }
+      render();
+    });
+  }
+
+  attach.addEventListener("change", render);
+  unread.addEventListener("change", render);
+  anywhere.addEventListener("change", render);
+  from.addEventListener("input", render);
+
+  // Last-resort copy for browsers without the async clipboard API.
+  function legacyCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.top = "-1000px";
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  function flashCopy(label) {
+    var original = "Copy the search";
+    copyBtn.textContent = label;
+    copyStatus.textContent = label;
+    if (copyTimer) clearTimeout(copyTimer);
+    copyTimer = setTimeout(function () {
+      copyBtn.textContent = original;
+      copyStatus.textContent = "";
+    }, 2000);
+  }
+
+  copyBtn.addEventListener("click", function () {
+    if (!currentQuery) return;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(currentQuery).then(function () {
+        flashCopy("Copied!");
+      }).catch(function () {
+        flashCopy(legacyCopy(currentQuery) ? "Copied!" : "Copy failed");
+      });
+      return;
+    }
+    flashCopy(legacyCopy(currentQuery) ? "Copied!" : "Copy failed");
+  });
+
+  result.hidden = false;   // the panel is dead weight without JS, so JS reveals it
+  render();
+})();
+</script>
+
+</body>
+</html>

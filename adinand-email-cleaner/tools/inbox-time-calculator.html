@@ -1,0 +1,355 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Inbox Time-Cost Calculator — Adinand Email Cleaner</title>
+<meta name="description" content="How many hours a year go to email you never wanted? Set your own numbers — mail per day, how much of it is unwanted, seconds each one steals — and see the yearly total in hours and work-weeks. Runs entirely in your browser.">
+<link rel="canonical" href="https://adinandemail.com/tools/inbox-time-calculator">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://adinandemail.com/#app",
+  "name": "Adinand Email Cleaner",
+  "alternateName": ["Zen Inbox Cleaner"],
+  "url": "https://adinandemail.com/",
+  "image": "https://adinandemail.com/assets/og-image.png",
+  "description": "Adinand Email Cleaner groups your Gmail by sender so you can trash hundreds of newsletters and promos at once, unsubscribe in one tap, and set auto-trash rules. Privacy-first: metadata only, no servers, no tracking. iOS & Android.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "iOS, Android",
+  "installUrl": [
+    "https://apps.apple.com/app/adinand-email-cleaner/id6778240674",
+    "https://play.google.com/store/apps/details?id=com.jyoti.zeninboxcleaner"
+  ],
+  "sameAs": [
+    "https://apps.apple.com/app/adinand-email-cleaner/id6778240674",
+    "https://play.google.com/store/apps/details?id=com.jyoti.zeninboxcleaner",
+    "https://www.youtube.com/@adinandemail",
+    "https://www.wikidata.org/wiki/Q141499234",
+    "https://alternativeto.net/software/adinand-email-cleaner/about/"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "description": "Free to download; a Pro upgrade is sold as an in-app purchase."
+  },
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://www.adinand.com/#organization",
+    "name": "Adinand Innovations",
+    "email": "support@adinandemail.com",
+    "sameAs": ["https://play.google.com/store/apps/developer?id=Adinand+Innovations", "https://www.wikidata.org/wiki/Q141499227"]
+  }
+}
+</script>
+<link rel="stylesheet" href="/styles.css">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Adinand Email Cleaner">
+<meta property="og:title" content="The Inbox Time-Cost Calculator">
+<meta property="og:description" content="How much of your year goes to email you never wanted? Choose your numbers — every assumption is yours to set.">
+<meta property="og:url" content="https://adinandemail.com/tools/inbox-time-calculator">
+<meta property="og:image" content="https://adinandemail.com/assets/og-image.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Inbox Time-Cost Calculator",
+  "description": "Set how many emails you get a day, how much of it is unwanted, and how many seconds each one steals — get the hours per year, and the work-weeks that adds up to. Every assumption is chosen by you. Runs entirely in the browser.",
+  "url": "https://adinandemail.com/tools/inbox-time-calculator",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "publisher": { "@type": "Organization", "name": "Adinand Innovations" }
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="/">
+      <img src="/assets/favicon-64.png" alt="" width="36" height="36">
+      Adinand Email Cleaner
+    </a>
+    <nav class="site-nav" aria-label="Site">
+      <a href="/#how-it-works">How it works</a>
+      <a href="/#features">Features</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/#privacy">Privacy</a>
+      <a href="/security">Security</a>
+      <a href="/support">Support</a>
+      <a href="/answers/">Answers</a>
+      <a href="/tools/" aria-current="page">Tools</a>
+      <a class="nav-cta" href="/#get">Get the app</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap narrow prose">
+<h1>The Inbox Time-Cost Calculator</h1>
+<p class="updated">Last reviewed: September 23, 2026 · <a href="/tools/inbox-time-calculator.md">Markdown version</a></p>
+
+<p>How much of your year goes to email you never wanted? Choose your numbers — every assumption is yours to set.</p>
+
+<div class="calc">
+  <label class="calc-label" for="tc-count">Emails you receive per day</label>
+  <input class="calc-input" id="tc-count" type="number" min="0" step="1" inputmode="numeric" autocomplete="off" placeholder="e.g. 100">
+  <p class="calc-note">Runs entirely in your browser — no form submission, no network request, nothing stored.</p>
+
+  <div class="calc-chips" role="group" aria-label="Common daily volumes">
+    <button type="button" class="calc-chip" data-count="20">20</button>
+    <button type="button" class="calc-chip" data-count="50">50</button>
+    <button type="button" class="calc-chip" data-count="100">100</button>
+    <button type="button" class="calc-chip" data-count="200">200</button>
+  </div>
+
+  <fieldset class="calc-mix">
+    <legend>How much of it is unwanted?</legend>
+    <div class="calc-chips" role="group" aria-label="How much of it is unwanted">
+      <button type="button" class="calc-chip" data-group="pct" data-value="25" aria-pressed="false">About a quarter <small>25%</small></button>
+      <button type="button" class="calc-chip" data-group="pct" data-value="50" aria-pressed="true">About half <small>50%</small></button>
+      <button type="button" class="calc-chip" data-group="pct" data-value="75" aria-pressed="false">Most of it <small>75%</small></button>
+    </div>
+  </fieldset>
+
+  <fieldset class="calc-mix">
+    <legend>Seconds each unwanted email steals</legend>
+    <div class="calc-chips" role="group" aria-label="Seconds each unwanted email steals">
+      <button type="button" class="calc-chip" data-group="secs" data-value="2" aria-pressed="false">2 s <small>a glance and a swipe</small></button>
+      <button type="button" class="calc-chip" data-group="secs" data-value="5" aria-pressed="true">5 s <small>read a bit first</small></button>
+      <button type="button" class="calc-chip" data-group="secs" data-value="10" aria-pressed="false">10 s <small>open, scroll, hunt the unsubscribe link</small></button>
+    </div>
+  </fieldset>
+</div>
+
+<section class="calc-result" id="tc-result" aria-live="polite" hidden>
+  <p class="calc-rank"><span id="tc-hours"></span></p>
+  <p class="calc-rank-line" id="tc-line"></p>
+
+  <div class="calc-stat">
+    <p class="calc-big" id="tc-weeks"></p>
+  </div>
+
+  <div class="calc-stat">
+    <p class="calc-big" id="tc-detail"></p>
+    <p class="calc-sub" id="tc-assumptions"></p>
+  </div>
+
+  <p><button type="button" class="calc-share" id="tc-share">Share my number</button>
+  <span class="calc-sr-only" id="tc-share-status" role="status" aria-live="polite"></span></p>
+</section>
+
+<h2>The formula, and every assumption in it</h2>
+<p>Nothing is measured for you and nothing is guessed on your behalf — the three inputs are the three assumptions, and they are all yours. With <code>perDay</code> = emails received per day, <code>pct</code> = the unwanted share, and <code>secs</code> = seconds each unwanted email steals:</p>
+<pre class="qb-query"><code>unwantedPerYear = perDay × 365 × pct
+secondsPerYear  = unwantedPerYear × secs
+hoursPerYear    = secondsPerYear ÷ 3600
+workWeeks       = hoursPerYear ÷ 40   (shown only at 40 hours or more)</code></pre>
+
+<p>Worked example: 100 emails a day, half of them unwanted, 5 seconds each is 100 × 365 × 0.5 = <strong>18,250</strong> unwanted emails a year, × 5 = 91,250 seconds — <strong>≈ 25.3 hours</strong>. At 200 a day, 75% unwanted, 10 seconds each: 54,750 emails, 547,500 seconds, <strong>≈ 152.1 hours</strong> — about <strong>3.8 work-weeks</strong>.</p>
+
+<p>The presets offered are 20 · 50 · 100 · 200 emails a day; a quarter, half, or most of it unwanted; and 2, 5, or 10 seconds each. A work-week is 40 hours. A year is 365 days — every day, because unwanted mail does not take weekends.</p>
+
+<div class="table-scroll">
+<table>
+  <tr><th>Hours per year</th><th>What we make of it</th></tr>
+  <tr><td>Under 10</td><td>Barely a dent. Guard it anyway.</td></tr>
+  <tr><td>10–39</td><td>A full workday or more, every year, on mail you never asked for.</td></tr>
+  <tr><td>40–99</td><td>That's ≥ a work-week a year of deleting and scrolling.</td></tr>
+  <tr><td>100 and up</td><td>Weeks of your year. The unsubscribe button is a raise.</td></tr>
+</table>
+</div>
+
+<p>This is an estimate, nothing more. It counts the time you spend <em>handling</em> unwanted mail — glancing, swiping, hunting an unsubscribe link — not the time it takes to get back to what you were doing. Storage is a different question: for that, try the <a href="/tools/email-hoarder-calculator">Email Hoarder Calculator</a> or the <a href="/tools/storage-diagnoser">one-minute storage diagnosis</a>.</p>
+
+<section class="calc-cta">
+  <h2>Get those hours back.</h2>
+  <p>The best unwanted email is the one you never have to handle. Adinand Email Cleaner groups your Gmail by sender so you can unsubscribe from a sender in one tap, or send its whole backlog to Trash in one tap. Its auto-trash rules are ordinary Gmail filters, so they keep running inside Gmail even if you delete the app.</p>
+  <p>It fetches only message headers — never bodies or attachments — and does its work on your device. Anything it trashes can still be pulled back out of Gmail's Trash, where Gmail keeps deleted mail for up to 30 days (<a href="https://support.google.com/mail/answer/7401"><em>Delete messages in Gmail</em>, Gmail Help</a>, read 23 September 2026).</p>
+  <p class="calc-cta-links"><a class="calc-btn" href="/#get">Get the app</a> <a href="/#how-it-works">How it works</a></p>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap cols">
+    <span>© 2026 Adinand Innovations · Adinand Email Cleaner</span>
+    <nav aria-label="Footer">
+      <a href="/answers/">Answers</a>
+      <a href="/tools/">Tools</a>
+      <a href="/security">Security</a>
+      <a href="/support">Support</a>
+      <a href="/privacy-policy">Privacy Policy</a>
+      <a href="/terms-of-service">Terms of Service</a>
+      <a href="mailto:support@adinandemail.com">Contact</a>
+    </nav>
+  </div>
+  <div class="wrap legal">
+    Adinand Email Cleaner is an independent application and is not affiliated with, endorsed by, or sponsored by Google LLC. Gmail and Google are trademarks of Google LLC. Apple, the Apple logo, and App Store are trademarks of Apple Inc., registered in the U.S. and other countries and regions. Google Play and the Google Play logo are trademarks of Google LLC. Adinand™ is a trademark of Adinand Innovations (registration pending). Use of information received from Google APIs adheres to the Google API Services User Data Policy, including the Limited Use requirements.
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var DAYS_PER_YEAR = 365;
+  var HOUR_SECONDS = 3600;
+  var WORK_WEEK_HOURS = 40;
+  var SHARE_URL = "https://adinandemail.com/tools/inbox-time-calculator";
+
+  // Pure, testable: the whole model lives here. pct is a fraction (0.5 = half).
+  function computeTimeCost(perDay, pct, secs) {
+    var unwantedPerYear = perDay * DAYS_PER_YEAR * pct;
+    var secondsPerYear = unwantedPerYear * secs;
+    var hoursPerYear = secondsPerYear / HOUR_SECONDS;
+    return {
+      unwantedPerYear: unwantedPerYear,
+      secondsPerYear: secondsPerYear,
+      hoursPerYear: hoursPerYear,
+      workWeeks: hoursPerYear / WORK_WEEK_HOURS
+    };
+  }
+
+  var LINES = [
+    { min: 100, line: "Weeks of your year. The unsubscribe button is a raise." },
+    { min: 40,  line: "That's ≥ a work-week a year of deleting and scrolling." },
+    { min: 10,  line: "A full workday or more, every year, on mail you never asked for." },
+    { min: 0,   line: "Barely a dent. Guard it anyway." }
+  ];
+
+  function lineFor(hours) {
+    for (var i = 0; i < LINES.length; i++) {
+      if (hours >= LINES[i].min) return LINES[i].line;
+    }
+    return LINES[LINES.length - 1].line;
+  }
+
+  function num(v, minD, maxD) {
+    return v.toLocaleString("en-US", { minimumFractionDigits: minD, maximumFractionDigits: maxD });
+  }
+
+  var input = document.getElementById("tc-count");
+  var result = document.getElementById("tc-result");
+  var countChips = document.querySelectorAll(".calc-chip[data-count]");
+  var groupChips = document.querySelectorAll(".calc-chip[data-group]");
+  var shareBtn = document.getElementById("tc-share");
+  var shareStatus = document.getElementById("tc-share-status");
+  var shareText = "";
+  var shareTimer = null;
+
+  var selected = { pct: 50, secs: 5 };
+
+  function render() {
+    var perDay = Math.floor(Number(input.value));
+    if (!isFinite(perDay) || perDay <= 0) {
+      result.hidden = true;
+      return;
+    }
+    var pct = selected.pct;
+    var secs = selected.secs;
+    var t = computeTimeCost(perDay, pct / 100, secs);
+    var hours = num(t.hoursPerYear, 1, 1);
+
+    document.getElementById("tc-hours").textContent = "≈ " + hours + " hours a year";
+    var hoursShown = Math.round(t.hoursPerYear * 10) / 10;
+    document.getElementById("tc-line").textContent = lineFor(hoursShown);
+
+    var weeks = document.getElementById("tc-weeks");
+    if (hoursShown >= WORK_WEEK_HOURS) {
+      weeks.textContent = "≈ " + num(t.workWeeks, 1, 1) + " work-weeks, at 40 hours a week.";
+      weeks.hidden = false;
+    } else {
+      weeks.textContent = "";
+      weeks.hidden = true;
+    }
+
+    document.getElementById("tc-detail").textContent =
+      "That's " + num(t.unwantedPerYear, 0, 0) + " unwanted emails a year, at " + secs +
+      " second" + (secs === 1 ? "" : "s") + " each.";
+
+    document.getElementById("tc-assumptions").textContent =
+      "Your assumptions: " + num(perDay, 0, 0) + " emails/day, " + pct +
+      "% unwanted, " + secs + " seconds each — change any of them above. This is an estimate, nothing more.";
+
+    shareText = "My inbox eats ≈ " + hours + " hours a year 📬🔥 (" + num(perDay, 0, 0) +
+      "/day, " + pct + "% unwanted). What's yours? " + SHARE_URL;
+
+    result.hidden = false;
+  }
+
+  for (var i = 0; i < countChips.length; i++) {
+    countChips[i].addEventListener("click", function () {
+      input.value = this.getAttribute("data-count");
+      render();
+    });
+  }
+
+  for (var j = 0; j < groupChips.length; j++) {
+    groupChips[j].addEventListener("click", function () {
+      var group = this.getAttribute("data-group");
+      var value = parseInt(this.getAttribute("data-value"), 10);
+      selected[group] = value;
+      var peers = document.querySelectorAll('.calc-chip[data-group="' + group + '"]');
+      for (var p = 0; p < peers.length; p++) {
+        peers[p].setAttribute("aria-pressed", peers[p] === this ? "true" : "false");
+      }
+      render();
+    });
+  }
+
+  input.addEventListener("input", render);
+
+  // Last-resort copy for browsers without the async clipboard API.
+  function legacyCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.top = "-1000px";
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  function flashShare(label) {
+    var original = "Share my number";
+    shareBtn.textContent = label;
+    shareStatus.textContent = label;
+    if (shareTimer) clearTimeout(shareTimer);
+    shareTimer = setTimeout(function () {
+      shareBtn.textContent = original;
+      shareStatus.textContent = "";
+    }, 2000);
+  }
+
+  shareBtn.addEventListener("click", function () {
+    if (!shareText) return;
+    if (navigator.share) {
+      navigator.share({ text: shareText }).catch(function () { /* dismissed — nothing to do */ });
+      return;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(shareText).then(function () {
+        flashShare("Copied!");
+      }).catch(function () {
+        flashShare(legacyCopy(shareText) ? "Copied!" : "Copy failed");
+      });
+      return;
+    }
+    flashShare(legacyCopy(shareText) ? "Copied!" : "Copy failed");
+  });
+
+  render();
+})();
+</script>
+
+</body>
+</html>

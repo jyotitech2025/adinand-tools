@@ -1,0 +1,330 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Storage Diagnoser — Adinand Email Cleaner</title>
+<meta name="description" content="Two or three questions and you land on the fix for your actual storage problem — phone storage, Google Photos, Google Drive, or Gmail — including the ones an email cleaner cannot fix. The whole decision tree is on the page.">
+<link rel="canonical" href="https://adinandemail.com/tools/storage-diagnoser">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://adinandemail.com/#app",
+  "name": "Adinand Email Cleaner",
+  "alternateName": ["Zen Inbox Cleaner"],
+  "url": "https://adinandemail.com/",
+  "image": "https://adinandemail.com/assets/og-image.png",
+  "description": "Adinand Email Cleaner groups your Gmail by sender so you can trash hundreds of newsletters and promos at once, unsubscribe in one tap, and set auto-trash rules. Privacy-first: metadata only, no servers, no tracking. iOS & Android.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "iOS, Android",
+  "installUrl": [
+    "https://apps.apple.com/app/adinand-email-cleaner/id6778240674",
+    "https://play.google.com/store/apps/details?id=com.jyoti.zeninboxcleaner"
+  ],
+  "sameAs": [
+    "https://apps.apple.com/app/adinand-email-cleaner/id6778240674",
+    "https://play.google.com/store/apps/details?id=com.jyoti.zeninboxcleaner",
+    "https://www.youtube.com/@adinandemail",
+    "https://www.wikidata.org/wiki/Q141499234",
+    "https://alternativeto.net/software/adinand-email-cleaner/about/"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "description": "Free to download; a Pro upgrade is sold as an in-app purchase."
+  },
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://www.adinand.com/#organization",
+    "name": "Adinand Innovations",
+    "email": "support@adinandemail.com",
+    "sameAs": ["https://play.google.com/store/apps/developer?id=Adinand+Innovations", "https://www.wikidata.org/wiki/Q141499227"]
+  }
+}
+</script>
+<link rel="stylesheet" href="/styles.css">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Adinand Email Cleaner">
+<meta property="og:title" content="What's actually full? A one-minute diagnosis.">
+<meta property="og:description" content="Answer one to three questions and land on the fix for YOUR storage problem — including the ones our app can't fix.">
+<meta property="og:url" content="https://adinandemail.com/tools/storage-diagnoser">
+<meta property="og:image" content="https://adinandemail.com/assets/og-image.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Storage Diagnoser — what's actually full?",
+  "description": "A two-or-three question decision tree that routes a storage-full warning to its real cause — device storage, Google Photos, Google Drive, or Gmail — and to the free fix for that cause. The full tree is readable on the page without JavaScript.",
+  "url": "https://adinandemail.com/tools/storage-diagnoser",
+  "isPartOf": { "@type": "WebSite", "name": "Adinand Email Cleaner", "url": "https://adinandemail.com/" },
+  "publisher": { "@type": "Organization", "name": "Adinand Innovations" }
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="/">
+      <img src="/assets/favicon-64.png" alt="" width="36" height="36">
+      Adinand Email Cleaner
+    </a>
+    <nav class="site-nav" aria-label="Site">
+      <a href="/#how-it-works">How it works</a>
+      <a href="/#features">Features</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/#privacy">Privacy</a>
+      <a href="/security">Security</a>
+      <a href="/support">Support</a>
+      <a href="/answers/">Answers</a>
+      <a href="/tools/" aria-current="page">Tools</a>
+      <a class="nav-cta" href="/#get">Get the app</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap narrow prose">
+<h1>What's actually full? A one-minute diagnosis.</h1>
+<p class="updated">Last reviewed: September 23, 2026 · <a href="/tools/storage-diagnoser.md">Markdown version</a></p>
+
+<p>Answer one to three questions and land on the fix for YOUR storage problem — including the ones our app can't fix. A full Google account can be full of photos rather than email, and deleting the wrong thing can cost an afternoon and barely move the bar.</p>
+
+<section class="calc dx-quiz" id="dx-quiz" hidden>
+  <p class="dx-step" id="dx-step">Question 1 of 3</p>
+  <p class="dx-q" id="dx-question" tabindex="-1"></p>
+  <p class="dx-lead" id="dx-lead" hidden></p>
+  <div class="dx-answers" id="dx-answers"></div>
+  <div class="dx-result" id="dx-result" hidden></div>
+  <p><button type="button" class="calc-chip" id="dx-restart" hidden>Start over</button></p>
+  <p class="calc-note">Runs entirely in your browser — no sign-in, no answers sent anywhere, nothing stored. The same tree is written out below.</p>
+</section>
+
+<p class="dx-tree-intro" id="dx-tree-intro">The whole tree is below — the questions, every branch, and where each one lands. Read it straight through if you'd rather not tap.</p>
+
+<h2 id="q1">Question 1 — Where did the warning appear?</h2>
+<p>"Storage full" can mean two completely different things: the physical space <strong>on your phone</strong>, or the <strong>cloud storage</strong> of your Google account. Google says "Each Google Account includes up to 15 GB of storage, which is shared across Gmail, Google Drive, and Google Photos" (<a href="https://support.google.com/googleone/answer/9312312"><em>How your Google storage works</em>, Google One Help</a>, read 23 September 2026). The phone and the account are measured separately, so find out which one is full before you delete anything.</p>
+
+<h3 id="route-phone">→ On the phone itself (iPhone/Android storage settings, "Storage almost full")</h3>
+<p><strong>It's device storage — a different system from your Google account.</strong> Check it in Settings. On iPhone, Apple's steps are Settings → General → iPhone Storage, which shows "recommendations and a list of apps with their storage usage"; for a "Storage Almost Full" alert Apple suggests checking those recommendations or removing "some content, such as videos and apps" (<a href="https://support.apple.com/en-us/108429"><em>How to check the storage on your iPhone and iPad</em>, Apple Support</a>, read 23 September 2026). On Android, Google's steps are to open the Settings app and tap Storage, with a note that some of its steps "only work on Android 14 and up" (<a href="https://support.google.com/android/answer/7431795"><em>Free up storage on your Android device</em>, Android Help</a>, read 23 September 2026). Clearing your Google account is a separate job, and not the way to fix this warning.</p>
+<p>Full check, both systems side by side: <a href="/answers/phone-or-google-storage">Is it your phone or your Google account that's full?</a></p>
+
+<h3>→ In Gmail, or from Google ("Your Gmail storage is X% full", or the account storage bar)</h3>
+<p>That's your Google account's shared storage. On the warning we have seen, the headline named Gmail but the percentage was the whole account's shared storage — and on that account Gmail was the smallest of the three slices. The name on the warning does not tell you where the space is. Carry on to <a href="#q2">Question 2</a>.</p>
+
+<h3>→ Not sure</h3>
+<p>One minute of checking saves an afternoon of deleting the wrong things: open <a href="https://one.google.com/storage" target="_blank" rel="noopener noreferrer">one.google.com/storage</a> for the account, and your phone's own Settings → Storage screen for the device. Which screen shows the problem is the answer. The two-screen check, step by step: <a href="/answers/phone-or-google-storage">Is it your phone or your Google account that's full?</a> Then carry on to <a href="#q2">Question 2</a>.</p>
+
+<h2 id="q2">Question 2 — Open <a href="https://one.google.com/storage" target="_blank" rel="noopener noreferrer">one.google.com/storage</a>. Which product holds the most?</h2>
+<p>Open it in the account that got the warning. It shows one bar with the exact split: how much is Google Photos, how much is Gmail, how much is Drive. <strong>That split is the whole diagnosis.</strong> Whatever product holds the most space is the one to clean.</p>
+
+<h3 id="route-photos">→ Google Photos</h3>
+<p><strong>Photos is the culprit, and an email cleaner cannot help you here.</strong> The fixes live inside Google Photos itself and they're free: photos.google.com → Settings → Manage storage → <strong>Recover storage</strong> converts your already-backed-up photos and videos to Storage saver quality — photos above 16&nbsp;MP are resized to 16&nbsp;MP, videos above 1080p become 1080p. Google adds that you "can only recover storage once a day" and that some items "may not be compressed", and its page does not say the conversion can be undone, so treat it as one-way (<a href="https://support.google.com/photos/answer/6220791"><em>Choose the backup quality of your photos &amp; videos</em>, Google Photos Help</a>, read 23 September 2026). Then empty the Photos Trash: Google says deleted items "will stay in your trash for 30 days before they are permanently deleted" (<a href="https://support.google.com/photos/answer/6128858"><em>Delete photos &amp; videos</em>, Google Photos Help</a>, read 23 September 2026), and until then the cleanup isn't finished.</p>
+<p>Full walkthrough: <a href="/answers/google-photos-storage-full">Google Photos is eating your storage</a></p>
+
+<h3 id="route-drive">→ Google Drive</h3>
+<p><strong>Drive tells you where the space is.</strong> Google's instructions: "On the left-hand menu, click Storage. Your files automatically list from largest to smallest." The same page points at device backups and hidden app data as "other storage" worth checking (<a href="https://support.google.com/drive/answer/6374270"><em>Manage your storage in Drive, Gmail &amp; Photos</em>, Google Drive Help</a>, read 23 September 2026). Work down from the top, then empty Drive's Trash: "Files in your Trash still count towards your storage until they are permanently deleted", and Drive deletes them for good after 30 days (<a href="https://support.google.com/drive/answer/2375102"><em>Delete files in Google Drive</em>, Google Drive Help</a>, read 23 September 2026).</p>
+<p>Full walkthrough: <a href="/answers/google-drive-storage-full">Google Drive is full</a></p>
+
+<h3>→ Gmail</h3>
+<p>Email really is where the space is. One more question — <a href="#q3">Question 3</a>.</p>
+
+<h3 id="route-general">→ Can't check right now</h3>
+<p>Then take the general playbook. Start by emptying all three Trashes — Gmail (with Spam), Drive, and Photos each keep their own, and Google's storage page calls emptying them "the quickest way to recover space". After that: Storage saver if it's Photos, large attachments if it's Gmail, biggest files first if it's Drive. All of it free.</p>
+<p>The playbook: <a href="/answers/google-storage-full">Google storage full — what actually works</a></p>
+
+<h2 id="q3">Question 3 — Is your account already bouncing incoming email (senders getting errors)?</h2>
+
+<h3 id="route-bouncing">→ Yes, mail is bouncing</h3>
+<p><strong>Fastest safe recovery first.</strong> Google's storage page lists what happens when an account hits its limit: "You can't send or receive emails. Messages sent to you go back to the sender." (<a href="https://support.google.com/drive/answer/6374270"><em>Manage your storage in Drive, Gmail &amp; Photos</em>, Google Drive Help</a>, read 23 September 2026). So this is worth fixing fast, and worth fixing right — confirm storage is really the cause at <a href="https://one.google.com/storage" target="_blank" rel="noopener noreferrer">one.google.com/storage</a>, then work the recovery order. One thing to expect afterwards: messages sent while the account was full were returned to their senders, so important correspondents may need to resend.</p>
+<p>The recovery order: <a href="/answers/gmail-not-receiving-emails">Gmail can't receive emails? Check your storage first</a></p>
+
+<h3 id="route-email">→ No, mail still arrives</h3>
+<p><strong>Email really is your problem — and it's the one this app is for.</strong> In order:</p>
+<ol>
+  <li><strong>Empty Gmail's Trash and Spam first.</strong> The same Google page: "Until you permanently clear items in these folders, they count against your storage limit." Emptying is permanent — once a message is deleted from Trash, "you can't recover the message" (<a href="https://support.google.com/mail/answer/7401"><em>Delete messages in Gmail</em>, Gmail Help</a>, read 23 September 2026) — so glance through Trash first if you've recently deleted anything you might want back.</li>
+  <li><strong>Then hunt the large attachments.</strong> Google's advice is to "Find and delete one or two emails with very large attachments you no longer need", starting from <code>has:attachment larger:10M</code>. The <a href="/tools/gmail-cleanup-query-builder">Query Builder</a> writes searches like that for you; then delete downward from the biggest.</li>
+  <li><strong>Then deal with the bulk</strong> — the years of promotions and updates that cost less space each but make a mailbox unmanageable.</li>
+  <li><strong>Then be patient with the number.</strong> Deleted mail keeps counting until it leaves Trash, and after a big deletion "it normally takes up to 48–72 hours for Google's systems to accurately update the storage space" (the Google One page linked under Question 1). More: <a href="/answers/does-deleting-emails-free-up-storage">Does deleting emails actually free up storage?</a></li>
+</ol>
+
+<section class="calc-cta">
+  <h2>If the answer was email.</h2>
+  <p>This is the case Adinand Email Cleaner is built for. It sorts your Gmail by sender, so a sender's whole backlog goes to Trash in one tap and unsubscribing takes one more, and it tells you how much space that will free once Trash clears — added up from Gmail's own size figures, not guessed. It reads message headers only, never bodies or attachments, and runs on your device. It never empties Trash itself.</p>
+  <p class="calc-cta-links"><a class="calc-btn" href="/#get">Get the app</a> <a href="/#how-it-works">How it works</a></p>
+  <p class="calc-note">If the answer was photos, Drive, or the phone itself, the pages linked above are what will actually move the bar — and they're all free.</p>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap cols">
+    <span>© 2026 Adinand Innovations · Adinand Email Cleaner</span>
+    <nav aria-label="Footer">
+      <a href="/answers/">Answers</a>
+      <a href="/tools/">Tools</a>
+      <a href="/security">Security</a>
+      <a href="/support">Support</a>
+      <a href="/privacy-policy">Privacy Policy</a>
+      <a href="/terms-of-service">Terms of Service</a>
+      <a href="mailto:support@adinandemail.com">Contact</a>
+    </nav>
+  </div>
+  <div class="wrap legal">
+    Adinand Email Cleaner is an independent application and is not affiliated with, endorsed by, or sponsored by Google LLC. Gmail and Google are trademarks of Google LLC. Apple, the Apple logo, and App Store are trademarks of Apple Inc., registered in the U.S. and other countries and regions. Google Play and the Google Play logo are trademarks of Google LLC. Adinand™ is a trademark of Adinand Innovations (registration pending). Use of information received from Google APIs adheres to the Google API Services User Data Policy, including the Limited Use requirements.
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  // The quiz is an enhancement: every route below is also written out in the
+  // static tree, which stays on the page. Result copy is deliberately short —
+  // it restates the tree's headline and links to the full route and its answer page.
+  var TREE = {
+    q1: {
+      step: "Question 1 of 3",
+      q: "Where did the warning appear?",
+      answers: [
+        { label: "On the phone itself (iPhone/Android storage settings, \"Storage almost full\")", go: "r-phone" },
+        { label: "In Gmail, or from Google (\"Your Gmail storage is X% full\", or the account storage bar)", go: "q2" },
+        { label: "Not sure", go: "q2", lead: "One minute of checking saves an afternoon of deleting the wrong things — the two-screen check is on <a href=\"/answers/phone-or-google-storage\">Is it your phone or your Google account that's full?</a>" }
+      ]
+    },
+    q2: {
+      step: "Question 2 of 3",
+      q: "Open one.google.com/storage — which product holds the most?",
+      lead: "<a href=\"https://one.google.com/storage\" target=\"_blank\" rel=\"noopener noreferrer\">Open one.google.com/storage</a> in the account that got the warning. That split is the whole diagnosis.",
+      answers: [
+        { label: "Google Photos", go: "r-photos" },
+        { label: "Google Drive", go: "r-drive" },
+        { label: "Gmail", go: "q3" },
+        { label: "Can't check right now", go: "r-general" }
+      ]
+    },
+    q3: {
+      step: "Question 3 of 3",
+      q: "Is your account already bouncing incoming email (senders getting errors)?",
+      answers: [
+        { label: "Yes, mail is bouncing", go: "r-bouncing" },
+        { label: "No, mail still arrives", go: "r-email" }
+      ]
+    }
+  };
+
+  var RESULTS = {
+    "r-phone": {
+      title: "It's device storage, not your Google account.",
+      body: "Two different systems, measured separately. Check Settings → General → iPhone Storage, or Settings → Storage on Android.",
+      link: "/answers/phone-or-google-storage",
+      linkText: "Is it your phone or your Google account that's full?",
+      anchor: "#route-phone"
+    },
+    "r-photos": {
+      title: "Photos is the culprit — an email cleaner cannot help here.",
+      body: "The fixes are inside Google Photos and they're free: Manage storage → Recover storage converts backed-up photos to Storage saver (16 MP / 1080p), then empty the Photos Trash.",
+      link: "/answers/google-photos-storage-full",
+      linkText: "Google Photos is eating your storage",
+      anchor: "#route-photos"
+    },
+    "r-drive": {
+      title: "Drive is the culprit — and Drive shows you where the space is.",
+      body: "Drive's Storage view lists your files largest-first. Delete from the top, then empty Drive's Trash — trashed files keep counting until permanently cleared.",
+      link: "/answers/google-drive-storage-full",
+      linkText: "Google Drive is full",
+      anchor: "#route-drive"
+    },
+    "r-general": {
+      title: "Take the general playbook.",
+      body: "Empty all three Trashes first — Gmail, Drive, and Photos each keep their own and each counts until cleared — then clean whichever product the bar says is biggest.",
+      link: "/answers/google-storage-full",
+      linkText: "Google storage full — what actually works",
+      anchor: "#route-general"
+    },
+    "r-bouncing": {
+      title: "Fastest safe recovery first.",
+      body: "Google says that at the storage limit \"You can't send or receive emails. Messages sent to you go back to the sender.\" Work the recovery order, then expect correspondents to resend.",
+      link: "/answers/gmail-not-receiving-emails",
+      linkText: "Gmail can't receive emails? Check your storage first",
+      anchor: "#route-bouncing"
+    },
+    "r-email": {
+      title: "Email really is your problem.",
+      body: "Empty Gmail's Trash and Spam first (both count until cleared, and emptying is permanent), then hunt the large attachments — the <a href=\"/tools/gmail-cleanup-query-builder\">Query Builder</a> writes the search for you.",
+      link: "/answers/does-deleting-emails-free-up-storage",
+      linkText: "Does deleting emails actually free up storage?",
+      anchor: "#route-email"
+    }
+  };
+
+  var quiz = document.getElementById("dx-quiz");
+  var stepEl = document.getElementById("dx-step");
+  var questionEl = document.getElementById("dx-question");
+  var leadEl = document.getElementById("dx-lead");
+  var answersEl = document.getElementById("dx-answers");
+  var resultEl = document.getElementById("dx-result");
+  var restartBtn = document.getElementById("dx-restart");
+  var treeIntro = document.getElementById("dx-tree-intro");
+
+  function clear(node) {
+    while (node.firstChild) node.removeChild(node.firstChild);
+  }
+
+  function showQuestion(id, lead) {
+    var node = TREE[id];
+    stepEl.textContent = node.step;
+    stepEl.hidden = false;
+    questionEl.textContent = node.q;
+    var leadHtml = lead || node.lead || "";
+    leadEl.innerHTML = leadHtml;
+    leadEl.hidden = !leadHtml;
+    resultEl.hidden = true;
+    clear(answersEl);
+    answersEl.hidden = false;
+
+    node.answers.forEach(function (a) {
+      var btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "dx-answer";
+      btn.textContent = a.label;
+      btn.addEventListener("click", function () {
+        if (a.go.indexOf("r-") === 0) showResult(a.go);
+        else showQuestion(a.go, a.lead);
+      });
+      answersEl.appendChild(btn);
+    });
+
+    restartBtn.hidden = (id === "q1");
+    questionEl.focus();
+  }
+
+  function showResult(id) {
+    var r = RESULTS[id];
+    stepEl.textContent = "Your answer";
+    questionEl.textContent = r.title;
+    leadEl.hidden = true;
+    answersEl.hidden = true;
+    clear(answersEl);
+    resultEl.innerHTML =
+      "<p>" + r.body + "</p>" +
+      '<p><a class="calc-btn" href="' + r.link + '">' + r.linkText + "</a></p>" +
+      '<p class="calc-note">The full route, written out: <a href="' + r.anchor + '">read it in the tree below</a>.</p>';
+    resultEl.hidden = false;
+    restartBtn.hidden = false;
+    questionEl.focus();
+  }
+
+  restartBtn.addEventListener("click", function () { showQuestion("q1"); });
+
+  treeIntro.textContent = "Prefer to read rather than tap? The same tree is written out below — every question, every branch, and where each one lands.";
+  quiz.hidden = false;   // the quiz is dead weight without JS, so JS reveals it
+  showQuestion("q1");
+})();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+# repo_path	source_repo	source_path	live_url	kind
+docfind/style.css	docfind-ios	site/style.css	https://docfindapp.com/style.css	raw
+docfind/package.json	docfind-ios	site/package.json	https://docfindapp.com/package.json	raw
+docfind/package-lock.json	docfind-ios	site/package-lock.json	https://docfindapp.com/package-lock.json	raw
+docfind/tools/search-multiple-pdfs.html	docfind-ios	site/tools/search-multiple-pdfs.html	https://docfindapp.com/tools/search-multiple-pdfs	raw
+docfind/tools/extract-text-from-pdf.html	docfind-ios	site/tools/extract-text-from-pdf.html	https://docfindapp.com/tools/extract-text-from-pdf	raw
+docfind/tools/is-your-pdf-searchable.html	docfind-ios	site/tools/is-your-pdf-searchable.html	https://docfindapp.com/tools/is-your-pdf-searchable	raw
+docfind/tools/pdf-text.mjs	docfind-ios	site/tools/pdf-text.mjs	https://docfindapp.com/tools/pdf-text.mjs	raw
+docfind/tools/ocr.mjs	docfind-ios	site/tools/ocr.mjs	https://docfindapp.com/tools/ocr.mjs	raw
+docfind/tools/folder-memory.mjs	docfind-ios	site/tools/folder-memory.mjs	https://docfindapp.com/tools/folder-memory.mjs	raw
+docfind/tools/export.mjs	docfind-ios	site/tools/export.mjs	https://docfindapp.com/tools/export.mjs	raw
+docfind/tools/prove-pdf-tools.mjs	docfind-ios	site/tools/prove-pdf-tools.mjs	https://docfindapp.com/tools/prove-pdf-tools.mjs	raw
+docfind/tools/prove-ocr.mjs	docfind-ios	site/tools/prove-ocr.mjs	https://docfindapp.com/tools/prove-ocr.mjs	raw
+docfind/tools/prove-folder-memory.mjs	docfind-ios	site/tools/prove-folder-memory.mjs	https://docfindapp.com/tools/prove-folder-memory.mjs	raw
+docfind/tools/prove-export.mjs	docfind-ios	site/tools/prove-export.mjs	https://docfindapp.com/tools/prove-export.mjs	raw
+docfind/tools/no-network.cjs	docfind-ios	site/tools/no-network.cjs	https://docfindapp.com/tools/no-network.cjs	raw
+docfind/tools/fixtures/ocr-refund.png	docfind-ios	site/tools/fixtures/ocr-refund.png	https://docfindapp.com/tools/fixtures/ocr-refund.png	raw
+adinand-email-cleaner/styles.css	adinand-email-website	styles.css	https://adinandemail.com/styles.css	raw
+adinand-email-cleaner/tools/email-hoarder-calculator.html	adinand-email-website	tools/email-hoarder-calculator.html	https://adinandemail.com/tools/email-hoarder-calculator	raw
+adinand-email-cleaner/tools/gmail-cleanup-query-builder.html	adinand-email-website	tools/gmail-cleanup-query-builder.html	https://adinandemail.com/tools/gmail-cleanup-query-builder	raw
+adinand-email-cleaner/tools/inbox-time-calculator.html	adinand-email-website	tools/inbox-time-calculator.html	https://adinandemail.com/tools/inbox-time-calculator	raw
+adinand-email-cleaner/tools/storage-diagnoser.html	adinand-email-website	tools/storage-diagnoser.html	https://adinandemail.com/tools/storage-diagnoser	raw
+subsense/feed-flood-calculator.html	subsense-web	dist/tools/feed-flood-calculator/index.html	https://www.subsenseapp.com/tools/feed-flood-calculator/	astro-inline-css

@@ -1,0 +1,656 @@
+/* Zen Inbox Cleaner — zeninboxcleaner.com
+   Static, no-JS, mobile-first. Palette derived from the app icon:
+   night indigo ground, sprout green accent, cream paper. */
+
+:root {
+  --bg: #faf9f5;
+  --surface: #ffffff;
+  --ink: #1d2433;
+  --muted: #5b6473;
+  --line: #e3e2da;
+  --accent: #2e8f66;
+  --accent-ink: #226b4d;
+  --leaf: #84dcac;
+  --night-1: #151c33;
+  --night-2: #2e3d6b;
+  --star: #ffe9a3;
+  --paper: #fffdf4;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #10141f;
+    --surface: #1a2130;
+    --ink: #e9ecf4;
+    --muted: #9aa4b8;
+    --line: #2a3145;
+    --accent: #6cd9a4;
+    --accent-ink: #8ce6b8;
+  }
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  background: var(--bg);
+  color: var(--ink);
+}
+h1, h2, h3 {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+a { color: var(--accent-ink); }
+a:focus-visible, button:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+img { max-width: 100%; height: auto; }
+code {
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.85em;
+  background: color-mix(in srgb, var(--ink) 7%, transparent);
+  padding: 0.1em 0.35em;
+  border-radius: 4px;
+  overflow-wrap: break-word;
+}
+
+.wrap { max-width: 1000px; margin: 0 auto; padding: 0 22px; }
+.narrow { max-width: 760px; }
+
+/* ---------- Header ---------- */
+.site-header {
+  background: linear-gradient(135deg, var(--night-1), var(--night-2));
+}
+.site-header .bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 16px 0;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  color: #fffdf4;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+.brand img { width: 36px; height: 36px; border-radius: 9px; }
+.site-nav { display: flex; gap: 6px; flex-wrap: wrap; }
+.site-nav a {
+  color: #cdd5ec;
+  text-decoration: none;
+  font-size: 0.92rem;
+  padding: 7px 11px;
+  border-radius: 8px;
+}
+.site-nav a:hover, .site-nav a[aria-current="page"] {
+  color: #fffdf4;
+  background: rgba(255, 253, 244, 0.1);
+}
+.site-nav a.nav-cta {
+  background: var(--accent);
+  color: #fffdf4;
+  font-weight: 600;
+}
+.site-nav a.nav-cta:hover {
+  background: var(--accent);
+  filter: brightness(1.12);
+}
+
+/* ---------- Hero (home) ---------- */
+.hero {
+  background:
+    radial-gradient(circle at 82% 18%, rgba(255, 233, 163, 0.14) 0 2px, transparent 3px),
+    radial-gradient(circle at 12% 30%, rgba(255, 233, 163, 0.12) 0 2px, transparent 3px),
+    radial-gradient(circle at 68% 62%, rgba(255, 233, 163, 0.1) 0 1.5px, transparent 2.5px),
+    linear-gradient(135deg, var(--night-1), var(--night-2));
+  color: #fffdf4;
+  padding: 56px 0 64px;
+  text-align: center;
+}
+.hero img.mark {
+  width: 108px;
+  height: 108px;
+  border-radius: 24px;
+  box-shadow: 0 14px 38px rgba(3, 8, 24, 0.55);
+}
+.hero h1 {
+  font-size: clamp(1.9rem, 5.4vw, 3rem);
+  margin: 22px 0 10px;
+}
+.hero .tagline {
+  font-size: clamp(1.05rem, 2.6vw, 1.3rem);
+  color: #b9c3e2;
+  max-width: 34em;
+  margin: 0 auto;
+}
+.hero .soon {
+  display: inline-block;
+  margin-top: 26px;
+  padding: 9px 18px;
+  border: 1px solid rgba(255, 253, 244, 0.35);
+  border-radius: 999px;
+  color: #e8ecf9;
+  font-size: 0.92rem;
+}
+.hero .soon strong { color: var(--leaf); }
+.hero .trust {
+  margin: 16px auto 0;
+  font-size: 0.88rem;
+  color: #b9c3e2;
+}
+.hero .trust a { color: var(--leaf); }
+
+.hero .store-links {
+  margin-top: 26px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+.hero .store-badge img { display: block; height: 47px; width: auto; }
+.hero .soon { margin-top: 0; }
+
+/* ---------- Get the app (nav CTA lands here) ---------- */
+.get-app { text-align: center; }
+.get-app .store-links {
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+.get-app .store-badge img { display: block; height: 47px; width: auto; }
+.get-app p { max-width: 34em; margin-left: auto; margin-right: auto; }
+
+/* ---------- Sections ---------- */
+main section { padding: 52px 0 8px; }
+main section:last-of-type { padding-bottom: 56px; }
+.kicker {
+  color: var(--accent-ink);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin: 0 0 6px;
+}
+main h2 { font-size: 1.65rem; margin: 0 0 14px; }
+
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 18px; margin-top: 22px; }
+.step {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 20px 22px;
+}
+.step .n {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-bottom: 10px;
+}
+.step h3 { font-size: 1.08rem; margin: 0 0 6px; }
+.step p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+.screens {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 18px;
+  margin-top: 22px;
+}
+.screens img {
+  width: calc((100% - 36px) / 3);
+  height: auto;
+  display: block;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+}
+@media (max-width: 720px) {
+  .screens {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    gap: 12px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 10px;
+  }
+  .screens img {
+    width: 72vw;
+    max-width: 320px;
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+  }
+}
+
+.features { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 14px; margin-top: 22px; list-style: none; padding: 0; }
+.features li {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 15px 18px;
+  font-size: 0.97rem;
+}
+.features li strong { display: block; margin-bottom: 3px; }
+.features li span { color: var(--muted); font-size: 0.92rem; }
+
+.privacy-card {
+  background: linear-gradient(135deg, var(--night-1), var(--night-2));
+  color: #e8ecf9;
+  border-radius: 18px;
+  padding: 30px 28px;
+  margin-top: 22px;
+}
+.privacy-card h3 { color: #fffdf4; font-size: 1.25rem; margin: 0 0 10px; }
+.privacy-card ul { margin: 0 0 14px; padding-left: 20px; }
+.privacy-card li { margin: 7px 0; }
+.privacy-card a { color: var(--leaf); }
+
+.pricing { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 18px; margin-top: 22px; }
+.plan {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 24px;
+}
+.plan.pro { border-color: var(--accent); border-width: 2px; }
+.plan h3 { margin: 0 0 4px; font-size: 1.2rem; }
+.plan .price { font-size: 1.5rem; font-weight: 700; margin: 6px 0 12px; font-family: -apple-system, BlinkMacSystemFont, sans-serif; }
+.plan .price small { font-size: 0.85rem; font-weight: 400; color: var(--muted); }
+.plan ul { margin: 0; padding-left: 20px; color: var(--muted); font-size: 0.95rem; }
+.plan li { margin: 5px 0; }
+/* Supporting note under the plan grid — renewal, currency and payment terms. */
+.pricing-note { margin-top: 18px; color: var(--muted); font-size: 0.95rem; }
+
+/* Question-shaped sections. Bare h3/p here sit outside .step, .plan and .prose,
+   so they need their own spacing or they inherit raw browser margins. */
+#questions h3 { font-size: 1.1rem; margin: 26px 0 8px; }
+#questions h3 + p { margin: 0; }
+
+/* FAQ */
+details {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 4px 18px;
+  margin: 10px 0;
+}
+details summary {
+  cursor: pointer;
+  font-weight: 600;
+  padding: 11px 0;
+  list-style-position: inside;
+}
+details p, details ul { color: var(--muted); margin-top: 0; }
+
+/* Security page fact card */
+.factbox {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 22px;
+  margin: 18px 0;
+}
+.factbox ul { list-style: none; margin: 0; padding: 0; }
+.factbox li { margin: 8px 0; }
+
+/* ---------- Legal / prose pages ---------- */
+.prose { padding-top: 44px; padding-bottom: 60px; } /* longhand: the shorthand zeroed .wrap's 22px side padding on phones */
+.prose h1 { font-size: clamp(1.7rem, 4.5vw, 2.3rem); margin: 0 0 6px; }
+.prose .updated { color: var(--muted); margin: 0 0 26px; font-size: 0.95rem; }
+.prose h2 { font-size: 1.35rem; margin: 34px 0 10px; }
+.prose h3 { font-size: 1.1rem; margin: 24px 0 8px; }
+.prose ul, .prose ol { padding-left: 24px; }
+.prose li { margin: 7px 0; }
+.prose > p, .prose li { max-width: 72ch; }
+
+/* ---------- Tables (added 2026-08-29 for the /answers hub) ---------- */
+.prose .table-scroll { overflow-x: auto; }
+.prose table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 14px 0 20px;
+  font-size: 0.95rem;
+  background: var(--surface);
+}
+.prose th, .prose td {
+  border: 1px solid var(--line);
+  padding: 9px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+.prose th {
+  font-weight: 600;
+  background: var(--bg);
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+  background: linear-gradient(135deg, var(--night-1), var(--night-2));
+  color: #b9c3e2;
+  padding: 34px 0 40px;
+  font-size: 0.92rem;
+  margin-top: 40px;
+}
+.site-footer .cols {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.site-footer nav { display: flex; gap: 16px; flex-wrap: wrap; }
+.site-footer a { color: #cdd5ec; }
+.site-footer .legal { margin-top: 18px; font-size: 0.82rem; color: #8b97bf; max-width: 62ch; }
+
+/* ---------- Email Hoarder Calculator (added 2026-08-30 for /tools/) ---------- */
+.calc {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 22px;
+  margin: 24px 0;
+}
+.calc-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.calc-input {
+  width: 100%;
+  font-family: inherit;
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 12px 14px;
+}
+.calc-input:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+.calc .calc-note {
+  color: var(--muted);
+  font-size: 0.88rem;
+  margin: 9px 0 0;
+}
+
+.calc-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+.calc-chip {
+  font-family: inherit;
+  font-size: 0.92rem;
+  color: var(--accent-ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 8px 15px;
+  cursor: pointer;
+}
+.calc-chip:hover { border-color: var(--accent); }
+
+.calc-mix { border: 0; margin: 20px 0 0; padding: 0; }
+.calc-mix legend { font-weight: 600; padding: 0; margin-bottom: 8px; }
+.calc-radio {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 0;
+  cursor: pointer;
+}
+.calc-radio input { accent-color: var(--accent); width: 18px; height: 18px; flex: 0 0 auto; }
+.calc-radio small { color: var(--muted); font-size: 0.86rem; }
+
+.calc-result {
+  background: linear-gradient(135deg, var(--night-1), var(--night-2));
+  color: #e8ecf9;
+  border-radius: 18px;
+  padding: 26px 24px;
+  margin: 24px 0;
+}
+.calc-rank {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  font-size: clamp(1.5rem, 5vw, 2.1rem);
+  line-height: 1.2;
+  color: #fffdf4;
+  margin: 0;
+}
+.calc-rank-emoji { font-size: 1.15em; }
+.calc-result .calc-rank-line { color: var(--leaf); margin: 6px 0 0; }
+.calc-stat { margin-top: 20px; }
+.calc-result .calc-big { font-size: 1.1rem; margin: 0; }
+.calc-result .calc-sub { color: #b9c3e2; font-size: 0.9rem; margin: 5px 0 0; }
+.calc-result .calc-honesty { color: #b9c3e2; font-size: 0.86rem; margin: 22px 0 0; }
+.calc-result a { color: var(--leaf); }
+.calc-share {
+  font-family: inherit;
+  font-size: 0.97rem;
+  font-weight: 600;
+  color: #fffdf4;
+  background: var(--accent);
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 20px;
+  margin-top: 6px;
+  cursor: pointer;
+}
+.calc-share:hover { filter: brightness(1.12); }
+
+/* Overrides the generic `main section` top padding — inside .prose the CTA
+   follows the result panel directly, so it needs prose rhythm, not section rhythm. */
+.calc-cta { margin-top: 34px; padding-top: 0; }
+.calc-cta h2 { font-size: 1.4rem; margin: 0 0 10px; }
+.calc-cta-links { display: flex; flex-wrap: wrap; align-items: center; gap: 16px; }
+.calc-btn {
+  display: inline-block;
+  background: var(--accent);
+  color: #fffdf4;
+  text-decoration: none;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 11px 20px;
+}
+.calc-btn:hover { filter: brightness(1.12); }
+
+/* Screen-reader-only status text for the share button (a11y — adversarial pass 2026-08-30) */
+.calc-sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap; border: 0;
+}
+
+/* Dark mode: --accent turns light mint, so near-white button text drops to ~1.7:1.
+   Dark ink on the mint keeps the calculator's buttons readable. */
+@media (prefers-color-scheme: dark) {
+  .calc-share, .calc-btn { color: #10141f; }
+}
+
+/* ---------- Query Builder · Storage Diagnoser · Time Calculator
+   (added 2026-08-30 for /tools/ — everything else on those three pages reuses
+   the .calc-* family above) ---------- */
+
+/* Toggle chips: the calculator's chips are one-shot presets, these hold state. */
+.calc-chip[aria-pressed="true"] {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #fffdf4;
+  font-weight: 600;
+}
+.calc-chip small {
+  display: block;
+  font-size: 0.78rem;
+  font-weight: 400;
+  opacity: 0.8;
+}
+
+/* A sender address is not a headline — the .calc-input display size is wrong for it. */
+.calc-input-text { font-size: 1.05rem; font-weight: 500; }
+
+/* Assembled query / formula block. Sits inside .calc-result on the builder and
+   in prose on the time calculator, so it carries its own ground both times. */
+.qb-query {
+  display: block;
+  margin: 10px 0 18px;
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgba(255, 253, 244, 0.08);
+  border: 1px solid rgba(255, 253, 244, 0.14);
+  font-family: "SF Mono", ui-monospace, Menlo, Consolas, monospace;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+.qb-query code { background: none; padding: 0; font-size: 1em; color: inherit; }
+.prose > .qb-query {
+  background: var(--surface);
+  border-color: var(--line);
+  color: var(--ink);
+}
+.calc-result .qb-empty { color: #b9c3e2; margin: 8px 0 0; }
+.calc-open { display: inline-block; font-weight: 600; }
+
+/* Diagnoser quiz — one question at a time; the static tree below carries the substance. */
+.dx-quiz .dx-step {
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+.dx-q {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  font-size: 1.35rem;
+  line-height: 1.3;
+  margin: 0 0 10px;
+}
+.dx-q:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+.dx-lead { margin: 0 0 14px; color: var(--muted); font-size: 0.95rem; }
+.dx-answers { display: flex; flex-direction: column; gap: 10px; }
+.dx-answer {
+  font-family: inherit;
+  font-size: 1rem;
+  text-align: left;
+  color: var(--ink);
+  background: var(--bg);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 13px 16px;
+  cursor: pointer;
+}
+.dx-answer:hover { border-color: var(--accent); }
+.dx-result p { margin: 0 0 12px; }
+.dx-result p:last-child { margin-bottom: 0; }
+
+/* The in-tree CTA sits under an h3 route, so its heading is an h4 —
+   outside the h1/h2/h3 serif rule, and it needs the .calc-cta h2 sizing. */
+.calc-cta h4 {
+  font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, serif;
+  font-size: 1.2rem;
+  line-height: 1.25;
+  margin: 0 0 10px;
+}
+
+/* Same trap as .calc-share/.calc-btn above: in dark mode --accent becomes light
+   mint, so near-white chip text drops to ~1.7:1. This override must stay AFTER
+   the .calc-chip[aria-pressed="true"] rule — equal specificity, later wins. */
+@media (prefers-color-scheme: dark) {
+  .calc-chip[aria-pressed="true"] { color: #10141f; }
+}
+
+/* Wide desktop: widen the page container so big screens aren't a narrow centered band
+   (owner request 2026-08-30; mobile/tablet untouched — min-width only). */
+@media (min-width: 1280px) {
+  .wrap { max-width: 1200px; }
+  main h2 { font-size: 1.85rem; }
+  .narrow { max-width: 820px; }
+}
+@media (min-width: 1600px) {
+  .wrap { max-width: 1320px; }
+}
+
+/* site-video embed — Scripts/site-video/embed/video-embed.css
+   Sits inside the site's existing .phone frame; only styles its own classes and the <video>
+   inside .app-video, so an existing .phone > img elsewhere on the page is untouched.
+   --app-video-radius matches the site's `.phone img` radius (docfind 32px, sorter 27px). */
+.app-video{position:relative;max-width:320px;margin:28px auto}
+.hero-phone .app-video{max-width:none;margin:0}
+.app-video video{display:block;width:100%;height:auto;aspect-ratio:9/16;object-fit:cover;
+  border-radius:var(--app-video-radius,32px);background:#08070c}
+.app-video video::cue{font-size:15px;line-height:1.3;background:rgba(0,0,0,.72)}
+/* The button only appears once the JS has wired it (.is-ready): without JS it would do nothing.
+   Top-right, not bottom-right: captions live at the bottom and the lanes' plate safe zone starts at
+   y=270/1920 (14%), so the top corner is the one place the button never covers a word (27 Sep 2026). */
+.app-video-sound{display:none;position:absolute;right:14px;top:14px;z-index:2;
+  min-width:44px;min-height:44px;padding:0 16px;align-items:center;justify-content:center;
+  border-radius:22px;border:1px solid rgba(255,255,255,.4);background:rgba(8,7,12,.74);
+  color:#fff;font:600 14px/1 system-ui,-apple-system,"Segoe UI",sans-serif;cursor:pointer;
+  -webkit-tap-highlight-color:transparent}
+.app-video.is-ready .app-video-sound{display:inline-flex}
+.app-video.is-ready .app-video-sound[hidden]{display:none}
+.app-video-sound:hover{background:rgba(8,7,12,.9)}
+.app-video-sound:focus-visible{outline:3px solid #fff;outline-offset:2px;
+  box-shadow:0 0 0 6px rgba(8,7,12,.85)}
+.app-video figcaption{margin-top:12px;font-size:14px;line-height:1.45;text-align:center;opacity:.82}
+/* adinandemail.com — hero video layout (Scripts/site-video/sites/zen-inbox-hero.css; sites.json extra_css).
+   ADR 2026-09-28 (i), revised by the owner the same evening: "the video should be on first page" /
+   "user do not need to scroll down" — the WHOLE player sits in the first viewport at 1280x800,
+   1440x900, 390x844 and 375x667. inject.py wraps the hero's existing children unchanged in .hero-copy
+   and adds .hero-video beside them; nothing here applies to a hero without .hero-grid.
+   The player's width follows the viewport height: width = (height available) x 9/16, capped at 300px.
+   The constants are measured, not guessed (28 Sep 2026): header 70px on desktop, 209px on phones
+   (the nav wraps to three rows), headline row ~76px at 375px wide. */
+.hero:has(.hero-grid){padding:32px 0 40px}
+.hero-grid .hero-video .app-video{max-width:none;margin:0 auto;
+  width:min(300px, calc((100vh - 170px) * 9 / 16));
+  width:min(300px, calc((100svh - 170px) * 9 / 16))}
+@media (min-width: 900px){
+  .hero-grid{display:grid;grid-template-columns:minmax(0,1fr) auto;column-gap:56px;
+    align-items:center;text-align:left}
+  .hero-grid .tagline{margin:0}
+  .hero-grid .store-links{justify-content:flex-start}
+}
+@media (max-width: 899px){
+  .hero:has(.hero-grid){padding:14px 0 36px}
+  /* phones: headline first, then the whole video, then the store buttons (owner's order) */
+  .hero-grid{display:grid;grid-template-columns:auto 1fr;column-gap:12px;align-items:center;text-align:left}
+  .hero-grid .hero-copy{display:contents}
+  .hero-grid img.mark{grid-row:1;grid-column:1;width:48px;height:48px;border-radius:12px}
+  .hero-grid h1{grid-row:1;grid-column:2;margin:0}
+  .hero-grid .hero-video{grid-row:2;grid-column:1 / -1;margin-top:12px}
+  /* Reserve 65px for the store buttons (47px + 18px gap) when that still leaves a player >= 190px wide;
+     on a short phone (375x667) the whole video wins and the buttons sit just below the fold. */
+  .hero-grid .hero-video .app-video{
+    width:min(300px, max(calc((100vh - 395px) * 9 / 16), min(190px, calc((100vh - 330px) * 9 / 16))));
+    width:min(300px, max(calc((100svh - 395px) * 9 / 16), min(190px, calc((100svh - 330px) * 9 / 16))))}
+  .hero-grid .store-links{grid-row:3;grid-column:1 / -1;margin-top:18px}
+  .hero-grid .tagline{grid-row:4;grid-column:1 / -1;margin:18px auto 0;text-align:center}
+  .hero-grid .trust{grid-row:5;grid-column:1 / -1;text-align:center}
+}

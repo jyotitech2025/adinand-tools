@@ -1,0 +1,8 @@
+{
+  "name": "docfindapp-site",
+  "private": true,
+  "description": "Exists only so tools/prove-ocr.mjs can run tesseract.js in Node. The site itself loads the VENDORED copies under vendor/ — nothing here is ever served.",
+  "devDependencies": {
+    "tesseract.js": "7.0.0"
+  }
+}

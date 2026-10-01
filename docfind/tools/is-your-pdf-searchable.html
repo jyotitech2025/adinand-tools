@@ -1,0 +1,628 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The privacy claim on this page is enforced by the browser, not by the prose. `connect-src`
+     is the directive that matters: with it pinned to 'self' there is no origin this page could
+     upload your file to even if its JavaScript tried. `default-src 'self'` bans CDN scripts;
+     the library this site uses is vendored under /vendor/ for the same reason. Checked by
+     ../check-answers.sh rule CSP. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+<title>Is Your PDF Searchable? — DocFind</title>
+<meta name="description" content="Drop in a PDF and find out whether it has a text layer or is a scanned picture of a page that needs OCR first. The file never leaves your browser — nothing is uploaded and no network request carries it anywhere.">
+<!-- TOOL-CAPS: ocr=no reads=structure network=none stores=nothing -->
+<link rel="canonical" href="https://docfindapp.com/tools/is-your-pdf-searchable">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://docfindapp.com/#app",
+  "name": "DocFind",
+  "alternateName": ["DocFind: Search Inside PDFs", "DocFind PDF Keyword Search"],
+  "url": "https://docfindapp.com/",
+  "image": "https://docfindapp.com/shot-1.png",
+  "description": "Search every PDF you own at once — including scans. On-device OCR, no account, no cloud, no ads. On the App Store for iPhone and on Google Play for Android.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "iOS, Android",
+  "installUrl": [
+    "https://apps.apple.com/app/docfind-search-inside-pdfs/id6801723267",
+    "https://play.google.com/store/apps/details?id=com.jyoti.docfindpdfkeywordsearch"
+  ],
+  "sameAs": [
+    "https://apps.apple.com/app/docfind-search-inside-pdfs/id6801723267",
+    "https://play.google.com/store/apps/details?id=com.jyoti.docfindpdfkeywordsearch",
+    "https://www.youtube.com/@docfindapp",
+    "https://www.wikidata.org/wiki/Q141499254",
+    "https://alternativeto.net/software/docfind/about/"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "description": "Free to download; a Pro upgrade is sold as an in-app purchase."
+  },
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://www.adinand.com/#organization",
+    "name": "Adinand Innovations",
+    "sameAs": ["https://play.google.com/store/apps/developer?id=Adinand+Innovations", "https://www.wikidata.org/wiki/Q141499227"]
+  }
+}
+</script>
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DocFind">
+<meta property="og:title" content="Is your PDF searchable?">
+<meta property="og:description" content="Some PDFs are text. Some are photographs of text. Only one of them can be searched. Find out which yours is — in your browser, without uploading the file.">
+<meta property="og:url" content="https://docfindapp.com/tools/is-your-pdf-searchable">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Is Your PDF Searchable?",
+  "description": "Checks whether a PDF contains a text layer or is a scanned image that needs OCR before any app can search it. Runs entirely in the browser; the file is never uploaded.",
+  "url": "https://docfindapp.com/tools/is-your-pdf-searchable",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "publisher": { "@type": "Organization", "@id": "https://www.adinand.com/#organization", "name": "Adinand Innovations", "sameAs": ["https://play.google.com/store/apps/developer?id=Adinand+Innovations", "https://www.wikidata.org/wiki/Q141499227"] }
+}
+</script>
+<style>
+/* Tool widget styles. Self-contained ON PURPOSE: the .calc-* class names come
+   from the Zen site, where all 44 rules live, and NEITHER sibling site defines
+   a single one of them — measured 2026-09-02, after the built page rendered as
+   unstyled stacked text in a browser. Written against the shared design tokens
+   (--surface, --border, --accent, --text-muted …), which both sites define with
+   identical names, so this block is verbatim-identical across the two pages and
+   inherits each site's own theme instead of fighting it. */
+.calc { background: var(--surface); border: 1px solid var(--border);
+        border-radius: 14px; padding: 1.25rem; margin: 1.5rem 0; }
+.calc-label { display: block; font-weight: 600; margin-bottom: .5rem; }
+.calc-input { width: 100%; max-width: 22ch; font-size: 1.05rem; padding: .6rem .7rem;
+              border-radius: 10px; border: 1px solid var(--border-2);
+              background: var(--ground); color: var(--text); }
+.calc-input[type="file"] { max-width: none; padding: .5rem; }
+.calc-note { color: var(--text-muted); font-size: .9rem; margin: .75rem 0 0; }
+.calc-chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .85rem; }
+.calc-chip { background: var(--surface-2); color: var(--text); border: 1px solid var(--border-2);
+             border-radius: 999px; padding: .35rem .85rem; font: inherit; font-size: .9rem;
+             cursor: pointer; }
+.calc-chip:hover { border-color: var(--accent); color: var(--accent); }
+.calc-mix { border: 1px solid var(--border-2); border-radius: 12px;
+            padding: .85rem 1rem; margin-top: 1rem; }
+.calc-mix legend { padding: 0 .4rem; font-weight: 600; font-size: .95rem; }
+.calc-radio { display: flex; gap: .6rem; align-items: flex-start;
+              padding: .45rem 0; cursor: pointer; }
+.calc-radio small { display: block; color: var(--text-muted); font-size: .85rem; margin-top: .15rem; }
+.calc-result { background: var(--surface); border: 1px solid var(--border);
+               border-left: 4px solid var(--accent); border-radius: 14px;
+               padding: 1.25rem; margin: 1.5rem 0; }
+.calc-rank { font-size: 1.35rem; font-weight: 700; margin: 0 0 .25rem; }
+.calc-rank-line { color: var(--text-muted); margin: 0 0 1.25rem; }
+.calc-stat { margin: 1.1rem 0; }
+.calc-big { font-size: 1.55rem; font-weight: 700; margin: 0; line-height: 1.2; }
+.calc-sub { color: var(--text-muted); font-size: .92rem; margin: .25rem 0 0; }
+.calc-assumption { font-size: .85rem; font-style: italic; }
+.calc-honesty { border-top: 1px solid var(--border-2); margin-top: 1.25rem;
+                padding-top: .9rem; color: var(--text-muted); font-size: .92rem; }
+.calc-cta { background: var(--surface-2); border: 1px solid var(--border);
+            border-radius: 14px; padding: 1.25rem; margin: 2rem 0; }
+.calc-cta h2 { margin-top: 0; }
+.calc-cta-links { display: flex; gap: 1rem; align-items: center;
+                  flex-wrap: wrap; margin-bottom: 0; }
+.calc-btn { display: inline-block; background: var(--accent); color: var(--ground);
+            font-weight: 600; padding: .55rem 1.1rem; border-radius: 10px; text-decoration: none; }
+.pdf-details { margin-top: 1.25rem; }
+.pdf-details summary { cursor: pointer; color: var(--text-muted); }
+.pdf-details ul { margin: .75rem 0; }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand display" href="/" aria-label="DocFind home">
+      <span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 5 5"/></svg></span>
+      DocFind
+    </a>
+    <nav class="nav-links">
+      <a href="/#features">Features</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/support">Support</a>
+      <a href="/answers/">Answers</a>
+      <a href="/tools/" aria-current="page">Tools</a>
+      <a class="chip-soon" href="/#get">Get DocFind</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap prose">
+<h1>Is your PDF actually searchable?</h1>
+<p class="updated">Last reviewed: September 23, 2026 · <a href="/tools/is-your-pdf-searchable.md">Markdown version</a></p>
+
+<p>Some PDFs are text. Some are <em>photographs</em> of text. They look identical on screen, and only one of
+them can be searched — which is why "search inside this PDF" sometimes finds nothing in a document you can
+plainly read with your own eyes.</p>
+
+<p>Drop a PDF below and this page will tell you which kind you have.</p>
+
+<div class="calc">
+  <noscript><p class="calc-note"><strong>This check needs JavaScript</strong> — it runs entirely in your
+  browser, which is also why nothing is uploaded. With JavaScript off, open the PDF and try selecting a word
+  with your cursor instead: if you can select it, the file has a text layer.</p></noscript>
+  <label class="calc-label" for="pdf-input">Choose a PDF</label>
+  <input class="calc-input" id="pdf-input" type="file" accept="application/pdf,.pdf">
+  <p class="calc-note"><strong>The file never leaves your browser.</strong> Nothing is uploaded, no network
+  request carries it anywhere, and nothing is stored — the check runs on your own machine, in this page.
+  Close the tab and it is gone.</p>
+</div>
+
+<section class="calc-result" id="pdf-result" hidden>
+  <p class="calc-rank"><span class="calc-rank-emoji" id="pdf-verdict-emoji"></span> <span id="pdf-verdict-name"></span></p>
+  <p class="calc-rank-line" id="pdf-verdict-line"></p>
+
+  <div class="calc-stat">
+    <p class="calc-big" id="pdf-stat-pages"></p>
+    <p class="calc-sub" id="pdf-stat-text"></p>
+  </div>
+
+  <p class="calc-honesty" id="pdf-next"></p>
+
+  <details class="pdf-details">
+    <summary>What this page actually looked at</summary>
+    <ul id="pdf-evidence"></ul>
+    <p class="calc-sub">This is a structural check: it looks for the text-drawing instructions inside the
+    file. It does not read your document, does not judge what it says, and cannot tell you whether the text
+    layer is <em>accurate</em> — only whether one is there.</p>
+    <p class="calc-sub"><strong>Why the character count is approximate.</strong> It counts the characters
+    the file asks to be drawn, and some fonts encode each character as two bytes, which can roughly double
+    the figure. Measured against Apple's own PDF text extractor on this page's test set, the count ran
+    about 1.9× high on a document using that encoding while every verdict still matched. The presence or
+    absence of a text layer is exact; the number beside it is an estimate, and is shown here rather than
+    above for that reason.</p>
+  </details>
+</section>
+
+<h2>What the answer means</h2>
+
+<p>In a PDF, text is drawn by instructions: the standard describes a text object as "operators that may
+show text strings, move the text position, and set text state" (<a href="https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/PDF32000_2008.pdf"><em>PDF 32000-1:2008</em>, the PDF standard as published by Adobe</a>, §9.4.1, read 23 September
+2026). This check looks for those instructions.</p>
+
+<h3>"Has a text layer"</h3>
+<p>The words are stored in the file as text, so a text search has something to match. If searching still
+fails, the problem is the search, not the document — see
+<a href="/answers/pdf-search-not-working">why PDF search stops working</a>.</p>
+
+<h3>"No text found — this looks like a scan"</h3>
+<p>The file has page images and no text-drawing instructions. There is nothing in the file that marks any
+of those pixels as letters, so there is nothing for a search to match. To make it searchable, the picture has to be run through OCR — optical
+character recognition — which looks at the shapes and writes a text layer underneath.
+<strong>This page does not run OCR</strong> and cannot make your file searchable; it only tells you
+which kind of file you have. That is
+<a href="/answers/what-is-ocr">what OCR is</a>, and
+<a href="/answers/make-a-scanned-pdf-searchable">how you make a scanned PDF searchable</a>.</p>
+
+<h3>"Contains both text and images"</h3>
+<p>The file has a text layer and it also has images. <em>Which pages are which is not something this check
+can tell you</em> — it reads the file as a whole, not page by page. If whole pages seem to be missing from
+your search results, those pages may be scans.</p>
+
+<h3>"Can't say for this file"</h3>
+<p>Parts of the PDF use a compression this page cannot read, so a "no text found" answer would not be
+trustworthy. The file may well be searchable.</p>
+
+<h3>"Encrypted — it may still be searchable"</h3>
+<p>The PDF standard allows "up to two passwords": an owner password and a user password. A reader first
+tries to open an encrypted file with the default, empty user password, and only "If this authentication
+attempt fails" should it "prompt for a password" (<a href="https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/PDF32000_2008.pdf"><em>PDF 32000-1:2008</em>, the PDF standard as published by Adobe</a>, §7.6.3.1, read 23 September 2026).
+So a file with a real <strong>user password</strong> asks for it, and nothing inside can be read until it
+is entered. A file restricted only by an <strong>owner password</strong> — limits on printing or copying —
+opens without a prompt, and <strong>DocFind treats it as an ordinary document</strong>, indexed and searched
+like the rest.</p>
+<p>This page reports that a file is encrypted but does not try to tell the two apart; doing so means
+attempting the decryption itself, which is more than a web page should do with your document. The quickest
+test is the one you can run yourself: open it in any reader. No password prompt means it will search
+normally.</p>
+
+<h2>The honest limits — ours and OCR's in general</h2>
+<ul>
+  <li><strong>Handwriting is not recognised.</strong> DocFind's recognisers are built for printed text.
+  A handwritten page will not become searchable, here or in the app.</li>
+  <li><strong>Scanned pages in other scripts depend on the platform.</strong> On Android, the recogniser
+  bundled with the app reads Latin-script printed text only, so a <em>scanned</em> Chinese, Arabic or Hindi
+  page will not become searchable there. On iPhone, scanned Chinese, Japanese, Korean, Arabic and Thai pages
+  can be read. A scanned Hindi page — or any page in Devanagari — cannot be read on either platform.</li>
+  <li><strong>Text that is already in the file is a different case.</strong> A PDF that already holds
+  Chinese or Arabic <em>as text</em> searches normally on both platforms. Devanagari text (Hindi, Marathi)
+  is not matched reliably, even when it is stored as text.</li>
+  <li><strong>Search matches what you type.</strong> DocFind looks for the word you asked for; it does not
+  guess at related words, so "running" will not find "run". That is deliberate — you can trust a hit.</li>
+  <li><strong>PDFs only.</strong> Word, Excel and plain-text files are not supported.</li>
+</ul>
+
+<section class="calc-cta">
+  <h2>Or stop checking them one at a time.</h2>
+  <p>DocFind searches inside many PDFs at once, and reads scanned pages by running OCR
+  on your device. The index is built on the phone and stays there; nothing is uploaded, and the iPhone
+  app ships with no network capability at all. iPhone and Android.</p>
+  <p class="calc-cta-links"><a class="calc-btn" href="/#get">Get the app</a> <a href="/answers/">More answers</a></p>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <a class="brand display" href="/" aria-label="DocFind home">
+        <span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 5 5"/></svg></span>
+        DocFind
+      </a>
+      <nav class="foot-links">
+        <a href="/#features">Features</a>
+        <a href="/#pricing">Pricing</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/support">Support</a>
+        <a href="/answers/">Answers</a>
+        <a href="/tools/">Tools</a>
+      </nav>
+    </div>
+    <p class="foot-fine">
+      Questions or bugs? <a href="mailto:support@docfindapp.com">support@docfindapp.com</a><br>
+      <span class="aff">DocFind is not affiliated with, endorsed, or sponsored by Apple&nbsp;Inc.
+      or Google&nbsp;LLC. Apple, the Apple logo and iPhone are trademarks of Apple&nbsp;Inc.
+      Google Play and the Google Play logo are trademarks of Google&nbsp;LLC.</span>
+    </p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  /* ---------------------------------------------------------------------
+     THE MODEL. Everything below the marker is pure and testable: it takes
+     the bytes of a file and returns a verdict object, with no DOM in sight.
+     `tools/prove-pdf-tools.mjs` extracts this exact block out of this
+     exact file and runs it over generated PDFs, so the thing proven and the
+     thing shipped cannot drift apart.
+
+     ⚠️ This comment used to name `tools/prove-pdf-checker.mjs`. That file was
+     never written — not in this commit, not in any commit, from the day this
+     page shipped (2026-09-02) until 2026-09-08, when the prover it describes
+     was finally written and this line was corrected. The block below was
+     therefore untested for its whole life, on the one page that has already
+     shipped a wrong answer. A prover named in a comment proves nothing.
+     --------------------------------------------------------------------- */
+  /* MODEL:START */
+
+  // A PDF's structure is ASCII even when its contents are not, so Latin-1 is
+  // the right lens: every byte maps to exactly one character and offsets in
+  // the string are offsets in the file.
+  function toLatin1(bytes) {
+    var CHUNK = 8192, out = [];
+    for (var i = 0; i < bytes.length; i += CHUNK) {
+      out.push(String.fromCharCode.apply(null, bytes.subarray(i, i + CHUNK)));
+    }
+    return out.join("");
+  }
+
+  async function inflate(bytes) {
+    // PDF /FlateDecode is zlib-wrapped, which is what the Web API calls
+    // "deflate". A few producers emit raw deflate instead, so try both
+    // before giving up on a stream.
+    var modes = ["deflate", "deflate-raw"];
+    for (var i = 0; i < modes.length; i++) {
+      try {
+        var stream = new Blob([bytes]).stream().pipeThrough(new DecompressionStream(modes[i]));
+        return new Uint8Array(await new Response(stream).arrayBuffer());
+      } catch (e) { /* try the next mode */ }
+    }
+    return null;
+  }
+
+  // Count the glyphs a page actually draws.
+  //
+  // ⚠️ Adjacency to a text operator is load-bearing, not tidiness. An earlier
+  // version counted any (literal) or <hex> it could see, and scored 39,934
+  // characters on a launch-screen icon that contains no text at all — because
+  // compressed streams and binary image data throw up those bracket pairs by
+  // chance. A PDF only DRAWS text via Tj/TJ/'/" immediately after the string,
+  // so requiring the operator is what separates real text from noise.
+  // Found 2026-09-02 by comparing this page's answers against Apple's PDFKit
+  // extractor on a corpus of real PDFs. (The comment here used to credit a file
+  // named prove-pdf-checker.mjs; no such file was ever committed. The comparison
+  // was real, the harness was not kept. tools/prove-pdf-tools.mjs, 2026-09-08, is.)
+  function countGlyphs(s) {
+    var n = 0, m;
+
+    // (string) Tj   |   (string) '   |   (string) "
+    var show = /\(((?:\\.|[^\\()])*)\)\s*(?:Tj|'|")(?=[\s\/\[\]<>()]|$)/g;
+    while ((m = show.exec(s)) !== null) n += m[1].replace(/\\./g, "x").length;
+
+    // <hex> Tj
+    var hexShow = /<([0-9A-Fa-f\s]{2,})>\s*Tj(?=[\s\/\[\]<>()]|$)/g;
+    while ((m = hexShow.exec(s)) !== null) n += Math.floor(m[1].replace(/\s/g, "").length / 2);
+
+    // [ (kerned) (runs) ] TJ — the common case in real documents
+    var arr = /\[([\s\S]{0,20000}?)\]\s*TJ/g;
+    while ((m = arr.exec(s)) !== null) n += countInArray(m[1]);
+
+    return n;
+  }
+
+  function countInArray(s) {
+    var n = 0, m;
+    var literal = /\(((?:\\.|[^\\()])*)\)/g;
+    while ((m = literal.exec(s)) !== null) n += m[1].replace(/\\./g, "x").length;
+    var hex = /<([0-9A-Fa-f\s]{2,})>/g;
+    while ((m = hex.exec(s)) !== null) n += Math.floor(m[1].replace(/\s/g, "").length / 2);
+    return n;
+  }
+
+  function countPages(s) {
+    var n = (s.match(/\/Type\s*\/Page[^s]/g) || []).length;
+    if (n > 0) return n;
+    var counts = s.match(/\/Count\s+(\d+)/g) || [];   // fall back to the page tree
+    var best = 0;
+    for (var i = 0; i < counts.length; i++) {
+      best = Math.max(best, parseInt(counts[i].replace(/\/Count\s+/, ""), 10) || 0);
+    }
+    return best;
+  }
+
+  var IMAGE_MARKERS = ["/Subtype /Image", "/Subtype/Image", "/DCTDecode", "/JPXDecode",
+                       "/CCITTFaxDecode", "/JBIG2Decode"];
+
+  function hasImage(s) {
+    for (var i = 0; i < IMAGE_MARKERS.length; i++) {
+      if (s.indexOf(IMAGE_MARKERS[i]) !== -1) return true;
+    }
+    return false;
+  }
+
+  // Walk every `stream ... endstream` and hand back what is inside, inflating
+  // the compressed ones. Page content, and in modern files the page objects
+  // themselves, live in here rather than in the visible bytes.
+  // Returns {text: [...], unreadable: n, truncated: bool}. `unreadable` is the
+  // whole point: a stream this code cannot decode contributes zero glyphs, and
+  // zero glyphs is indistinguishable from "this page is a picture" unless the
+  // count is carried out. Without it, a browser with no DecompressionStream —
+  // or any PDF using LZW/ASCII85 — gets told its perfectly searchable document
+  // "is a picture of a page". That is the worst answer this tool can give, and
+  // it would be given confidently. Found in adversarial review, 2026-09-02.
+  async function decodedStreams(raw, bytes, budgetMs) {
+    var out = [], at = 0, started = Date.now(), unreadable = 0, truncated = false;
+    while (out.length < 4000) {
+      var s = raw.indexOf("stream", at);
+      if (s === -1) break;
+      if (Date.now() - started > budgetMs) { truncated = true; break; }
+      var dictFrom = Math.max(0, raw.lastIndexOf("obj", s));
+      var dict = raw.slice(dictFrom, s);
+      var from = s + 6;
+      if (raw[from] === "\r") from++;
+      if (raw[from] === "\n") from++;
+      var end = raw.indexOf("endstream", from);
+      if (end === -1) break;
+      at = end + 9;
+      if (end - from <= 0) continue;
+      if (/\/Filter/.test(dict) && !/FlateDecode/.test(dict)) {
+        if (!/\/Subtype\s*\/Image/.test(dict)) unreadable++;  // LZW, ASCII85, …
+        continue;
+      }
+
+      // Skip image XObjects. An image never draws text, and its decompressed
+      // pixels are megabytes of random bytes in which `(…)'` — a real PDF
+      // text operator — turns up by chance. A 1 MB synthetic scan scored 100
+      // phantom characters this way and was reported as a searchable document,
+      // which is the single worst answer this page can give.
+      if (/\/Subtype\s*\/Image/.test(dict)) continue;
+
+      // Trim to the stream's declared /Length. This is not tidiness: the bytes
+      // between the data and `endstream` are an EOL the spec puts there, and
+      // DecompressionStream rejects the whole stream over them with "trailing
+      // junk". Without this, EVERY compressed stream in a normal PDF fails to
+      // decode and a text document reads as a scan.
+      // Found 2026-09-02 by comparing this page's answers against Apple's PDFKit
+  // extractor on a corpus of real PDFs. (The comment here used to credit a file
+  // named prove-pdf-checker.mjs; no such file was ever committed. The comparison
+  // was real, the harness was not kept. tools/prove-pdf-tools.mjs, 2026-09-08, is.)
+      var stop = end;
+      var declared = /\/Length\s+(\d+)(?!\s+\d+\s+R)/.exec(dict);
+      if (declared) {
+        var len = parseInt(declared[1], 10);
+        if (len > 0 && from + len <= end) stop = from + len;
+      } else {
+        while (stop > from && "\r\n \t".indexOf(raw[stop - 1]) !== -1) stop--;
+      }
+      if (stop <= from) continue;
+
+      if (/FlateDecode/.test(dict)) {
+        var got = await inflate(bytes.subarray(from, stop));
+        if (got) out.push(toLatin1(got)); else unreadable++;
+      } else if (!/\/Filter/.test(dict)) {
+        out.push(raw.slice(from, stop));
+      }
+    }
+    if (out.length >= 4000) truncated = true;
+    return { text: out, unreadable: unreadable, truncated: truncated };
+  }
+
+  async function analyzePdf(bytes, opts) {
+    var budgetMs = (opts && opts.budgetMs) || 15000;
+    var head = toLatin1(bytes.subarray(0, 2048));
+    if (head.indexOf("%PDF-") === -1) return { kind: "not-pdf" };
+
+    var raw = toLatin1(bytes);
+    var version = (head.match(/%PDF-(\d\.\d)/) || [null, "unknown"])[1];
+
+    // /Encrypt marks the file as encrypted — which is NOT the same as "you need a
+    // password to open it", and the difference decides whether DocFind can read it.
+    // A PDF carrying only an OWNER password (permissions restrictions) opens on an
+    // empty user password and indexes and searches normally: iOS keys its refusal on
+    // `isLocked`, not `isEncrypted` (PDFKitPageTextExtractor.swift:27-32), and Android
+    // only refuses on PdfBox's InvalidPasswordException (MatchedPagesExporter.kt:225+).
+    // Telling those apart needs the PDF security handler's key derivation, which this
+    // page will not attempt — so it reports the ambiguity instead of guessing.
+    // Corrected 2026-09-02: this previously asserted "DocFind declines these", which
+    // was a WRONG ANSWER for owner-password files, live on the page.
+    if (/\/Encrypt[\s\d]/.test(raw)) {
+      return { kind: "encrypted", version: version, pages: countPages(raw) };
+    }
+
+    // If the browser cannot inflate at all, every Flate stream is unreadable and
+    // the honest answer is "I can't check this here" — not a verdict.
+    if (typeof DecompressionStream === "undefined") {
+      return { kind: "unsupported", version: version, pages: countPages(raw),
+               glyphs: 0, glyphsPerPage: 0, images: false, streams: 0,
+               unreadable: 0, truncated: false };
+    }
+
+    var got = await decodedStreams(raw, bytes, budgetMs);
+    var streams = got.text;
+    var all = raw + "\n" + streams.join("\n");
+
+    // Only decoded streams are counted. Never `raw`: outside the streams it is
+    // compressed bytes, and counting there is what produced the icon false
+    // positive described above.
+    var glyphs = 0;
+    for (var i = 0; i < streams.length; i++) glyphs += countGlyphs(streams[i]);
+
+    var pages = Math.max(countPages(all), 1);
+    var images = hasImage(all);
+    var perPage = glyphs / pages;
+
+    var kind;
+    if (perPage >= 100) kind = "text";
+    else if (glyphs > 0 && images) kind = "mixed";
+    else if (glyphs > 0) kind = "text-thin";
+    else if (got.unreadable > 0) kind = "undetermined";   // never assert "scan" here
+    else if (images) kind = "scan";
+    else kind = "no-text";
+
+    return {
+      kind: kind, version: version, pages: pages,
+      glyphs: glyphs, glyphsPerPage: Math.round(perPage),
+      images: images, streams: streams.length,
+      unreadable: got.unreadable, truncated: got.truncated
+    };
+  }
+
+  var VERDICTS = {
+    "text":      { emoji: "✅", name: "Has a text layer",
+                   line: "The words are really in there as text, so a search has something to match." },
+    "text-thin": { emoji: "✅", name: "Has a text layer — a thin one",
+                   line: "There is real text in the file, but not much of it per page. Searchable, as far as it goes." },
+    "mixed":     { emoji: "🧩", name: "Contains both text and images",
+                   line: "This file has a text layer and it also has images. Which pages are which is not something this check can tell you — it reads the file as a whole, not page by page." },
+    "scan":      { emoji: "🔍", name: "No text found — this looks like a scan",
+                   line: "Page images, and no text-drawing instructions anywhere. Nothing in the file says which shapes are letters, so there is nothing for a search to match." },
+    "no-text":   { emoji: "❓", name: "No text found",
+                   line: "No text-drawing instructions and no page images turned up. Unusual — the file may be damaged, or built in a way this check does not read." },
+    "encrypted": { emoji: "🔒", name: "Encrypted — it may still be searchable",
+                   line: "This file carries PDF encryption, and this page cannot tell which kind. If it opens in a reader without asking you for a password, it is an owner-password file and DocFind reads it like any other. If it does ask for a password, nothing inside can be read until the password is entered." },
+    "not-pdf":   { emoji: "⚠️", name: "Not a PDF",
+                   line: "That file does not start with a PDF header. Only PDFs can be checked here." },
+    "undetermined": { emoji: "🤔", name: "Can't say for this file",
+                   line: "Parts of this PDF use a compression this page cannot read, so a \"no text found\" answer would not be trustworthy. The file may well be searchable." },
+    "unsupported": { emoji: "🌐", name: "This browser can't run the check",
+                   line: "The check needs a decompression feature your browser does not provide. Try a current Chrome, Edge, Safari or Firefox — or just open the PDF and try selecting a word with your cursor." }
+  };
+
+  var NEXT = {
+    "text":      'Already searchable. If a search still comes up empty, the problem is elsewhere — see <a href="/answers/pdf-search-not-working">why PDF search stops working</a>.',
+    "text-thin": 'Searchable. If whole pages seem to be missing from your results, they may be images — see <a href="/answers/make-a-scanned-pdf-searchable">making a scanned PDF searchable</a>.',
+    "mixed":     'If some pages are scans, those pages need OCR before their words can be found. Here is <a href="/answers/make-a-scanned-pdf-searchable">how to make a scanned PDF searchable</a>.',
+    "scan":      'This one needs OCR. Here is <a href="/answers/what-is-ocr">what that means</a>, and <a href="/answers/make-a-scanned-pdf-searchable">how to make a scanned PDF searchable</a>.',
+    "no-text":   'Try opening it in a PDF reader and selecting a word with your cursor. If you cannot select it, it is a picture — see <a href="/answers/what-is-ocr">what OCR is</a>.',
+    "encrypted": 'The quickest way to tell: open it in any PDF reader. No password prompt means it will search normally; a prompt means remove the password in whatever app produced the file first.',
+    "not-pdf":   'Choose a file ending in <code>.pdf</code>.',
+    "undetermined": 'The quickest check by hand: open the PDF and try to select a word with your cursor. If you can, it has a text layer. If you cannot, see <a href="/answers/what-is-ocr">what OCR is</a>.',
+    "unsupported": 'Open the PDF and try to select a word with your cursor — if you can, it has a text layer.'
+  };
+
+  /* MODEL:END */
+
+  var $ = function (id) { return document.getElementById(id); };
+
+  function describe(r) {
+    var bits = ["PDF version " + (r.version || "unknown")];
+    if (r.pages) bits.push(r.pages === 1 ? "1 page" : r.pages.toLocaleString("en-US") + " pages");
+    if (r.kind !== "encrypted" && r.kind !== "not-pdf") {
+      bits.push(r.glyphs === 0
+        ? "no text-drawing instructions found anywhere in the file"
+        : "roughly " + r.glyphs.toLocaleString("en-US") + " text characters drawn"
+          + (r.pages ? " (about " + r.glyphsPerPage.toLocaleString("en-US") + " per page)" : "")
+          + " — approximate, see below");
+      bits.push(r.images ? "page images present" : "no page images found");
+      bits.push(r.streams.toLocaleString("en-US") + " internal streams read"
+                + (r.truncated ? " (stopped early — large file, so this is a partial read)" : ""));
+      if (r.unreadable) {
+        bits.push(r.unreadable.toLocaleString("en-US")
+                  + " stream(s) used a compression this page cannot read — "
+                  + "any \u201cno text\u201d answer would be unreliable, so none is given");
+      }
+    }
+    return bits;
+  }
+
+  function render(r) {
+    var v = VERDICTS[r.kind] || VERDICTS["no-text"];
+    $("pdf-verdict-emoji").textContent = v.emoji;
+    $("pdf-verdict-name").textContent = v.name;
+    $("pdf-verdict-line").textContent = v.line;
+
+    // The page count is the same class of regex heuristic as the character
+    // count and can overcount an incrementally-updated PDF, so it gets the same
+    // hedge rather than sitting unqualified as the headline number.
+    $("pdf-stat-pages").textContent = r.pages
+      ? (r.pages === 1 ? "about 1 page" : "about " + r.pages.toLocaleString("en-US") + " pages")
+      : "";
+    // Deliberately NOT a character count. The count is approximate — see
+    // countGlyphs — and this line is the one a reader takes at face value, so
+    // it states only what the check can actually prove.
+    $("pdf-stat-text").textContent = (r.kind === "encrypted" || r.kind === "not-pdf") ? ""
+      : r.glyphs > 0 ? "Text found in the file" : "No text found in the file";
+
+    $("pdf-next").innerHTML = NEXT[r.kind] || "";
+
+    var ul = $("pdf-evidence");
+    ul.innerHTML = "";
+    describe(r).forEach(function (b) {
+      var li = document.createElement("li");
+      li.textContent = b;
+      ul.appendChild(li);
+    });
+
+    $("pdf-result").hidden = false;
+  }
+
+  var input = $("pdf-input");
+  if (!input) return;
+
+  input.addEventListener("change", async function () {
+    var file = input.files && input.files[0];
+    if (!file) return;
+
+    $("pdf-verdict-emoji").textContent = "⏳";
+    $("pdf-verdict-name").textContent = "Reading the file…";
+    $("pdf-verdict-line").textContent = "";
+    $("pdf-next").innerHTML = "";
+    $("pdf-evidence").innerHTML = "";
+    $("pdf-result").hidden = false;
+
+    try {
+      var bytes = new Uint8Array(await file.arrayBuffer());
+      render(await analyzePdf(bytes));
+    } catch (e) {
+      render({ kind: "no-text", version: "unknown", pages: 0, glyphs: 0,
+               glyphsPerPage: 0, images: false, streams: 0 });
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

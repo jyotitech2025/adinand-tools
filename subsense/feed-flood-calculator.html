@@ -1,0 +1,224 @@
+<!DOCTYPE html><html lang="en" data-theme="dark"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Feed Flood Calculator for YouTube Subscriptions — SubSense</title><meta name="description" content="Work out how many videos your YouTube subscriptions actually push into your feed each week and each year, how few channels produce most of it, and where you sit against YouTube's own published subscription limits. Runs entirely in your browser."><link rel="canonical" href="https://www.subsenseapp.com/tools/feed-flood-calculator/"><script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","@id":"https://www.subsenseapp.com/#app","name":"SubSense","alternateName":["SubSense: Sub Organiser","SubSense Sub Organizer"],"url":"https://www.subsenseapp.com/","image":"https://www.subsenseapp.com/images/og.png","description":"SubSense reads your YouTube subscriptions on-device to show what's gone quiet, what's flooding your feed, and how to tidy it. You confirm every change. No servers. iOS & Android.","applicationCategory":"UtilitiesApplication","operatingSystem":"iOS, Android","installUrl":["https://apps.apple.com/app/subsense-sub-organiser/id6787562040","https://play.google.com/store/apps/details?id=com.jyoti.subsense_subscriptionorganiser"],"sameAs":["https://apps.apple.com/app/subsense-sub-organiser/id6787562040","https://play.google.com/store/apps/details?id=com.jyoti.subsense_subscriptionorganiser","https://www.youtube.com/@subsenseapp","https://www.wikidata.org/wiki/Q141499259","https://alternativeto.net/software/subsense/about/"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","description":"Free to download; a Pro upgrade is sold as an in-app purchase."},"publisher":{"@type":"Organization","@id":"https://www.adinand.com/#organization","name":"Adinand Innovations","sameAs":["https://play.google.com/store/apps/developer?id=Adinand+Innovations","https://www.wikidata.org/wiki/Q141499227"]}}</script><link rel="icon" href="/favicon.svg" type="image/svg+xml"><meta name="theme-color" content="#0C0A13"><!-- Open Graph / social --><meta property="og:type" content="website"><meta property="og:site_name" content="SubSense"><meta property="og:title" content="Feed Flood Calculator for YouTube Subscriptions — SubSense"><meta property="og:description" content="Work out how many videos your YouTube subscriptions actually push into your feed each week and each year, how few channels produce most of it, and where you sit against YouTube's own published subscription limits. Runs entirely in your browser."><meta property="og:url" content="https://www.subsenseapp.com/tools/feed-flood-calculator/"><meta property="og:image" content="https://www.subsenseapp.com/images/og.png"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Feed Flood Calculator for YouTube Subscriptions — SubSense"><meta name="twitter:description" content="Work out how many videos your YouTube subscriptions actually push into your feed each week and each year, how few channels produce most of it, and where you sit against YouTube's own published subscription limits. Runs entirely in your browser."><meta name="twitter:image" content="https://www.subsenseapp.com/images/og.png"><!-- Flag JS as available so the reveal animation may hide content.
+         Without JS, .reveal stays fully visible (see global.css). --><script>document.documentElement.classList.add('js');</script><style>:root{--ground: #FAF9FE;--ground-2: #F1EFFA;--surface: #FFFFFF;--surface-2: #F7F5FD;--border: rgba(23,19,40,.1);--border-2: rgba(23,19,40,.06);--text: #17131F;--text-muted: #615B74;--accent: #6C5CF0;--accent-2: #5A47E8;--accent-soft: rgba(108,92,240,.11);--signal: #128A5E;--signal-soft: rgba(18,138,94,.12);--warn: #B26E12;--warn-soft: rgba(178,110,18,.13);--glow: rgba(108,92,240,.28);--grid-line: rgba(23,19,40,.035);--shadow: 0 24px 60px -24px rgba(38,26,90,.3), 0 4px 14px -6px rgba(38,26,90,.16)}@media (prefers-color-scheme: dark){:root{--ground:#0C0A13;--ground-2:#100D1A;--surface:#16131F;--surface-2:#1D1929;--border:rgba(255,255,255,.09);--border-2:rgba(255,255,255,.05);--text:#F3F1FB;--text-muted:#A6A0BA;--accent:#8B7BFF;--accent-2:#A597FF;--accent-soft:rgba(139,123,255,.15);--signal:#4ADE9A;--signal-soft:rgba(74,222,154,.14);--warn:#F5B454;--warn-soft:rgba(245,180,84,.15);--glow:rgba(139,123,255,.38);--grid-line:rgba(255,255,255,.028);--shadow:0 30px 70px -28px rgba(0,0,0,.7), 0 6px 18px -8px rgba(0,0,0,.5)}}:root[data-theme=light]{--ground:#FAF9FE;--ground-2:#F1EFFA;--surface:#FFFFFF;--surface-2:#F7F5FD;--border:rgba(23,19,40,.1);--border-2:rgba(23,19,40,.06);--text:#17131F;--text-muted:#615B74;--accent:#6C5CF0;--accent-2:#5A47E8;--accent-soft:rgba(108,92,240,.11);--signal:#128A5E;--signal-soft:rgba(18,138,94,.12);--warn:#B26E12;--warn-soft:rgba(178,110,18,.13);--glow:rgba(108,92,240,.28);--grid-line:rgba(23,19,40,.035);--shadow:0 24px 60px -24px rgba(38,26,90,.3), 0 4px 14px -6px rgba(38,26,90,.16)}:root[data-theme=dark]{--ground:#0C0A13;--ground-2:#100D1A;--surface:#16131F;--surface-2:#1D1929;--border:rgba(255,255,255,.09);--border-2:rgba(255,255,255,.05);--text:#F3F1FB;--text-muted:#A6A0BA;--accent:#8B7BFF;--accent-2:#A597FF;--accent-soft:rgba(139,123,255,.15);--signal:#4ADE9A;--signal-soft:rgba(74,222,154,.14);--warn:#F5B454;--warn-soft:rgba(245,180,84,.15);--glow:rgba(139,123,255,.38);--grid-line:rgba(255,255,255,.028);--shadow:0 30px 70px -28px rgba(0,0,0,.7), 0 6px 18px -8px rgba(0,0,0,.5)}*{box-sizing:border-box}html{color-scheme:dark;scroll-behavior:smooth}@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}body{margin:0;background:var(--ground);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}.display{font-family:ui-rounded,SF Pro Rounded,Segoe UI,system-ui,sans-serif}.mono{font-family:ui-monospace,SF Mono,Cascadia Code,Roboto Mono,monospace}.wrap{width:100%;max-width:1120px;margin:0 auto;padding:0 24px}a{color:inherit;text-decoration:none}:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:6px}header.nav{position:sticky;top:0;z-index:50;backdrop-filter:saturate(1.4) blur(14px);background:color-mix(in srgb,var(--ground) 82%,transparent);border-bottom:1px solid var(--border-2)}.nav-inner{display:flex;align-items:center;justify-content:space-between;height:64px}.brand{display:flex;align-items:center;gap:11px;font-weight:700;font-size:19px;letter-spacing:-.02em;color:var(--text)}.logo{width:34px;height:34px;border-radius:10px;flex:none;background:linear-gradient(150deg,#7c6cf6,#9b7bff 55%,#5fa8ff);display:grid;place-items:center;box-shadow:0 6px 16px -6px var(--glow)}.logo .b{display:grid;gap:3.4px;width:15px}.logo .b span{display:block;height:2.4px;border-radius:3px;background:#fff}.logo .b span:nth-child(1){width:100%}.logo .b span:nth-child(2){width:70%}.logo .b span:nth-child(3){width:85%}.nav-links{display:flex;align-items:center;gap:30px}.nav-links a{color:var(--text-muted);font-size:14.5px;font-weight:500;transition:color .18s}.nav-links a:hover{color:var(--text)}.btn{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:14.5px;padding:9px 17px;border-radius:11px;border:1px solid transparent;cursor:pointer;transition:transform .16s ease,box-shadow .2s,background .2s}.btn-primary{background:var(--accent);color:#fff;box-shadow:0 10px 22px -10px var(--glow)}.btn-primary:hover{transform:translateY(-1px);box-shadow:0 16px 30px -12px var(--glow)}@media (max-width: 760px){.nav-links a:not(.btn){display:none}}.hero{position:relative;padding:76px 0 40px;overflow:hidden}.hero:before{content:"";position:absolute;inset:-20% -10% auto;height:620px;z-index:0;background:radial-gradient(560px 320px at 22% 8%,var(--glow),transparent 70%),radial-gradient(520px 340px at 92% 0%,color-mix(in srgb,var(--signal) 26%,transparent),transparent 68%);opacity:.8;pointer-events:none}.hero:after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(var(--grid-line) 1px,transparent 1px),linear-gradient(90deg,var(--grid-line) 1px,transparent 1px);background-size:46px 46px;-webkit-mask-image:radial-gradient(circle at 50% 30%,#000 30%,transparent 78%);mask-image:radial-gradient(circle at 50% 30%,#000 30%,transparent 78%)}.hero-grid{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr .95fr;gap:54px;align-items:center}@media (max-width: 940px){.hero-grid{grid-template-columns:1fr;gap:44px}}.eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-2);background:var(--accent-soft);padding:6px 12px;border-radius:999px;margin-bottom:22px}.eyebrow .dot{width:6px;height:6px;border-radius:50%;background:var(--accent)}h1{font-size:clamp(38px,6.2vw,62px);line-height:1.02;letter-spacing:-.035em;font-weight:800;margin:0 0 20px;text-wrap:balance}h1 .grad{background:linear-gradient(105deg,var(--accent),#6FB8FF);-webkit-background-clip:text;background-clip:text;color:transparent}.lede{font-size:clamp(16.5px,1.9vw,19px);color:var(--text-muted);max-width:33ch;margin:0 0 30px}.cta-row{display:flex;flex-wrap:wrap;gap:13px;align-items:center}.trust-chips{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:28px}.trust-chips span{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;color:var(--text-muted)}.trust-chips svg{color:var(--signal);flex:none}.store-badge{display:inline-flex;transition:transform .16s,box-shadow .2s;border-radius:10px}.store-badge:hover{transform:translateY(-1px);box-shadow:0 14px 26px -14px #0009}.store-badge img{display:block;height:54px;width:auto}.phone{position:relative;border-radius:40px;padding:9px;background:#08070c;border:1px solid rgba(255,255,255,.1);box-shadow:var(--shadow),inset 0 0 0 2px #ffffff0a}.phone img{display:block;width:100%;height:auto;border-radius:32px}.hero-phone{position:relative;max-width:320px;margin:0 auto}.hero-phone:before{content:"";position:absolute;inset:-18px;z-index:-1;border-radius:56px;background:radial-gradient(60% 55% at 50% 40%,var(--glow),transparent 70%);filter:blur(8px)}.gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:46px}@media (max-width: 820px){.gallery{grid-template-columns:1fr;max-width:320px;margin-left:auto;margin-right:auto}}.shot{text-align:center}.shot .phone{max-width:300px;margin:0 auto 16px}.shot h3{font-size:16px;margin:0 0 5px;font-weight:700;letter-spacing:-.01em}.shot p{font-size:13.5px;color:var(--text-muted);margin:0 auto;max-width:26ch}section{position:relative}.band{padding:84px 0}.sec-eyebrow{font-size:12.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;color:var(--accent-2);margin:0 0 14px}h2{font-size:clamp(28px,4vw,40px);letter-spacing:-.03em;font-weight:800;margin:0 0 16px;text-wrap:balance}.sec-lede{font-size:17px;color:var(--text-muted);max-width:56ch;margin:0}.features{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;margin-top:44px}@media (max-width: 720px){.features{grid-template-columns:1fr}}.feat{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:26px;transition:transform .2s,box-shadow .25s,border-color .25s}.feat:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--accent) 40%,var(--border))}.feat .ic{width:44px;height:44px;border-radius:13px;display:grid;place-items:center;background:var(--accent-soft);color:var(--accent-2);margin-bottom:16px}.feat.sig .ic{background:var(--signal-soft);color:var(--signal)}.feat.warn .ic{background:var(--warn-soft);color:var(--warn)}.feat h3{font-size:18.5px;margin:0 0 8px;letter-spacing:-.01em;font-weight:700}.feat p{font-size:14.5px;color:var(--text-muted);margin:0}.fun-note{margin-top:20px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;font-size:14.5px;color:var(--text-muted);background:var(--surface-2);border:1px solid var(--border-2);border-radius:14px;padding:14px 18px}.fun-note b{color:var(--text)}.pill-fun{font-size:12px;font-weight:650;padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent-2)}.steps-band{background:var(--ground-2);border-top:1px solid var(--border-2);border-bottom:1px solid var(--border-2)}.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:44px;counter-reset:s}@media (max-width: 860px){.steps{grid-template-columns:repeat(2,1fr)}}@media (max-width: 480px){.steps{grid-template-columns:1fr}}.step{position:relative;padding-top:44px}.step:before{counter-increment:s;content:counter(s,decimal-leading-zero);position:absolute;top:0;left:0;font-family:ui-monospace,monospace;font-size:14px;font-weight:700;color:var(--accent);background:var(--accent-soft);width:34px;height:34px;border-radius:9px;display:grid;place-items:center}.step h3{font-size:16.5px;margin:0 0 7px;font-weight:700;letter-spacing:-.01em}.step p{font-size:14px;color:var(--text-muted);margin:0}.privacy-card{margin-top:44px;background:var(--surface);border:1px solid var(--border);border-radius:24px;padding:34px;box-shadow:var(--shadow)}.promises{display:grid;grid-template-columns:repeat(3,1fr);gap:16px 26px;margin:0;padding:0;list-style:none}@media (max-width: 720px){.promises{grid-template-columns:1fr}}.promises li{display:flex;gap:12px;align-items:flex-start;font-size:15px}.promises .ck{flex:none;width:24px;height:24px;border-radius:7px;display:grid;place-items:center;background:var(--signal-soft);color:var(--signal);margin-top:1px}.promises b{display:block;font-weight:650}.promises small{color:var(--text-muted);font-size:13px}.limited{margin-top:26px;padding-top:22px;border-top:1px solid var(--border-2);font-size:13.5px;color:var(--text-muted)}.limited a{color:var(--accent-2);font-weight:550;text-decoration:underline;text-underline-offset:2px}.pricing-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:44px}@media (max-width: 1080px){.pricing-grid{grid-template-columns:repeat(2,1fr);gap:18px}}@media (max-width: 720px){.pricing-grid{grid-template-columns:1fr}}.price-card{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:46px 22px 26px;transition:transform .2s,box-shadow .25s,border-color .25s}.price-card:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:color-mix(in srgb,var(--accent) 40%,var(--border))}.price-card.pro{border-color:color-mix(in srgb,var(--accent) 55%,var(--border));box-shadow:var(--shadow)}.price-pill{position:absolute;top:18px;left:22px;font-size:10.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;padding:3px 8px;border-radius:999px;white-space:nowrap;color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent);border:1px solid color-mix(in srgb,var(--accent) 35%,transparent)}.price-card h3{font-size:18.5px;margin:0 0 8px;letter-spacing:-.01em;font-weight:700}.price-tag{font-size:36px;font-weight:800;letter-spacing:-.03em;margin:0;line-height:1.05}.price-sub{font-size:13px;color:var(--text-muted);margin:6px 0 0}.price-note{font-size:14.5px;color:var(--text-muted);margin:12px 0 20px}.price-card .promises{grid-template-columns:1fr;gap:12px}.price-fine{margin-top:22px}.final{text-align:center}.final .box{position:relative;overflow:hidden;background:linear-gradient(150deg,var(--accent),var(--accent-2));border-radius:28px;padding:60px 32px;color:#fff}.final .box:after{content:"";position:absolute;inset:0;background:radial-gradient(400px 200px at 80% 10%,rgba(255,255,255,.22),transparent 60%);pointer-events:none}.final h2{color:#fff;position:relative}.final p{color:#ffffffdb;position:relative;max-width:46ch;margin:0 auto 28px;font-size:17px}.final .cta-row{justify-content:center;position:relative}footer{padding:56px 0 40px;border-top:1px solid var(--border-2)}.foot-grid{display:flex;justify-content:space-between;gap:30px;flex-wrap:wrap}.foot-links{display:flex;gap:26px;flex-wrap:wrap}.foot-links a{color:var(--text-muted);font-size:14px;transition:color .18s}.foot-links a:hover{color:var(--text)}.foot-fine{margin-top:30px;font-size:12.5px;color:var(--text-muted);max-width:60ch}.foot-fine a{color:var(--accent-2);text-decoration:underline;text-underline-offset:2px}.foot-fine .aff{opacity:.8}.legal{padding:60px 0 40px}.legal-wrap{max-width:760px}.legal h1{font-size:clamp(30px,5vw,44px);margin:0 0 10px}.legal .dates{color:var(--text-muted);font-size:14px;margin:0 0 36px}.legal h2{font-size:21px;margin:34px 0 12px;letter-spacing:-.01em}.legal p,.legal li{font-size:15.5px;color:var(--text)}.legal p{margin:0 0 14px}.legal ul{margin:0 0 16px;padding-left:22px;display:grid;gap:8px}.legal a{color:var(--accent-2);text-decoration:underline;text-underline-offset:2px}.legal code{font-family:ui-monospace,monospace;font-size:.9em;background:var(--surface-2);padding:1px 6px;border-radius:6px}.legal .lead{font-size:17px;color:var(--text-muted)}a,button{-webkit-tap-highlight-color:rgba(108,92,240,.18)}@media (max-width: 640px){.wrap{padding:0 18px}.hero{padding:46px 0 20px}.band{padding:58px 0}h1{font-size:clamp(33px,8.6vw,46px)}.lede{max-width:none}.sec-lede{font-size:15.5px}.cta-row{gap:10px}.store-badge img{height:46px}.feat{padding:22px}.privacy-card{padding:24px}.final .box{padding:44px 22px}.legal{padding:44px 0 32px}.legal h2{margin-top:28px}}@media (hover: none){.feat:hover,.btn-primary:hover,.store-badge:hover,.hero-phone:hover{transform:none;box-shadow:var(--shadow)}.feat:hover{box-shadow:none}}.js .reveal{opacity:0;transform:translateY(18px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}.js .reveal.in{opacity:1;transform:none}@media (prefers-reduced-motion: reduce){.js .reveal{opacity:1;transform:none;transition:none}}@media (min-width: 1280px){.wrap{max-width:1200px}}@media (min-width: 1600px){.wrap{max-width:1320px}}.app-video{position:relative;max-width:320px;margin:28px auto}.hero-phone .app-video{max-width:none;margin:0}.app-video video{display:block;width:100%;height:auto;aspect-ratio:9/16;object-fit:cover;border-radius:var(--app-video-radius,32px);background:#08070c}.app-video video::cue{font-size:15px;line-height:1.3;background:#000000b8}.app-video-sound{display:none;position:absolute;right:14px;top:14px;z-index:2;min-width:44px;min-height:44px;padding:0 16px;align-items:center;justify-content:center;border-radius:22px;border:1px solid rgba(255,255,255,.4);background:#08070cbd;color:#fff;font:600 14px/1 system-ui,-apple-system,Segoe UI,sans-serif;cursor:pointer;-webkit-tap-highlight-color:transparent}.app-video.is-ready .app-video-sound{display:inline-flex}.app-video.is-ready .app-video-sound[hidden]{display:none}.app-video-sound:hover{background:#08070ce6}.app-video-sound:focus-visible{outline:3px solid #fff;outline-offset:2px;box-shadow:0 0 0 6px #08070cd9}.app-video figcaption{margin-top:12px;font-size:14px;line-height:1.45;text-align:center;opacity:.82}
+</style>
+<style>.calc[data-astro-cid-crdmqzw2]{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:1.25rem;margin:1.5rem 0}.calc-label[data-astro-cid-crdmqzw2]{display:block;font-weight:600;margin-bottom:.5rem}.calc-input[data-astro-cid-crdmqzw2]{width:100%;max-width:22ch;font-size:1.05rem;padding:.6rem .7rem;border-radius:10px;border:1px solid var(--border-2);background:var(--ground);color:var(--text)}.calc-input[data-astro-cid-crdmqzw2][type=file]{max-width:none;padding:.5rem}.calc-note[data-astro-cid-crdmqzw2]{color:var(--text-muted);font-size:.9rem;margin:.75rem 0 0}.calc-chips[data-astro-cid-crdmqzw2]{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.85rem}.calc-chip[data-astro-cid-crdmqzw2]{background:var(--surface-2);color:var(--text);border:1px solid var(--border-2);border-radius:999px;padding:.35rem .85rem;font:inherit;font-size:.9rem;cursor:pointer}.calc-chip[data-astro-cid-crdmqzw2]:hover{border-color:var(--accent);color:var(--accent)}.calc-mix[data-astro-cid-crdmqzw2]{border:1px solid var(--border-2);border-radius:12px;padding:.85rem 1rem;margin-top:1rem}.calc-mix[data-astro-cid-crdmqzw2] legend[data-astro-cid-crdmqzw2]{padding:0 .4rem;font-weight:600;font-size:.95rem}.calc-radio[data-astro-cid-crdmqzw2]{display:flex;gap:.6rem;align-items:flex-start;padding:.45rem 0;cursor:pointer}.calc-radio[data-astro-cid-crdmqzw2] small[data-astro-cid-crdmqzw2]{display:block;color:var(--text-muted);font-size:.85rem;margin-top:.15rem}.calc-result[data-astro-cid-crdmqzw2]{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:14px;padding:1.25rem;margin:1.5rem 0}.calc-rank[data-astro-cid-crdmqzw2]{font-size:1.35rem;font-weight:700;margin:0 0 .25rem}.calc-rank-line[data-astro-cid-crdmqzw2]{color:var(--text-muted);margin:0 0 1.25rem}.calc-stat[data-astro-cid-crdmqzw2]{margin:1.1rem 0}.calc-big[data-astro-cid-crdmqzw2]{font-size:1.55rem;font-weight:700;margin:0;line-height:1.2}.calc-sub[data-astro-cid-crdmqzw2]{color:var(--text-muted);font-size:.92rem;margin:.25rem 0 0}.calc-assumption[data-astro-cid-crdmqzw2]{font-size:.85rem;font-style:italic}.calc-honesty[data-astro-cid-crdmqzw2]{border-top:1px solid var(--border-2);margin-top:1.25rem;padding-top:.9rem;color:var(--text-muted);font-size:.92rem}.calc-cta[data-astro-cid-crdmqzw2]{background:var(--surface-2);border:1px solid var(--border);border-radius:14px;padding:1.25rem;margin:2rem 0}.calc-cta[data-astro-cid-crdmqzw2] h2[data-astro-cid-crdmqzw2]{margin-top:0}.calc-cta-links[data-astro-cid-crdmqzw2]{display:flex;gap:1rem;align-items:center;flex-wrap:wrap;margin-bottom:0}.calc-btn[data-astro-cid-crdmqzw2]{display:inline-block;background:var(--accent);color:var(--ground);font-weight:600;padding:.55rem 1.1rem;border-radius:10px;text-decoration:none}
+</style></head> <body> <header class="nav"> <div class="wrap nav-inner"> <a class="brand display" href="/" aria-label="SubSense home"> <span class="logo"><span class="b"><span></span><span></span><span></span></span></span>
+SubSense
+</a> <nav class="nav-links"> <a href="/#features">Features</a> <a href="/#how">How it works</a> <a href="/#pricing">Pricing</a> <a href="/#privacy">Privacy</a> <a href="/security">Security</a> <a href="/support">Support</a> <a href="/answers/">Answers</a> <a href="/tools/">Tools</a> <a href="/#get" class="btn btn-primary">Get the app</a> </nav> </div> </header> <main>  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Feed Flood Calculator","description":"Estimates the weekly and yearly upload volume arriving in a YouTube subscriptions feed, and how much of it comes from a handful of high-volume channels. Runs entirely in the browser; nothing is sent anywhere and no YouTube account is involved.","url":"https://www.subsenseapp.com/tools/feed-flood-calculator/","applicationCategory":"UtilityApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"publisher":{"@type":"Organization","@id":"https://www.adinand.com/#organization","name":"Adinand Innovations","sameAs":["https://play.google.com/store/apps/developer?id=Adinand+Innovations","https://www.wikidata.org/wiki/Q141499227"]}}</script> <section class="legal" data-astro-cid-crdmqzw2> <div class="wrap legal-wrap" data-astro-cid-crdmqzw2> <h1 class="display" data-astro-cid-crdmqzw2>The Feed Flood Calculator</h1> <p class="dates" data-astro-cid-crdmqzw2>Last reviewed: September 23, 2026 · <a href="/tools/feed-flood-calculator.md" data-astro-cid-crdmqzw2>Markdown version</a></p> <p data-astro-cid-crdmqzw2>Nobody subscribes to 400 channels on purpose. It tends to happen one tap at a time, over years, and the pile builds up quietly — as a feed you scroll past.</p> <p data-astro-cid-crdmqzw2><strong data-astro-cid-crdmqzw2>This works out how much actually arrives.</strong> Not by looking at your account —
+      it never touches YouTube, asks for no sign-in and sends nothing anywhere — but from two numbers
+      you already know.</p> <div class="calc" data-astro-cid-crdmqzw2> <label class="calc-label" for="ff-count" data-astro-cid-crdmqzw2>How many channels are you subscribed to?</label> <input class="calc-input" id="ff-count" type="number" min="0" max="5000" step="1" inputmode="numeric" autocomplete="off" placeholder="e.g. 320" data-astro-cid-crdmqzw2> <div class="calc-chips" role="group" aria-label="Common subscription counts" data-astro-cid-crdmqzw2> <button type="button" class="calc-chip" data-count="50" data-astro-cid-crdmqzw2>50</button> <button type="button" class="calc-chip" data-count="200" data-astro-cid-crdmqzw2>200</button> <button type="button" class="calc-chip" data-count="500" data-astro-cid-crdmqzw2>500</button> <button type="button" class="calc-chip" data-count="900" data-astro-cid-crdmqzw2>No idea, a lot</button> </div> <fieldset class="calc-mix" data-astro-cid-crdmqzw2> <legend data-astro-cid-crdmqzw2>What kind of channels, mostly?</legend> <label class="calc-radio" data-astro-cid-crdmqzw2><input type="radio" name="ff-mix" value="quiet" data-astro-cid-crdmqzw2> <span data-astro-cid-crdmqzw2>Small creators &amp; hobby channels
+<small data-astro-cid-crdmqzw2>60% dormant · 37% at about 1 upload a fortnight · 3% high-volume at 21/week</small></span></label> <label class="calc-radio" data-astro-cid-crdmqzw2><input type="radio" name="ff-mix" value="typical" checked data-astro-cid-crdmqzw2> <span data-astro-cid-crdmqzw2>A typical mix
+<small data-astro-cid-crdmqzw2>40% dormant · 55% at about 1–2 uploads a week · 5% high-volume at 21/week</small></span></label> <label class="calc-radio" data-astro-cid-crdmqzw2><input type="radio" name="ff-mix" value="busy" data-astro-cid-crdmqzw2> <span data-astro-cid-crdmqzw2>News, gaming, shorts &amp; podcasts
+<small data-astro-cid-crdmqzw2>20% dormant · 65% at about 3 uploads a week · 15% high-volume at 25/week</small></span></label> </fieldset> <p class="calc-note" data-astro-cid-crdmqzw2>Every percentage above is this page's assumption — not a measurement and not survey data — and
+        it is written down on purpose, so you can disagree with the assumptions rather than the answer. The
+        arithmetic is nothing more than these bands multiplied out.</p> </div> <section class="calc-result" id="ff-result" hidden data-astro-cid-crdmqzw2> <p class="calc-sub" data-astro-cid-crdmqzw2><strong data-astro-cid-crdmqzw2>Your estimate</strong> — worked out from the two answers above, not
+        read from your account.</p> <p class="calc-rank" data-astro-cid-crdmqzw2><span id="ff-rank-emoji" data-astro-cid-crdmqzw2></span> <span id="ff-rank-name" data-astro-cid-crdmqzw2></span></p> <p class="calc-rank-line" id="ff-rank-line" data-astro-cid-crdmqzw2></p> <div class="calc-stat" data-astro-cid-crdmqzw2> <p class="calc-big" id="ff-week" data-astro-cid-crdmqzw2></p> <p class="calc-sub" data-astro-cid-crdmqzw2>would arrive in your subscriptions feed each week, on these assumptions</p> </div> <div class="calc-stat" data-astro-cid-crdmqzw2> <p class="calc-big" id="ff-year" data-astro-cid-crdmqzw2></p> <p class="calc-sub" id="ff-year-note" data-astro-cid-crdmqzw2></p> <p class="calc-sub calc-assumption" data-astro-cid-crdmqzw2>The hours figure assumes a 12-minute average video —
+          this page's assumption, not a measurement of your feed.</p> </div> <div class="calc-stat" data-astro-cid-crdmqzw2> <p class="calc-big" id="ff-flooders" data-astro-cid-crdmqzw2></p> <p class="calc-sub" id="ff-flooders-note" data-astro-cid-crdmqzw2></p> </div> <div class="calc-stat" data-astro-cid-crdmqzw2> <p class="calc-big" id="ff-dormant" data-astro-cid-crdmqzw2></p> <p class="calc-sub" data-astro-cid-crdmqzw2>would be dormant on these assumptions — no upload in the last 60 days.
+          They cost you nothing and give you nothing; they are just length in the list.</p> </div> <p class="calc-honesty" id="ff-limit" data-astro-cid-crdmqzw2></p> </section> <h2 data-astro-cid-crdmqzw2>Where the two thresholds come from</h2> <p data-astro-cid-crdmqzw2>They are not invented for this page. They are the same rules SubSense applies inside the app:</p> <ul data-astro-cid-crdmqzw2> <li data-astro-cid-crdmqzw2><strong data-astro-cid-crdmqzw2>Dormant — no upload in 60 days.</strong> A channel that has published nothing in two
+        months is not contributing to your feed. (In the iPhone app you can move this line yourself,
+        anywhere from 30 to 180 days.)</li> <li data-astro-cid-crdmqzw2><strong data-astro-cid-crdmqzw2>High-volume — 21 or more uploads a week.</strong> Three a day, every day. On the
+        typical mix above, one such channel out-publishes fourteen ordinary ones.</li> </ul> <p data-astro-cid-crdmqzw2><strong data-astro-cid-crdmqzw2>Both are counts of uploads.</strong> Neither this page nor the app measures your
+      viewing — not what, not how long, not whether at all. Upload activity is a property of the channel,
+      and it is the only thing being counted.</p> <h2 data-astro-cid-crdmqzw2>YouTube's own numbers, for scale</h2> <p data-astro-cid-crdmqzw2>YouTube's help page publishes three numbers, and a caveat that matters more than any of them.
+      There is a daily cap — <em data-astro-cid-crdmqzw2>&ldquo;You can only subscribe to 75 channels per day.&rdquo;</em> Then
+<em data-astro-cid-crdmqzw2>&ldquo;In general, you can subscribe to a maximum of 2,000 channels.&rdquo;</em> — but the very
+      next sentence is <em data-astro-cid-crdmqzw2>&ldquo;But, your subscription limit grows as your YouTube channel does&mdash;it&rsquo;s
+      tied to the number of subscribers your channel has or how long your account has existed.&rdquo;</em>,
+      followed by <em data-astro-cid-crdmqzw2>&ldquo;Your exact limits may change over time.&rdquo;</em>
+(<a href="https://support.google.com/youtube/answer/4489286?hl=en&co=GENIE.Platform%3DAndroid" data-astro-cid-crdmqzw2><em data-astro-cid-crdmqzw2>Subscribe to YouTube channels</em>, YouTube Help</a>, read 23 September 2026).
+<strong data-astro-cid-crdmqzw2>So 2,000 is a starting point, not a ceiling.</strong></p> <p data-astro-cid-crdmqzw2>Separately, the same page recommends capping an account at <strong data-astro-cid-crdmqzw2>5,000</strong> channel subscriptions
+<em data-astro-cid-crdmqzw2>&ldquo;to make sure the subscriptions feed and channel list give the best experience&rdquo;</em>.
+      That one is about the feed working well rather than about any hard stop — which is the thing the
+      number above is actually describing. More in
+<a href="/answers/youtube-subscription-limit/" data-astro-cid-crdmqzw2>is there a limit on YouTube subscriptions?</a></p> <h2 data-astro-cid-crdmqzw2>What to actually do about it</h2> <p data-astro-cid-crdmqzw2>The useful move is not unsubscribing from everything. It is finding the small number of channels
+      producing most of the volume, and the large number producing none — and deciding about those two
+      groups only. That is <a href="/answers/clean-up-youtube-subscriptions/" data-astro-cid-crdmqzw2>how to clean up your YouTube
+      subscriptions</a>, and it is what SubSense is for.</p> <section class="calc-cta" data-astro-cid-crdmqzw2> <h2 data-astro-cid-crdmqzw2>Or see your real numbers instead of these ones.</h2> <p data-astro-cid-crdmqzw2>SubSense signs in with Google, sorts the channels you follow into categories, and shows you
+        which have gone quiet and which are flooding your feed — from their real upload history, not an
+        estimate. You approve every removal: nothing is ever removed automatically, and never without
+        showing you exactly what will go first. Changed your mind? Undo re-subscribes you and puts the channel back in its category. A large purge can run into the daily quota Google puts on the YouTube Data API
+        (<a href="https://developers.google.com/youtube/v3/getting-started" data-astro-cid-crdmqzw2><em data-astro-cid-crdmqzw2>YouTube Data API Overview</em>, Google for Developers</a>, read 23 September 2026)
+        and need finishing the next day — the app tells you when that happens rather than pretending otherwise. And the
+        free way is always there: open any channel in YouTube and unsubscribe yourself, unlimited and never
+        metered. iPhone and Android.</p> <p class="calc-cta-links" data-astro-cid-crdmqzw2><a class="btn btn-primary" href="/#get" data-astro-cid-crdmqzw2>Get the app</a> <a href="/answers/" data-astro-cid-crdmqzw2>More answers</a></p> </section> </div> </section> <script>
+  (function () {
+    "use strict";
+
+    /* ------------------------------------------------------------------
+       THE MODEL. Pure and testable; prove-feed-flood.mjs extracts this
+       exact block from this exact file and asserts against it, so the
+       thing proven and the thing shipped cannot drift.
+       ------------------------------------------------------------------ */
+    /* MODEL:START */
+
+    // SubSense's own thresholds, and the only two numbers here that are not
+    // this page's assumptions. Both are counts of UPLOADS — the app measures
+    // channel publishing activity and never viewing.
+    var FLOODER_UPLOADS_PER_WEEK = 21;   // SystemCategoryRule: flooder = >= 21/wk
+    var DORMANT_DAYS = 60;               // SystemCategoryRule: inactive = no upload in 60 days
+
+    // YouTube's published figures, quoted on /answers/youtube-subscription-limit/
+    // This page's own assumption, stated on screen rather than buried here.
+    var AVG_MINUTES = 12;
+
+    // YouTube's published figures, quoted on /answers/youtube-subscription-limit/.
+    // Note YouTube also says the 2,000 GROWS with account age and channel size,
+    // so treat this as a starting point rather than a ceiling.
+    var YT_MAX = 2000;
+    var YT_RECOMMENDED = 5000;
+
+    // Each band states its share of your channels and how much each of those
+    // channels publishes per week. Written as data so the page can show them.
+    var MIXES = {
+      quiet:   { dormant: 0.60, midRate: 0.5, heavy: 0.03, heavyRate: 21 },
+      typical: { dormant: 0.40, midRate: 1.5, heavy: 0.05, heavyRate: 21 },
+      busy:    { dormant: 0.20, midRate: 3.0, heavy: 0.15, heavyRate: 25 }
+    };
+
+    function computeFlood(channels, mixKey) {
+      var mix = MIXES[mixKey] || MIXES.typical;
+      var n = Math.max(0, Math.floor(channels || 0));
+
+      var dormant = Math.round(n * mix.dormant);
+      var heavy = Math.round(n * mix.heavy);
+      var mid = Math.max(0, n - dormant - heavy);
+
+      var heavyWeekly = heavy * mix.heavyRate;
+      var midWeekly = mid * mix.midRate;
+      var weekly = heavyWeekly + midWeekly;
+
+      return {
+        channels: n,
+        dormant: dormant,
+        heavy: heavy,
+        mid: mid,
+        perWeek: Math.round(weekly),
+        perYear: Math.round(weekly * 52),
+        // The punchline: what share of the flood a handful of channels make.
+        heavyShare: weekly > 0 ? heavyWeekly / weekly : 0,
+        heavyPctOfChannels: n > 0 ? heavy / n : 0,
+        overYouTubeMax: n > YT_MAX,
+        overYouTubeRecommended: n > YT_RECOMMENDED
+      };
+    }
+
+    var RANKS = [
+      { min: 1000, emoji: "🌊", name: "Firehose",
+        line: "This is not a feed. It is a conveyor belt that happens to have videos on it." },
+      { min: 400, emoji: "🚰", name: "Flooded",
+        line: "More arrives each week than anyone could watch in a week. The backlog only grows." },
+      { min: 150, emoji: "📥", name: "Busy",
+        line: "A real feed with a real overflow problem — mostly caused by very few channels." },
+      { min: 50, emoji: "🙂", name: "Manageable",
+        line: "Roughly a sitting's worth a day. This one is still winnable." },
+      { min: 1, emoji: "🧘", name: "Calm",
+        line: "A feed you could actually read. Rare, and worth protecting." },
+      { min: 0, emoji: "🌙", name: "Silent",
+        line: "Nothing is arriving at all." }
+    ];
+
+    function rankFor(perWeek) {
+      for (var i = 0; i < RANKS.length; i++) if (perWeek >= RANKS[i].min) return RANKS[i];
+      return RANKS[RANKS.length - 1];
+    }
+
+    /* MODEL:END */
+
+    var $ = function (id) { return document.getElementById(id); };
+    var input = $("ff-count");
+    if (!input) return;
+
+    function num(v) { return Math.round(v).toLocaleString("en-US"); }
+    function plural(v, w) { return num(v) + " " + w + (Math.round(v) === 1 ? "" : "s"); }
+
+    function render() {
+      var checked = document.querySelector('input[name="ff-mix"]:checked');
+      var raw = parseInt(input.value, 10);
+      if (!raw || raw < 1) { $("ff-result").hidden = true; return; }
+
+      var r = computeFlood(raw, checked ? checked.value : "typical");
+      var rank = rankFor(r.perWeek);
+
+      $("ff-rank-emoji").textContent = rank.emoji;
+      $("ff-rank-name").textContent = rank.name;
+      $("ff-rank-line").textContent = rank.line;
+
+      $("ff-week").textContent = plural(r.perWeek, "video");
+      $("ff-year").textContent = plural(r.perYear, "video") + " a year";
+      // Deliberately framed as PUBLISHED volume, not viewing. SubSense measures
+      // channel upload activity and nothing else, and a watch-shaped sentence on
+      // a page full of feed statistics is precisely the never-claim that is live
+      // on this app's Play listing today. AVG_MINUTES is this page's assumption
+      // and is labelled as one on screen.
+      $("ff-year-note").textContent =
+        "about " + num(r.perYear * AVG_MINUTES / 60)
+        + " hours of video published into your feed, at a 12-minute average.";
+
+      $("ff-flooders").textContent = plural(r.heavy, "channel");
+      $("ff-flooders-note").textContent =
+        r.heavy > 0
+          ? "would be flagged as flooders — " + FLOODER_UPLOADS_PER_WEEK
+            + "+ uploads a week. That is " + Math.round(r.heavyPctOfChannels * 100)
+            + "% of your subscriptions producing " + Math.round(r.heavyShare * 100)
+            + "% of everything arriving."
+          : "reach the " + FLOODER_UPLOADS_PER_WEEK + "-uploads-a-week mark at this size.";
+
+      $("ff-dormant").textContent = plural(r.dormant, "channel");
+
+      // NEVER tell a user they are past a limit they have demonstrably passed:
+      // YouTube's own page says the cap GROWS with account age and channel size,
+      // so a 2,500-subscription account is not in breach of anything.
+      $("ff-limit").innerHTML = r.overYouTubeRecommended
+        ? "You are above the <strong>5,000</strong> YouTube recommends as a cap, so its subscriptions feed and channel list work as intended."
+        : r.overYouTubeMax
+          ? "You are above the <strong>2,000</strong> YouTube names as the general starting point — it says "
+            + "that limit grows with your channel's subscriber count or your account's age, so this is normal, not a breach."
+          : "Comfortably inside YouTube's published figures — the issue here is volume, not any ceiling.";
+
+      $("ff-result").hidden = false;
+    }
+
+    input.addEventListener("input", render);
+    Array.prototype.forEach.call(document.querySelectorAll('input[name="ff-mix"]'), function (el) {
+      el.addEventListener("change", render);
+    });
+    Array.prototype.forEach.call(document.querySelectorAll(".calc-chip"), function (btn) {
+      btn.addEventListener("click", function () {
+        input.value = btn.getAttribute("data-count");
+        render();
+      });
+    });
+  })();
+  </script>   </main> <footer> <div class="wrap"> <div class="foot-grid"> <a class="brand display" href="/" aria-label="SubSense home"> <span class="logo"><span class="b"><span></span><span></span><span></span></span></span>
+SubSense
+</a> <nav class="foot-links"> <a href="/#features">Features</a> <a href="/#how">How it works</a> <a href="/#pricing">Pricing</a> <a href="/privacy">Privacy Policy</a> <a href="/security">Security</a> <a href="/terms">Terms of Service</a> <a href="/support">Support</a> <a href="/answers/">Answers</a> <a href="/tools/">Tools</a> </nav> </div> <p class="foot-fine">
+More from <a href="https://adinand.com">Adinand Innovations</a>: <a href="https://adinandemail.com">Adinand Email Cleaner</a> · <a href="https://docfindapp.com">DocFind</a> · <a href="https://adinandsorter.com">Adinand Auto File Sorter</a>.<br>
+Questions or bugs? <a href="mailto:support@subsenseapp.com">support@subsenseapp.com</a><br> <span class="aff">SubSense is not affiliated with, endorsed, or sponsored by YouTube or Google. YouTube is a trademark of Google LLC.</span> </p> </div> </footer> <script>
+      (function () {
+        var items = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+        if (!items.length) return;
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (reduce) { items.forEach(function (el) { el.classList.add('in'); }); return; }
+        // Scroll-based reveal: reveal a card once it's within the viewport.
+        // Deliberately simple + self-contained so content can never get stranded hidden.
+        function revealInView() {
+          var vh = window.innerHeight || document.documentElement.clientHeight;
+          for (var i = items.length - 1; i >= 0; i--) {
+            var el = items[i];
+            if (el.getBoundingClientRect().top < vh * 0.92) {
+              el.classList.add('in');
+              items.splice(i, 1);
+            }
+          }
+        }
+        revealInView();
+        var ticking = false;
+        function onScroll() {
+          if (ticking) return;
+          ticking = true;
+          window.requestAnimationFrame(function () { revealInView(); ticking = false; });
+        }
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll, { passive: true });
+      })();
+    </script>  </body> </html>

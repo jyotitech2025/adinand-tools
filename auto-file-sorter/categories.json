@@ -1,0 +1,14 @@
+{
+  "description": "Adinand Auto File Sorter's default extension-to-category table. Each category's folder name is its English name. Checked in order; the sets do not overlap. Any other non-empty extension goes to Others.",
+  "source": "the app's model/SortableFile.kt at commit e6655dbbf7a6bda3968781b77cb96c631d3b000b (read 1 October 2026)",
+  "normalisation": "extension = the text after the last '.' in the file name (empty if there is no '.'), lower-cased; SortableFile.kt:43-62",
+  "categories": [
+    {"name": "Documents", "folder": "Documents", "extensions": ["pdf", "doc", "docx", "ppt", "pptx", "xls", "xlsx", "txt"], "source": "SortableFile.kt:9, :19"},
+    {"name": "Images", "folder": "Images", "extensions": ["jpg", "jpeg", "png", "webp", "gif"], "source": "SortableFile.kt:10, :22"},
+    {"name": "Videos", "folder": "Videos", "extensions": ["mp4", "mkv", "avi", "webm"], "source": "SortableFile.kt:11, :25"},
+    {"name": "Apps", "folder": "Apps", "extensions": ["apk", "xapk", "apkm"], "source": "SortableFile.kt:12, :28"},
+    {"name": "Audio", "folder": "Audio", "extensions": ["mp3", "wav", "aac", "m4a"], "source": "SortableFile.kt:13, :31"},
+    {"name": "Archives", "folder": "Archives", "extensions": ["zip", "rar", "7z"], "source": "SortableFile.kt:14, :34"},
+    {"name": "Others", "folder": "Others", "extensions": null, "rule": "every other non-empty extension", "source": "SortableFile.kt:15, :52"}
+  ]
+}

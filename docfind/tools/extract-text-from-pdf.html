@@ -1,0 +1,399 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The privacy claim on this page is enforced by the browser, not by the prose. `connect-src`
+     is the directive that matters: with it pinned to 'self' there is no origin this page could
+     upload your file to even if its JavaScript tried. `default-src 'self'` bans CDN scripts —
+     pdf.js is vendored under /vendor/ for exactly that reason (see vendor/README.md).
+     Checked by ../check-answers.sh rules NETWORK and CSP. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+<title>Extract the Text From a PDF — DocFind</title>
+<meta name="description" content="Pull the plain text out of a PDF and copy it or save it as a .txt file, page by page. It runs in your browser — the file is never uploaded and nothing is stored.">
+<!-- TOOL-CAPS: ocr=no reads=text-layer network=none stores=nothing -->
+<link rel="canonical" href="https://docfindapp.com/tools/extract-text-from-pdf">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://docfindapp.com/#app",
+  "name": "DocFind",
+  "alternateName": ["DocFind: Search Inside PDFs", "DocFind PDF Keyword Search"],
+  "url": "https://docfindapp.com/",
+  "image": "https://docfindapp.com/shot-1.png",
+  "description": "Search every PDF you own at once — including scans. On-device OCR, no account, no cloud, no ads. On the App Store for iPhone and on Google Play for Android.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "iOS, Android",
+  "installUrl": [
+    "https://apps.apple.com/app/docfind-search-inside-pdfs/id6801723267",
+    "https://play.google.com/store/apps/details?id=com.jyoti.docfindpdfkeywordsearch"
+  ],
+  "sameAs": [
+    "https://apps.apple.com/app/docfind-search-inside-pdfs/id6801723267",
+    "https://play.google.com/store/apps/details?id=com.jyoti.docfindpdfkeywordsearch",
+    "https://www.youtube.com/@docfindapp",
+    "https://www.wikidata.org/wiki/Q141499254",
+    "https://alternativeto.net/software/docfind/about/"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "description": "Free to download; a Pro upgrade is sold as an in-app purchase."
+  },
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://www.adinand.com/#organization",
+    "name": "Adinand Innovations",
+    "sameAs": ["https://play.google.com/store/apps/developer?id=Adinand+Innovations", "https://www.wikidata.org/wiki/Q141499227"]
+  }
+}
+</script>
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DocFind">
+<meta property="og:title" content="Extract the text from a PDF">
+<meta property="og:description" content="Get the words out of a PDF as plain text, page by page — in your browser, without uploading the file anywhere.">
+<meta property="og:url" content="https://docfindapp.com/tools/extract-text-from-pdf">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Extract the Text From a PDF",
+  "description": "Extracts the plain text stored in a PDF, page by page, and offers it for copying or saving as a .txt file. Runs entirely in the browser; the file is never uploaded. Reads PDFs that contain a text layer; it does not run OCR, and says so when a page is a scan instead of returning an empty result.",
+  "url": "https://docfindapp.com/tools/extract-text-from-pdf",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript. Runs offline once loaded.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "publisher": { "@type": "Organization", "@id": "https://www.adinand.com/#organization", "name": "Adinand Innovations", "sameAs": ["https://play.google.com/store/apps/developer?id=Adinand+Innovations", "https://www.wikidata.org/wiki/Q141499227"] }
+}
+</script>
+<style>
+/* `hidden` must actually hide. Both pages set display on .calc-btn (inline-block) and
+   .run-row (flex), and a display rule beats the attribute — so the Stop button and the
+   export row rendered on page load, before there was anything to stop or export. Caught in
+   the browser walk, 2026-09-08; it is invisible to every text-level check in this repo. */
+[hidden] { display: none !important; }
+/* Tool widget styles — the shared .calc-* block used by every tool page here. See the note
+   in is-your-pdf-searchable.html: these class names come from the Zen site and neither
+   sibling site defines them, so each page carries them and inherits its own site's tokens. */
+.calc { background: var(--surface); border: 1px solid var(--border);
+        border-radius: 14px; padding: 1.25rem; margin: 1.5rem 0; }
+.calc-label { display: block; font-weight: 600; margin-bottom: .5rem; }
+.calc-input { width: 100%; max-width: 22ch; font-size: 1.05rem; padding: .6rem .7rem;
+              border-radius: 10px; border: 1px solid var(--border-2);
+              background: var(--ground); color: var(--text); }
+.calc-input[type="file"] { max-width: none; padding: .5rem; }
+.calc-note { color: var(--text-muted); font-size: .9rem; margin: .75rem 0 0; }
+.calc-result { background: var(--surface); border: 1px solid var(--border);
+               border-left: 4px solid var(--accent); border-radius: 14px;
+               padding: 1.25rem; margin: 1.5rem 0; }
+.calc-rank { font-size: 1.35rem; font-weight: 700; margin: 0 0 .25rem; }
+.calc-rank-line { color: var(--text-muted); margin: 0 0 1.25rem; }
+.calc-sub { color: var(--text-muted); font-size: .92rem; margin: .25rem 0 0; }
+.calc-honesty { border-top: 1px solid var(--border-2); margin-top: 1.25rem;
+                padding-top: .9rem; color: var(--text-muted); font-size: .92rem; }
+.calc-cta { background: var(--surface-2); border: 1px solid var(--border);
+            border-radius: 14px; padding: 1.25rem; margin: 2rem 0; }
+.calc-cta h2 { margin-top: 0; }
+.calc-cta-links { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; margin-bottom: 0; }
+.calc-btn { display: inline-block; background: var(--accent); color: var(--ground);
+            font-weight: 600; padding: .55rem 1.1rem; border-radius: 10px; text-decoration: none;
+            border: 0; font-size: 1rem; font-family: inherit; cursor: pointer; }
+.calc-btn[disabled] { opacity: .5; cursor: default; }
+.calc-btn-quiet { background: transparent; color: var(--accent); border: 1px solid var(--border-2); }
+.drop { border: 2px dashed var(--border); border-radius: 14px; padding: 1.5rem 1.25rem;
+        text-align: center; transition: border-color .15s, background .15s; }
+.drop.is-over { border-color: var(--accent); background: var(--accent-soft); }
+.drop p { margin: .5rem 0 0; color: var(--text-muted); font-size: .93rem; }
+.run-row { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; margin-top: 1rem; }
+.progress { margin: .9rem 0 0; color: var(--text-muted); font-size: .93rem; }
+.bar { height: 6px; border-radius: 999px; background: var(--surface-2);
+       border: 1px solid var(--border-2); overflow: hidden; margin-top: .5rem; }
+.bar > i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .15s; }
+.page-block { border-top: 1px solid var(--border-2); padding-top: .9rem; margin-top: .9rem; }
+.page-block:first-of-type { border-top: 0; padding-top: 0; margin-top: 0; }
+.page-block h3 { margin: 0 0 .35rem; font-size: .82rem; font-weight: 600; color: var(--accent-2);
+                 text-transform: uppercase; letter-spacing: .05em; }
+.page-block pre { margin: 0; white-space: pre-wrap; overflow-wrap: anywhere;
+                  font-size: .93rem; line-height: 1.55; font-family: inherit; }
+.page-block.is-blank pre { color: var(--text-muted); font-style: italic; }
+.out-scroll { max-height: 30rem; overflow-y: auto; padding-right: .4rem; }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand display" href="/" aria-label="DocFind home">
+      <span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 5 5"/></svg></span>
+      DocFind
+    </a>
+    <nav class="nav-links">
+      <a href="/#features">Features</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/support">Support</a>
+      <a href="/answers/">Answers</a>
+      <a href="/tools/" aria-current="page">Tools</a>
+      <a class="chip-soon" href="/#get">Get DocFind</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap prose">
+<h1>Extract the text from a PDF</h1>
+<p class="updated">Last reviewed: September 23, 2026 · <a href="/tools/extract-text-from-pdf.md">Markdown version</a></p>
+
+<p>Sometimes you do not want to search a PDF, you want the words out of it — to paste into a note, to
+diff against another version, to feed to something else. Copying from a reader can drag the layout along
+with the words, and running headers and page numbers too.</p>
+
+<p>Choose a PDF below and this page gives you back the text it stores, one page at a time.</p>
+
+<div class="calc">
+  <noscript><p class="calc-note"><strong>This tool needs JavaScript</strong> — it reads your file in
+  this page, which is also why nothing is uploaded.</p></noscript>
+
+  <div class="drop" id="drop">
+    <button class="calc-btn" type="button" id="pick">Choose a PDF</button>
+    <p>…or drag one here.</p>
+    <input id="input-file" type="file" accept="application/pdf,.pdf" hidden>
+  </div>
+
+  <div id="progress-wrap" hidden>
+    <p class="progress" id="progress"></p>
+    <div class="bar"><i id="bar"></i></div>
+  </div>
+
+  <p class="calc-note"><strong>The file never leaves your browser.</strong> Nothing is uploaded, no
+  network request carries it anywhere, and nothing is stored — the reading happens on your own machine,
+  in this page. Close the tab and it is gone.</p>
+</div>
+
+<section class="calc-result" id="result" hidden>
+  <p class="calc-rank" id="headline"></p>
+  <p class="calc-rank-line" id="subhead"></p>
+
+  <div class="run-row" id="actions" style="margin-top:0;margin-bottom:1.25rem">
+    <button class="calc-btn calc-btn-quiet" type="button" id="copy">Copy all text</button>
+    <button class="calc-btn calc-btn-quiet" type="button" id="save">Save as .txt</button>
+    <span class="calc-sub" id="said"></span>
+  </div>
+
+  <div class="out-scroll"><div id="out"></div></div>
+
+  <p class="calc-honesty">This page reads the text stored inside the PDF. It does not run OCR, so a
+  page that is a photograph of words comes back marked as having no text layer rather than as an empty
+  page — the difference matters, and no tool should hide it from you.</p>
+</section>
+
+<h2>What you get, and what you do not</h2>
+
+<h3>The words, in the order the file stores them</h3>
+<p>A PDF does not store sentences. It stores instructions to draw pieces of text at positions on a
+page — in the standard's words, "operators that may show text strings, move the text position, and set
+text state" — and the order they are drawn in need not be the order you read them. The standard says a
+page's drawing order and its logical reading order "may or may not coincide" (<a href="https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/PDF32000_2008.pdf"><em>PDF 32000-1:2008</em>, Adobe's published copy of the PDF standard</a>, §9.4.1
+and §14.8.2.3.1, read 23 September 2026). Text in two columns, in a table, or in a sidebar can come back
+interleaved. What you see here is the same raw material a PDF text search works from, which is exactly
+why a search sometimes behaves in ways that look strange.</p>
+
+<h3>Nothing from a scanned page</h3>
+<p>If the page is an image, there is no text in the file to extract — not for this page, and not for
+any tool that only reads the text a PDF stores. Those pages are marked. Turning them into text means running OCR over them first:
+<a href="/answers/what-is-ocr">what OCR is</a>, and
+<a href="/answers/make-a-scanned-pdf-searchable">how to make a scanned PDF searchable</a>.</p>
+
+<h3>Files that need a password to open</h3>
+<p>The standard lets a PDF carry a <strong>user password</strong>, needed to open it, and an
+<strong>owner password</strong>, which governs permissions such as printing and copying (same standard,
+§7.6.3.1). If a file needs a user password to open, this page cannot read it. If it has only an owner
+password, it opens without asking and its text comes out here normally — and <strong>DocFind reads it as
+it would any unprotected PDF</strong>.</p>
+
+<h2>The honest limits</h2>
+<ul>
+  <li><strong>This page does not run OCR.</strong> Scanned pages come back empty and labelled.</li>
+  <li><strong>Layout is not preserved.</strong> Columns, tables and headers come out as text in
+  drawing order, not as a reproduction of the page.</li>
+  <li><strong>Words hyphenated across a line break</strong> stay in two pieces, because that is how
+  the file stores them.</li>
+  <li><strong>Nothing is remembered.</strong> Reload the page and it is empty again.</li>
+  <li><strong>PDFs only.</strong> Word, Excel and plain-text files cannot be read here.</li>
+</ul>
+
+<section class="calc-cta">
+  <h2>Looking for a word rather than the whole thing?</h2>
+  <p><a href="/tools/search-multiple-pdfs">Search across many PDFs at once</a> takes a folder and gives
+  you the file, the page and the sentence around every match. And DocFind does that over a whole
+  library on your phone, reading scanned pages with OCR <em>on the device</em> — nothing uploaded, the
+  index built and kept locally. iPhone and Android.</p>
+  <p class="calc-cta-links"><a class="calc-btn" href="/#get">Get the app</a> <a href="/tools/">Other tools</a> <a href="/answers/">More answers</a></p>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <a class="brand display" href="/" aria-label="DocFind home">
+        <span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 5 5"/></svg></span>
+        DocFind
+      </a>
+      <nav class="foot-links">
+        <a href="/#features">Features</a>
+        <a href="/#pricing">Pricing</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/support">Support</a>
+        <a href="/answers/">Answers</a>
+        <a href="/tools/">Tools</a>
+      </nav>
+    </div>
+    <p class="foot-fine">
+      Questions or bugs? <a href="mailto:support@docfindapp.com">support@docfindapp.com</a><br>
+      <span class="aff">DocFind is not affiliated with, endorsed, or sponsored by Apple&nbsp;Inc.
+      or Google&nbsp;LLC. Apple, the Apple logo and iPhone are trademarks of Apple&nbsp;Inc.
+      Google Play and the Google Play logo are trademarks of Google&nbsp;LLC.</span>
+    </p>
+  </div>
+</footer>
+
+<script type="module">
+import * as pdfjsLib from "/vendor/pdfjs-6.3.289/pdf.min.mjs";
+import { describeFailure, readPages } from "/tools/pdf-text.mjs";
+
+// Same-origin worker, like everything else this page loads — the CSP above forbids anything else.
+pdfjsLib.GlobalWorkerOptions.workerSrc = "/vendor/pdfjs-6.3.289/pdf.worker.min.mjs";
+
+const $ = (id) => document.getElementById(id);
+const el = {
+  drop: $("drop"), pick: $("pick"), input: $("input-file"),
+  progressWrap: $("progress-wrap"), progress: $("progress"), bar: $("bar"),
+  result: $("result"), headline: $("headline"), subhead: $("subhead"), out: $("out"),
+  copy: $("copy"), save: $("save"), said: $("said"), actions: $("actions")
+};
+
+let current = null;
+
+const isPdf = (f) => /\.pdf$/i.test(f.name) || f.type === "application/pdf";
+
+el.pick.addEventListener("click", () => el.input.click());
+el.input.addEventListener("change", (e) => { if (e.target.files[0]) handle(e.target.files[0]); });
+
+for (const type of ["dragenter", "dragover"]) {
+  el.drop.addEventListener(type, (e) => { e.preventDefault(); el.drop.classList.add("is-over"); });
+}
+for (const type of ["dragleave", "drop"]) {
+  el.drop.addEventListener(type, (e) => { e.preventDefault(); el.drop.classList.remove("is-over"); });
+}
+el.drop.addEventListener("drop", (e) => {
+  const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+  if (f) handle(f);
+});
+
+async function handle(file) {
+  el.said.textContent = "";
+  if (!isPdf(file)) {
+    show({ name: file.name, error: "That is not a PDF. This reads PDFs only — Word, Excel and plain-text files are not supported." });
+    return;
+  }
+  el.progressWrap.hidden = false;
+  el.progress.textContent = "Reading " + file.name + "…";
+  el.bar.style.width = "35%";
+  // Let the progress line paint before the parsing starts.
+  await new Promise((r) => setTimeout(r, 0));
+
+  try {
+    const pages = await readPages(pdfjsLib, file);
+    el.bar.style.width = "100%";
+    show({ name: file.name, pages: pages });
+  } catch (err) {
+    show({ name: file.name, error: describeFailure(err) });
+  } finally {
+    el.progressWrap.hidden = true;
+    el.bar.style.width = "0";
+  }
+}
+
+function show(res) {
+  current = res;
+  el.out.replaceChildren();
+
+  if (res.error) {
+    el.headline.textContent = "Could not read that file";
+    el.subhead.textContent = res.name + " — " + res.error;
+    el.actions.hidden = true;
+    el.result.hidden = false;
+    el.result.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+
+  const total = res.pages.length;
+  const blank = res.pages.filter((p) => !p.trim()).length;
+  const chars = res.pages.reduce((n, p) => n + p.trim().length, 0);
+
+  if (chars === 0) {
+    el.headline.textContent = "No text in this file";
+    el.subhead.textContent = total + (total === 1 ? " page" : " pages")
+      + ", none of which store any text. It looks like a scan, and this page does not run OCR.";
+  } else {
+    el.headline.textContent = "Text from " + total + (total === 1 ? " page" : " pages");
+    el.subhead.textContent = chars.toLocaleString() + " characters"
+      + (blank ? " · " + blank + (blank === 1 ? " page has" : " pages have") + " no text layer and " + (blank === 1 ? "is" : "are") + " marked below" : "");
+  }
+  el.actions.hidden = chars === 0;
+
+  res.pages.forEach((text, i) => {
+    const box = document.createElement("div");
+    box.className = "page-block" + (text.trim() ? "" : " is-blank");
+    const h = document.createElement("h3");
+    h.textContent = "Page " + (i + 1);
+    const pre = document.createElement("pre");
+    pre.textContent = text.trim() || "No text layer on this page — it is an image. OCR would be needed to read it.";
+    box.append(h, pre);
+    el.out.append(box);
+  });
+
+  el.result.hidden = false;
+  el.result.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// Like the app's exports, the saved file records what it came from and what was skipped,
+// so a page that came back empty is visible in the output rather than silently missing.
+function asText() {
+  if (!current || !current.pages) return "";
+  const lines = ["Text extracted from: " + current.name,
+                 current.pages.length + " page(s). No OCR: pages that are images are marked.",
+                 ""];
+  current.pages.forEach((text, i) => {
+    lines.push("--- Page " + (i + 1) + " ---");
+    lines.push(text.trim() || "[no text layer on this page — it is an image]");
+    lines.push("");
+  });
+  return lines.join("\n");
+}
+
+el.copy.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(asText());
+    el.said.textContent = "Copied.";
+  } catch (e) {
+    el.said.textContent = "Your browser would not let the page copy — select the text instead.";
+  }
+});
+
+el.save.addEventListener("click", () => {
+  const blob = new Blob([asText()], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = (current && current.name ? current.name.replace(/\.pdf$/i, "") : "pdf") + ".txt";
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+});
+</script>
+
+</body>
+</html>

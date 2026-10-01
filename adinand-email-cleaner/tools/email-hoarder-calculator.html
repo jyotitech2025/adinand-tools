@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Email Hoarder Calculator — Adinand Email Cleaner</title>
+<meta name="description" content="Enter how many emails are sitting in your inbox and get an estimate of the storage they hold, how long clearing them by hand would take, and your official hoarder rank. Runs entirely in your browser.">
+<link rel="canonical" href="https://adinandemail.com/tools/email-hoarder-calculator">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://adinandemail.com/#app",
+  "name": "Adinand Email Cleaner",
+  "alternateName": ["Zen Inbox Cleaner"],
+  "url": "https://adinandemail.com/",
+  "image": "https://adinandemail.com/assets/og-image.png",
+  "description": "Adinand Email Cleaner groups your Gmail by sender so you can trash hundreds of newsletters and promos at once, unsubscribe in one tap, and set auto-trash rules. Privacy-first: metadata only, no servers, no tracking. iOS & Android.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "iOS, Android",
+  "installUrl": [
+    "https://apps.apple.com/app/adinand-email-cleaner/id6778240674",
+    "https://play.google.com/store/apps/details?id=com.jyoti.zeninboxcleaner"
+  ],
+  "sameAs": [
+    "https://apps.apple.com/app/adinand-email-cleaner/id6778240674",
+    "https://play.google.com/store/apps/details?id=com.jyoti.zeninboxcleaner",
+    "https://www.youtube.com/@adinandemail",
+    "https://www.wikidata.org/wiki/Q141499234",
+    "https://alternativeto.net/software/adinand-email-cleaner/about/"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "description": "Free to download; a Pro upgrade is sold as an in-app purchase."
+  },
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://www.adinand.com/#organization",
+    "name": "Adinand Innovations",
+    "email": "support@adinandemail.com",
+    "sameAs": ["https://play.google.com/store/apps/developer?id=Adinand+Innovations", "https://www.wikidata.org/wiki/Q141499227"]
+  }
+}
+</script>
+<link rel="stylesheet" href="/styles.css">
+<link rel="icon" type="image/png" sizes="32x32" href="/assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="64x64" href="/assets/favicon-64.png">
+<link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Adinand Email Cleaner">
+<meta property="og:title" content="The Email Hoarder Calculator">
+<meta property="og:description" content="How many emails are sitting in your inbox? Get your storage damage, your cleanup time, and your official rank.">
+<meta property="og:url" content="https://adinandemail.com/tools/email-hoarder-calculator">
+<meta property="og:image" content="https://adinandemail.com/assets/og-image.png">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Email Hoarder Calculator",
+  "description": "Enter your inbox email count to estimate the storage those emails hold, the time it would take to clear them one by one, and a shareable hoarder rank. Runs entirely in the browser.",
+  "url": "https://adinandemail.com/tools/email-hoarder-calculator",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "publisher": { "@type": "Organization", "name": "Adinand Innovations" }
+}
+</script>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="wrap bar">
+    <a class="brand" href="/">
+      <img src="/assets/favicon-64.png" alt="" width="36" height="36">
+      Adinand Email Cleaner
+    </a>
+    <nav class="site-nav" aria-label="Site">
+      <a href="/#how-it-works">How it works</a>
+      <a href="/#features">Features</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/#privacy">Privacy</a>
+      <a href="/security">Security</a>
+      <a href="/support">Support</a>
+      <a href="/answers/">Answers</a>
+      <a href="/tools/" aria-current="page">Tools</a>
+      <a class="nav-cta" href="/#get">Get the app</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap narrow prose">
+<h1>The Email Hoarder Calculator</h1>
+<p class="updated">Last reviewed: September 23, 2026 · <a href="/tools/email-hoarder-calculator.md">Markdown version</a></p>
+
+<p>How many emails are sitting in your inbox? Enter the number — get your storage damage, your cleanup time, and your official rank.</p>
+
+<div class="calc">
+  <label class="calc-label" for="calc-count">Emails in your inbox</label>
+  <input class="calc-input" id="calc-count" type="number" min="0" step="1" inputmode="numeric" autocomplete="off" placeholder="e.g. 23000">
+  <p class="calc-note">Runs entirely in your browser — no form submission, no network request, nothing stored.</p>
+
+  <div class="calc-chips" role="group" aria-label="Common inbox sizes">
+    <button type="button" class="calc-chip" data-count="1000">1,000</button>
+    <button type="button" class="calc-chip" data-count="5000">5,000</button>
+    <button type="button" class="calc-chip" data-count="20000">20,000</button>
+    <button type="button" class="calc-chip" data-count="50000">I stopped counting</button>
+  </div>
+
+  <fieldset class="calc-mix">
+    <legend>What's in there, mostly?</legend>
+    <label class="calc-radio"><input type="radio" name="calc-mix" value="30"> <span>Newsletters &amp; promos <small>~30 KB each</small></span></label>
+    <label class="calc-radio"><input type="radio" name="calc-mix" value="75" checked> <span>A typical mix <small>~75 KB each</small></span></label>
+    <label class="calc-radio"><input type="radio" name="calc-mix" value="300"> <span>Lots of attachments <small>~300 KB each</small></span></label>
+  </fieldset>
+</div>
+
+<section class="calc-result" id="calc-result" hidden>
+  <p class="calc-rank"><span class="calc-rank-emoji" id="calc-rank-emoji"></span> <span id="calc-rank-name"></span></p>
+  <p class="calc-rank-line" id="calc-rank-line"></p>
+
+  <div class="calc-stat">
+    <p class="calc-big" id="calc-size"></p>
+    <p class="calc-sub" id="calc-size-note"></p>
+  </div>
+
+  <div class="calc-stat">
+    <p class="calc-big" id="calc-quota"></p>
+  </div>
+
+  <div class="calc-stat">
+    <p class="calc-big" id="calc-time"></p>
+  </div>
+
+  <p class="calc-honesty">Deleting emails frees storage only after Gmail's Trash clears — and if your account is full, the space may not be email at all. See <a href="/answers/does-deleting-emails-free-up-storage">Does deleting emails actually free up storage?</a></p>
+
+  <p><button type="button" class="calc-share" id="calc-share">Share my rank</button>
+  <span class="calc-sr-only" id="calc-share-status" role="status" aria-live="polite"></span></p>
+</section>
+
+<h2>How the estimate is worked out</h2>
+<p>With <code>n</code> = the email count and <code>avgKB</code> = the average size you picked:</p>
+<pre class="qb-query"><code>bytes   = n × avgKB × 1024
+percent = bytes ÷ (15 × 1024³) × 100
+seconds = n × 2</code></pre>
+<p>Sizes show in KB below 1 MB, in MB below 1 GB, and in GB above that. Worked example: 23,000 emails at a typical mix (75 KB) is 23,000 × 75 × 1,024 = 1,766,400,000 bytes, <strong>≈ 1.65 GB</strong> — about <strong>11%</strong> of 15 GB — and 23,000 × 2 = 46,000 seconds, <strong>≈ 12.8 hours</strong> of tapping.</p>
+<ul>
+  <li><strong>The average size is an assumption, and you choose it.</strong> Real messages vary a lot in size, which is why the mix is yours to pick. The only authoritative figure for your own account is on <a href="https://one.google.com/storage" target="_blank" rel="noopener noreferrer">your Google storage page</a>.</li>
+  <li><strong>The 15 GB is not Gmail's alone.</strong> Google's wording: "Each Google Account includes up to 15 GB of storage, which is shared across Gmail, Google Drive, and Google Photos" (<a href="https://support.google.com/googleone/answer/9312312"><em>How your Google storage works</em>, Google One Help</a>, read 23 September 2026). So the percentage is the share of the whole account those emails would take, not a Gmail-only figure.</li>
+  <li><strong>2 seconds per email is this page's assumption, not a measurement.</strong> It stands for find it, select it, delete it, move on — no pausing, no reading. The page does not let you change it; at a slower pace the time grows in proportion.</li>
+  <li><strong>Binary gigabytes.</strong> The percentage divides by 15 × 1024³ = 16,106,127,360 bytes. Google's storage help does not say whether its 15 GB is binary or decimal; binary gives the slightly smaller percentage.</li>
+  <li><strong>Deleted mail keeps counting until it leaves Trash.</strong> That same Google One page lists "Gmail messages and attachments, which includes your Spam and Trash folders" among what counts, and says that after a large deletion "it normally takes up to 48–72 hours for Google's systems to accurately update the storage space". Gmail keeps a deleted message in Trash for up to 30 days before removing it for good (<a href="https://support.google.com/mail/answer/7401"><em>Delete messages in Gmail</em>, Gmail Help</a>, read 23 September 2026). The longer version: <a href="/answers/does-deleting-emails-free-up-storage">Does deleting emails actually free up storage?</a></li>
+</ul>
+
+<h2>The ranks</h2>
+<p>The rank depends only on the email count, never on the mix you pick.</p>
+<div class="table-scroll">
+<table>
+  <tr><th>Emails</th><th>Rank</th><th></th></tr>
+  <tr><td>0–99</td><td>🧘 Inbox Zen Master</td><td>You don't need this calculator. You are the calculator.</td></tr>
+  <tr><td>100–999</td><td>✅ Tidy-ish</td><td>One weekend sweep and you're at zero.</td></tr>
+  <tr><td>1,000–4,999</td><td>📚 Casual Collector</td><td>It's not a problem. (It's becoming a problem.)</td></tr>
+  <tr><td>5,000–19,999</td><td>🗃️ Certified Email Hoarder</td><td>Somewhere in there is a password reset from 2019.</td></tr>
+  <tr><td>20,000–49,999</td><td>🐉 Digital Dragon</td><td>You sit atop a hoard of newsletters, guarding it.</td></tr>
+  <tr><td>50,000+</td><td>🏛️ Archivist of the Apocalypse</td><td>Historians will thank you. Your storage quota will not.</td></tr>
+</table>
+</div>
+
+<section class="calc-cta">
+  <h2>Or let the app do the tapping.</h2>
+  <p>Clearing mail by hand is the slow part. Adinand Email Cleaner lists your Gmail by sender, so everything from one sender goes to Trash in a single tap, and unsubscribing is one tap as well. It asks Gmail for message headers only — never bodies or attachments — and works from your phone with no server of ours in between. It never deletes anything for good: what it trashes waits in Gmail's Trash like anything else you delete.</p>
+  <p class="calc-cta-links"><a class="calc-btn" href="/#get">Get the app</a> <a href="/#how-it-works">How it works</a></p>
+</section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap cols">
+    <span>© 2026 Adinand Innovations · Adinand Email Cleaner</span>
+    <nav aria-label="Footer">
+      <a href="/answers/">Answers</a>
+      <a href="/tools/">Tools</a>
+      <a href="/security">Security</a>
+      <a href="/support">Support</a>
+      <a href="/privacy-policy">Privacy Policy</a>
+      <a href="/terms-of-service">Terms of Service</a>
+      <a href="mailto:support@adinandemail.com">Contact</a>
+    </nav>
+  </div>
+  <div class="wrap legal">
+    Adinand Email Cleaner is an independent application and is not affiliated with, endorsed by, or sponsored by Google LLC. Gmail and Google are trademarks of Google LLC. Apple, the Apple logo, and App Store are trademarks of Apple Inc., registered in the U.S. and other countries and regions. Google Play and the Google Play logo are trademarks of Google LLC. Adinand™ is a trademark of Adinand Innovations (registration pending). Use of information received from Google APIs adheres to the Google API Services User Data Policy, including the Limited Use requirements.
+  </div>
+</footer>
+
+<script>
+(function () {
+  "use strict";
+
+  var KB = 1024, MB = 1024 * 1024, GB = 1024 * 1024 * 1024;
+  var QUOTA_BYTES = 15 * GB;          // 15 GB free Google account quota
+  var SECONDS_PER_EMAIL = 2;          // this page's assumption, stated as one on screen
+  var SHARE_URL = "https://adinandemail.com/tools/email-hoarder-calculator";
+
+  // Pure, testable: the whole model lives here.
+  function computeHoard(n, avgKB) {
+    var bytes = n * avgKB * KB;
+    return {
+      bytes: bytes,
+      pctOf15GB: (bytes / QUOTA_BYTES) * 100,
+      seconds: n * SECONDS_PER_EMAIL
+    };
+  }
+
+  var RANKS = [
+    { min: 50000, emoji: "🏛️", name: "Archivist of the Apocalypse", line: "Historians will thank you. Your storage quota will not." },
+    { min: 20000, emoji: "🐉", name: "Digital Dragon", line: "You sit atop a hoard of newsletters, guarding it." },
+    { min: 5000,  emoji: "🗃️", name: "Certified Email Hoarder", line: "Somewhere in there is a password reset from 2019." },
+    { min: 1000,  emoji: "📚", name: "Casual Collector", line: "It's not a problem. (It's becoming a problem.)" },
+    { min: 100,   emoji: "✅", name: "Tidy-ish", line: "One weekend sweep and you're at zero." },
+    { min: 0,     emoji: "🧘", name: "Inbox Zen Master", line: "You don't need this calculator. You are the calculator." }
+  ];
+
+  function rankFor(n) {
+    for (var i = 0; i < RANKS.length; i++) {
+      if (n >= RANKS[i].min) return RANKS[i];
+    }
+    return RANKS[RANKS.length - 1];
+  }
+
+  function num(v, minD, maxD) {
+    return v.toLocaleString("en-US", { minimumFractionDigits: minD, maximumFractionDigits: maxD });
+  }
+
+  function formatSize(bytes) {
+    if (bytes < MB) return num(Math.round(bytes / KB), 0, 0) + " KB";
+    if (bytes < GB) return num(bytes / MB, 1, 1) + " MB";
+    return num(bytes / GB, 1, 2) + " GB";
+  }
+
+  function formatPct(pct) {
+    if (pct > 0 && pct < 0.1) return "<0.1";
+    if (pct < 10) return num(pct, 1, 1);
+    return num(Math.round(pct), 0, 0);
+  }
+
+  function unitWord(value, word) {
+    return value === 1 ? word : word + "s";
+  }
+
+  // Short form ("12.8 hours") — used on the page and in the share text.
+  function formatDurationShort(seconds) {
+    if (seconds < 60) {
+      var s = Math.round(seconds);
+      return num(s, 0, 0) + " " + unitWord(s, "second");
+    }
+    if (seconds < 3600) {
+      var m = Math.round(seconds / 60);
+      return num(m, 0, 0) + " " + unitWord(m, "minute");
+    }
+    var h = Math.round(seconds / 360) / 10;
+    return num(h, 1, 1) + " " + unitWord(h, "hour");
+  }
+
+  // Page form — adds the workday comparison once the number stops meaning anything.
+  function formatDuration(seconds) {
+    var short = formatDurationShort(seconds);
+    if (seconds > 16 * 3600) {
+      return short + " — about " + num(seconds / 3600 / 8, 1, 1) + " workdays";
+    }
+    return short;
+  }
+
+  var input = document.getElementById("calc-count");
+  var result = document.getElementById("calc-result");
+  var chips = document.querySelectorAll(".calc-chip");
+  var mixes = document.querySelectorAll('input[name="calc-mix"]');
+  var shareBtn = document.getElementById("calc-share");
+  var shareText = "";
+  var shareTimer = null;
+
+  function currentMix() {
+    for (var i = 0; i < mixes.length; i++) {
+      if (mixes[i].checked) return parseInt(mixes[i].value, 10);
+    }
+    return 75;
+  }
+
+  function render() {
+    var n = Math.floor(Number(input.value));
+    if (!isFinite(n) || n <= 0) {
+      result.hidden = true;
+      return;
+    }
+    var avgKB = currentMix();
+    var h = computeHoard(n, avgKB);
+    var rank = rankFor(n);
+    var size = formatSize(h.bytes);
+    var timeShort = formatDurationShort(h.seconds);
+
+    document.getElementById("calc-rank-emoji").textContent = rank.emoji;
+    document.getElementById("calc-rank-name").textContent = rank.name;
+    document.getElementById("calc-rank-line").textContent = rank.line;
+
+    document.getElementById("calc-size").textContent = "≈ " + size + " of storage";
+    document.getElementById("calc-size-note").innerHTML =
+      "Assuming ~" + avgKB + " KB per email — change the mix above. The real number is on your Google storage page: " +
+      '<a href="https://one.google.com/storage" target="_blank" rel="noopener noreferrer">one.google.com/storage</a>';
+
+    document.getElementById("calc-quota").textContent = h.pctOf15GB >= 100
+      ? "That's a whole free Google account's storage (or more) — up to 15 GB, shared with Google Drive and Google Photos."
+      : "That's ≈ " + formatPct(h.pctOf15GB) + "% of the up to 15 GB a free Google account includes — storage shared with Google Drive and Google Photos.";
+
+    document.getElementById("calc-time").textContent =
+      "Clearing them one by one, at this page's assumed 2 seconds per email: ≈ " + formatDuration(h.seconds) + " of tapping.";
+
+    shareText = "My inbox rank: " + rank.emoji + " " + rank.name + " — " + num(n, 0, 0) +
+      " " + unitWord(n, "email") + ", ≈" + size + " of storage, " + timeShort + " to clear by hand 🗑️ Get your rank: " + SHARE_URL;
+
+    result.hidden = false;
+  }
+
+  var shareStatus = document.getElementById("calc-share-status");
+
+  function flashShare(label) {
+    var original = "Share my rank";
+    shareBtn.textContent = label;
+    shareStatus.textContent = label;
+    if (shareTimer) clearTimeout(shareTimer);
+    shareTimer = setTimeout(function () {
+      shareBtn.textContent = original;
+      shareStatus.textContent = "";
+    }, 2000);
+  }
+
+  input.addEventListener("input", render);
+  for (var i = 0; i < mixes.length; i++) mixes[i].addEventListener("change", render);
+  for (var j = 0; j < chips.length; j++) {
+    chips[j].addEventListener("click", function () {
+      input.value = this.getAttribute("data-count");
+      render();
+    });
+  }
+
+  // Last-resort copy for browsers without the async clipboard API.
+  function legacyCopy(text) {
+    var ta = document.createElement("textarea");
+    ta.value = text;
+    ta.setAttribute("readonly", "");
+    ta.style.position = "fixed";
+    ta.style.top = "-1000px";
+    document.body.appendChild(ta);
+    ta.select();
+    var ok = false;
+    try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+    document.body.removeChild(ta);
+    return ok;
+  }
+
+  shareBtn.addEventListener("click", function () {
+    if (!shareText) return;
+    if (navigator.share) {
+      navigator.share({ text: shareText }).catch(function () { /* dismissed — nothing to do */ });
+      return;
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(shareText).then(function () {
+        flashShare("Copied!");
+      }).catch(function () {
+        flashShare(legacyCopy(shareText) ? "Copied!" : "Copy failed");
+      });
+      return;
+    }
+    flashShare(legacyCopy(shareText) ? "Copied!" : "Copy failed");
+  });
+
+  render();
+})();
+</script>
+
+</body>
+</html>

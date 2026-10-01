@@ -1,0 +1,1062 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- The privacy claim on this page is enforced by the browser, not by the prose. `connect-src`
+     is the directive that matters: with it pinned to 'self' there is no origin this page could
+     upload your files to even if its JavaScript tried. `default-src 'self'` bans CDN scripts —
+     pdf.js and tesseract.js are both vendored under /vendor/ for exactly that reason (see
+     vendor/README.md). No 'unsafe-eval', which is why the reader is created with
+     isEvalSupported:false below.
+     OCR's WebAssembly core does NOT need a token here: it compiles inside the tesseract
+     worker, and a worker loaded from a URL takes its CSP from its own response headers, not
+     from this meta tag. That is what /_headers' /vendor/* block is for — it carries
+     'wasm-unsafe-eval' so the narrow token lives on the one response that needs it and this
+     page never gains it. Checked by ../check-answers.sh rules NETWORK and CSP. -->
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self'; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'">
+<title>Search Text Across Multiple PDFs — DocFind</title>
+<meta name="description" content="Choose a folder of PDFs and search all of them for a word at once. Results show the file, the page, and the text around the match. Scanned pages can be read too, with optional OCR that runs in your browser. The files never leave your browser — nothing is uploaded, and the only thing this page can store is a pointer to a folder you chose, if you ask it to.">
+<!-- TOOL-CAPS: ocr=yes reads=text-layer+ocr network=none stores=folder-handle-opt-in -->
+<link rel="canonical" href="https://docfindapp.com/tools/search-multiple-pdfs">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "@id": "https://docfindapp.com/#app",
+  "name": "DocFind",
+  "alternateName": ["DocFind: Search Inside PDFs", "DocFind PDF Keyword Search"],
+  "url": "https://docfindapp.com/",
+  "image": "https://docfindapp.com/shot-1.png",
+  "description": "Search every PDF you own at once — including scans. On-device OCR, no account, no cloud, no ads. On the App Store for iPhone and on Google Play for Android.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "iOS, Android",
+  "installUrl": [
+    "https://apps.apple.com/app/docfind-search-inside-pdfs/id6801723267",
+    "https://play.google.com/store/apps/details?id=com.jyoti.docfindpdfkeywordsearch"
+  ],
+  "sameAs": [
+    "https://apps.apple.com/app/docfind-search-inside-pdfs/id6801723267",
+    "https://play.google.com/store/apps/details?id=com.jyoti.docfindpdfkeywordsearch",
+    "https://www.youtube.com/@docfindapp",
+    "https://www.wikidata.org/wiki/Q141499254",
+    "https://alternativeto.net/software/docfind/about/"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD",
+    "description": "Free to download; a Pro upgrade is sold as an in-app purchase."
+  },
+  "publisher": {
+    "@type": "Organization",
+    "@id": "https://www.adinand.com/#organization",
+    "name": "Adinand Innovations",
+    "sameAs": ["https://play.google.com/store/apps/developer?id=Adinand+Innovations", "https://www.wikidata.org/wiki/Q141499227"]
+  }
+}
+</script>
+<link rel="stylesheet" href="/style.css">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="DocFind">
+<meta property="og:title" content="Search text across multiple PDFs">
+<meta property="og:description" content="One search, every PDF you choose. File, page, and the sentence around the match — in your browser, without uploading anything.">
+<meta property="og:url" content="https://docfindapp.com/tools/search-multiple-pdfs">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Search Text Across Multiple PDFs",
+  "description": "Searches a whole set of PDFs for a keyword at once and reports the file, the page number, and the surrounding text for every match. Runs entirely in the browser; the files are never uploaded. Reads the text layer of each PDF, and can optionally read scanned pages with OCR — English printed text only, in the browser, with those matches labelled OCR because OCR can misread. In Chrome and Edge it can also remember the folder you chose, if you tick the box for it: what it keeps is a pointer to that folder, never the files, the text inside them, or the words you searched for, and one click forgets it.",
+  "url": "https://docfindapp.com/tools/search-multiple-pdfs",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "Requires JavaScript. Runs offline once loaded.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "publisher": { "@type": "Organization", "@id": "https://www.adinand.com/#organization", "name": "Adinand Innovations", "sameAs": ["https://play.google.com/store/apps/developer?id=Adinand+Innovations", "https://www.wikidata.org/wiki/Q141499227"] }
+}
+</script>
+<style>
+/* `hidden` must actually hide. Both pages set display on .calc-btn (inline-block) and
+   .run-row (flex), and a display rule beats the attribute — so the Stop button and the
+   export row rendered on page load, before there was anything to stop or export. Caught in
+   the browser walk, 2026-09-08; it is invisible to every text-level check in this repo. */
+[hidden] { display: none !important; }
+/* Tool widget styles. Self-contained ON PURPOSE: the .calc-* class names come
+   from the Zen site, where all 44 rules live, and NEITHER sibling site defines
+   a single one of them — measured 2026-09-02, after the built page rendered as
+   unstyled stacked text in a browser. Written against the shared design tokens
+   (--surface, --border, --accent, --text-muted …), which both sites define with
+   identical names, so this block is verbatim-identical across the two pages and
+   inherits each site's own theme instead of fighting it. */
+.calc { background: var(--surface); border: 1px solid var(--border);
+        border-radius: 14px; padding: 1.25rem; margin: 1.5rem 0; }
+.calc-label { display: block; font-weight: 600; margin-bottom: .5rem; }
+.calc-input { width: 100%; max-width: 22ch; font-size: 1.05rem; padding: .6rem .7rem;
+              border-radius: 10px; border: 1px solid var(--border-2);
+              background: var(--ground); color: var(--text); }
+.calc-input[type="file"] { max-width: none; padding: .5rem; }
+.calc-note { color: var(--text-muted); font-size: .9rem; margin: .75rem 0 0; }
+.calc-chips { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .85rem; }
+.calc-chip { background: var(--surface-2); color: var(--text); border: 1px solid var(--border-2);
+             border-radius: 999px; padding: .35rem .85rem; font: inherit; font-size: .9rem;
+             cursor: pointer; }
+.calc-chip:hover { border-color: var(--accent); color: var(--accent); }
+.calc-result { background: var(--surface); border: 1px solid var(--border);
+               border-left: 4px solid var(--accent); border-radius: 14px;
+               padding: 1.25rem; margin: 1.5rem 0; }
+.calc-rank { font-size: 1.35rem; font-weight: 700; margin: 0 0 .25rem; }
+.calc-rank-line { color: var(--text-muted); margin: 0 0 1.25rem; }
+.calc-big { font-size: 1.55rem; font-weight: 700; margin: 0; line-height: 1.2; }
+.calc-sub { color: var(--text-muted); font-size: .92rem; margin: .25rem 0 0; }
+.calc-honesty { border-top: 1px solid var(--border-2); margin-top: 1.25rem;
+                padding-top: .9rem; color: var(--text-muted); font-size: .92rem; }
+.calc-cta { background: var(--surface-2); border: 1px solid var(--border);
+            border-radius: 14px; padding: 1.25rem; margin: 2rem 0; }
+.calc-cta h2 { margin-top: 0; }
+.calc-cta-links { display: flex; gap: 1rem; align-items: center;
+                  flex-wrap: wrap; margin-bottom: 0; }
+.calc-btn { display: inline-block; background: var(--accent); color: var(--ground);
+            font-weight: 600; padding: .55rem 1.1rem; border-radius: 10px; text-decoration: none;
+            border: 0; font-size: 1rem; font-family: inherit; cursor: pointer; }
+.calc-btn[disabled] { opacity: .5; cursor: default; }
+.calc-btn-quiet { background: transparent; color: var(--accent);
+                  border: 1px solid var(--border-2); }
+.pdf-details { margin-top: 1.25rem; }
+.pdf-details summary { cursor: pointer; color: var(--text-muted); }
+.pdf-details ul { margin: .75rem 0; }
+
+/* Search-specific. */
+.drop { border: 2px dashed var(--border); border-radius: 14px; padding: 1.5rem 1.25rem;
+        text-align: center; transition: border-color .15s, background .15s; }
+.drop.is-over { border-color: var(--accent); background: var(--accent-soft); }
+.drop p { margin: .5rem 0 0; color: var(--text-muted); font-size: .93rem; }
+.pick-row { display: flex; gap: .6rem; flex-wrap: wrap; justify-content: center; }
+.file-tally { margin: .9rem 0 0; font-weight: 600; }
+.file-list { list-style: none; padding: 0; margin: .6rem 0 0; max-height: 11rem;
+             overflow-y: auto; font-size: .9rem; color: var(--text-muted); }
+.file-list li { padding: .15rem 0; overflow-wrap: anywhere; }
+.run-row { display: flex; gap: .75rem; align-items: center; flex-wrap: wrap; margin-top: 1rem; }
+.progress { margin: .9rem 0 0; color: var(--text-muted); font-size: .93rem; }
+.bar { height: 6px; border-radius: 999px; background: var(--surface-2);
+       border: 1px solid var(--border-2); overflow: hidden; margin-top: .5rem; }
+.bar > i { display: block; height: 100%; width: 0; background: var(--accent); transition: width .15s; }
+.hit-file { border-top: 1px solid var(--border-2); padding-top: 1rem; margin-top: 1rem; }
+.hit-file:first-of-type { border-top: 0; padding-top: 0; margin-top: 0; }
+.hit-file h3 { margin: 0 0 .1rem; font-size: 1.02rem; overflow-wrap: anywhere; }
+.hit-file .calc-sub { margin-bottom: .6rem; }
+.hit { margin: .55rem 0; padding-left: .85rem; border-left: 2px solid var(--border); }
+.hit .page { font-size: .82rem; font-weight: 600; color: var(--accent-2);
+             text-transform: uppercase; letter-spacing: .05em; }
+.hit .snip { margin: .15rem 0 0; font-size: .95rem; overflow-wrap: anywhere; }
+.hit mark { background: var(--accent-soft); color: inherit; font-weight: 600;
+            border-radius: 3px; padding: 0 .12em; }
+.skipped { border: 1px solid var(--border); border-radius: 12px; padding: .9rem 1.1rem;
+           margin-top: 1.25rem; background: var(--surface-2); }
+.skipped h3 { margin: 0 0 .4rem; font-size: 1rem; }
+.skipped ul { margin: .4rem 0 0; padding-left: 1.1rem; font-size: .92rem; color: var(--text-muted); }
+.skipped li { overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand display" href="/" aria-label="DocFind home">
+      <span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 5 5"/></svg></span>
+      DocFind
+    </a>
+    <nav class="nav-links">
+      <a href="/#features">Features</a>
+      <a href="/#pricing">Pricing</a>
+      <a href="/support">Support</a>
+      <a href="/answers/">Answers</a>
+      <a href="/tools/" aria-current="page">Tools</a>
+      <a class="chip-soon" href="/#get">Get DocFind</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap prose">
+<h1>Search across many PDFs at once</h1>
+<p class="updated">Last reviewed: September 23, 2026 · <a href="/tools/search-multiple-pdfs.md">Markdown version</a></p>
+
+<p>Ctrl&#8209;F in a PDF reader searches the file you have open. With forty files, that means opening
+them one at a time, searching each, and hoping you remember which one you were up to.</p>
+
+<p>Choose a folder of PDFs below and this page searches all of them together. Each match comes back
+with the file it is in, the page number, and the sentence around it.</p>
+
+<div class="calc">
+  <noscript><p class="calc-note"><strong>This tool needs JavaScript</strong> — it reads your files in
+  this page, which is also why nothing is uploaded. With JavaScript off there is nothing here to run.</p></noscript>
+
+  <!-- aria-live because every word in here changes in response to a click the reader just
+       made — remembered, restored, forgotten — and a screen-reader user who presses "Forget it"
+       otherwise gets silence back. Rendered by describeMemory(); set with textContent, never
+       innerHTML, because the folder name inside it is a string the operating system gave us. -->
+  <p class="calc-note" id="memory-row" aria-live="polite" hidden>
+    <span id="memory-said"></span>
+    <button class="calc-btn calc-btn-quiet" type="button" id="memory-open">Search it again</button>
+    <button class="calc-btn calc-btn-quiet" type="button" id="memory-forget">Forget it</button>
+  </p>
+
+  <div class="drop" id="drop">
+    <div class="pick-row">
+      <button class="calc-btn" type="button" id="pick-files">Choose PDFs</button>
+      <button class="calc-btn calc-btn-quiet" type="button" id="pick-folder">Choose a folder</button>
+    </div>
+    <p>…or drag them here. Sub-folders are included when you choose a folder.</p>
+    <input id="input-files" type="file" accept="application/pdf,.pdf" multiple hidden>
+    <input id="input-folder" type="file" webkitdirectory directory multiple hidden>
+  </div>
+
+  <p class="file-tally" id="tally" hidden></p>
+  <ul class="file-list" id="file-list" hidden></ul>
+
+  <p class="calc-note" id="remember-row" hidden style="margin-top:.5rem">
+    <label><input type="checkbox" id="remember"> <strong>Remember this folder in this browser</strong></label><br>
+    It keeps a pointer to the folder — not the files, not the text inside them, not the words you
+    search for — so a later visit can search it again without you finding it first. One click forgets
+    it. Chrome and Edge only.
+  </p>
+  <p class="calc-note" id="memory-note" role="status" hidden></p>
+
+  <p style="margin-top:1.25rem">
+    <label class="calc-label" for="q">Words to look for</label>
+    <input class="calc-input" id="q" type="search" style="max-width:32ch"
+           placeholder="invoice refund" autocomplete="off" spellcheck="false">
+  </p>
+  <p class="calc-note" style="margin-top:.4rem">Separate several words with spaces — a page counts as
+  a match if it contains any one of them. Matching is on whole words and ignores capitals:
+  <strong>run</strong> does not find <strong>running</strong>, and it does not guess at similar words.</p>
+
+  <p class="calc-note" style="margin-top:.9rem">
+    <label><input type="checkbox" id="ocr"> <strong>Also read scanned pages with OCR</strong></label><br>
+    English printed text only, read in your browser, slower. About 6 MB of OCR engine is fetched from
+    this site — never from anyone else — the first time it runs. Off, scanned pages are listed as not
+    searched.
+  </p>
+
+  <div class="run-row">
+    <button class="calc-btn" type="button" id="go" disabled>Search</button>
+    <button class="calc-btn calc-btn-quiet" type="button" id="stop" hidden>Stop</button>
+    <span class="calc-sub" id="hint">Choose at least one PDF and type a word.</span>
+  </div>
+
+  <div id="progress-wrap" hidden>
+    <!-- aria-live: with OCR on a run can sit on one file for a minute, and the page's only
+         sign of life is this line. A screen-reader user needs it announced, not merely painted. -->
+    <p class="progress" id="progress" aria-live="polite"></p>
+    <div class="bar"><i id="bar"></i></div>
+  </div>
+
+  <p class="calc-note"><strong>The files never leave your browser.</strong> Nothing is uploaded and no
+  network request carries them anywhere — the reading and the searching both happen on your own
+  machine, in this page. The one thing this page can keep is a <strong>pointer to a folder</strong> you
+  chose, and only if you tick the box asking it to: never the files, never the text inside them, never
+  the words you searched for. One click forgets it.</p>
+</div>
+
+<section class="calc-result" id="result" hidden>
+  <p class="calc-rank" id="headline"></p>
+  <p class="calc-rank-line" id="subhead"></p>
+
+  <div class="run-row" id="export-row" hidden style="margin-top:0;margin-bottom:1.25rem">
+    <button class="calc-btn calc-btn-quiet" type="button" id="copy">Copy results</button>
+    <button class="calc-btn calc-btn-quiet" type="button" id="csv">Download CSV</button>
+    <button class="calc-btn calc-btn-quiet" type="button" id="txt">Download text</button>
+    <!-- aria-live: every word this span ever shows appears in response to a click the reader
+         has just made — "Copied.", "Saved as …", or the sentence saying the clipboard was
+         refused — and without the attribute a screen-reader user gets silence where a sighted
+         reader gets confirmation. A download is the worst of the three: the browser's own save
+         UI may be nothing but a chime, so this line is the only thing that says it happened.
+         Same reasoning as the attribute on #progress and on #memory-row. -->
+    <span class="calc-sub" id="copy-said" aria-live="polite"></span>
+  </div>
+
+  <p class="calc-sub" id="ocr-notice" hidden style="margin:0 0 1rem"></p>
+
+  <div id="hits"></div>
+
+  <div class="skipped" id="skipped" hidden>
+    <h3 id="skipped-title"></h3>
+    <p class="calc-sub" style="margin:0">A gap you can see beats a gap you cannot. These are listed so
+    that "no matches" never quietly means "never read".</p>
+    <ul id="skipped-list"></ul>
+  </div>
+
+  <p class="calc-honesty">This page reads the text stored inside each PDF. A scanned page — a
+  photograph of words — has nothing in that text to search. With the OCR box off it is reported above
+  rather than counted as a page with no matches; with it on, the page is read by OCR in your browser
+  and any match on it is labelled OCR. <span id="ocr-said"></span></p>
+</section>
+
+<h2>What the results mean</h2>
+
+<h3>"Matched" — the word is in the file's text</h3>
+<p>The file stores its words as text and one of yours is among them. The page number counts from the
+first page of the file, which is not always the number printed on the paper: the PDF standard lets a
+document label its pages in any style, and says "Page labels and page indices need not coincide"
+(<a href="https://opensource.adobe.com/dc-acrobat-sdk-docs/pdfstandards/PDF32000_2008.pdf"><em>PDF 32000-1:2008</em></a>, the PDF standard as published by Adobe, §12.4.2, read 23 September 2026).</p>
+
+<h3>"No text layer" — the file is a scan</h3>
+<p>The pages are pictures. Nothing inside marks any of those pixels as letters, so there is nothing
+for a plain text search to match. Tick <strong>Also read scanned pages
+with OCR</strong> and this page reads those pages by OCR, in your browser, before searching them —
+English printed text only, and any match found that way is labelled <strong>OCR</strong>. For what OCR
+is and what it cannot read: <a href="/answers/what-is-ocr">what OCR is</a>, and
+<a href="/answers/make-a-scanned-pdf-searchable">how to make a scanned PDF searchable</a>. To check a
+single file on its own, use <a href="/tools/is-your-pdf-searchable">the searchable-PDF checker</a>.</p>
+
+<h3>"Needs a password to open"</h3>
+<p>Under the PDF standard a reader first tries an encrypted file's default, empty password, and should
+"prompt for a password" only "If this authentication attempt fails" (same standard, §7.6.3.1). A file
+locked with a real <strong>user password</strong> therefore needs that password before anything in it
+can be read; this page cannot ask for one, so it lists the file as skipped. A file restricted only by an
+<strong>owner password</strong> — printing or copying limits — opens with no prompt, is searched here
+normally, and <strong>DocFind indexes it the same way</strong>.</p>
+
+<h2>The honest limits</h2>
+<ul>
+  <li><strong>OCR is optional, English-only, and can misread.</strong> Off, scanned pages cannot be
+  searched here and are named in the skipped list rather than passed over silently, because a scan
+  that reports "no matches" is one of the most misleading answers a search can give. On, they are read
+  by OCR in your browser — English printed text only — using the open-source Tesseract engine. Its own
+  documentation warns that on a skewed page "The quality of Tesseract’s line segmentation reduces
+  significantly", that it "works best on images which have a DPI of at least 300 dpi" (<a
+  href="https://tesseract-ocr.github.io/tessdoc/ImproveQuality.html"><em>Improving the quality of the
+  output</em>, Tesseract documentation</a>, read 23 September 2026), and that handwriting is not what it is for:
+  "it won’t work very well, as Tesseract is designed for printed text" (<a
+  href="https://tesseract-ocr.github.io/tessdoc/FAQ.html"><em>FAQ</em>, Tesseract documentation</a>,
+  read 23 September 2026). So a miss on an OCR page is not proof the word is absent. Every match found
+  by OCR is labelled so you can tell.</li>
+  <li><strong>Whole words only.</strong> "run" will not find "running" and "running"
+  will not find "run". It does not guess at similar words or related words. That is deliberate: a
+  match you can trust is worth more than a match you have to check.</li>
+  <li><strong>A word broken across two lines with a hyphen</strong> is stored as two pieces and will
+  not match as one word.</li>
+  <li><strong>A folder can be remembered; nothing else can.</strong> There is no library and no index
+  here. In Chrome and Edge you can tick <em>Remember this folder</em> and the page keeps a pointer to
+  it, so a later visit can search the same folder without you finding it again — it does not keep the
+  files, their text, your searches, or any OCR. Every search still re-reads every file from scratch,
+  OCR still runs from scratch every time, and one click forgets the folder. The browser's folder picker this relies on is listed as
+  supported in Chrome and Edge and unsupported in Safari and Firefox (<a
+  href="https://developer.mozilla.org/en-US/docs/Web/API/Window/showdirectorypicker"><em>MDN Web Docs</em>, the browser-compatibility table for the Window directory picker</a>, read 23 September 2026), so the
+  box is not shown in Safari or Firefox.</li>
+  <li><strong>How long it takes is your machine's business, not ours.</strong> A large set of long
+  documents is real work, and it is done in this tab; you can stop it at any point.</li>
+  <li><strong>PDFs only.</strong> Word documents, spreadsheets and plain-text files in a folder are left out of the search.</li>
+</ul>
+
+<section class="calc-cta">
+  <h2>When the folder stops fitting in a browser tab.</h2>
+  <p>DocFind does this on a whole library instead of a page-load: it indexes your documents once —
+  scanned pages included, read by OCR <em>on your device</em> once rather than on every visit — and
+  searches them again any time without re-reading them, and tapping a result opens that PDF at that
+  page with the word highlighted. It uploads nothing either: the index lives on the phone, and the
+  iPhone app ships with no network capability at all. iPhone and Android.</p>
+  <p class="calc-cta-links"><a class="calc-btn" href="/#get">Get the app</a> <a href="/tools/">Other tools</a> <a href="/answers/">More answers</a></p>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <a class="brand display" href="/" aria-label="DocFind home">
+        <span class="logo"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6"/><path d="m15 15 5 5"/></svg></span>
+        DocFind
+      </a>
+      <nav class="foot-links">
+        <a href="/#features">Features</a>
+        <a href="/#pricing">Pricing</a>
+        <a href="/privacy">Privacy Policy</a>
+        <a href="/support">Support</a>
+        <a href="/answers/">Answers</a>
+        <a href="/tools/">Tools</a>
+      </nav>
+    </div>
+    <p class="foot-fine">
+      Questions or bugs? <a href="mailto:support@docfindapp.com">support@docfindapp.com</a><br>
+      <span class="aff">DocFind is not affiliated with, endorsed, or sponsored by Apple&nbsp;Inc.
+      or Google&nbsp;LLC. Apple, the Apple logo and iPhone are trademarks of Apple&nbsp;Inc.
+      Google Play and the Google Play logo are trademarks of Google&nbsp;LLC.</span>
+    </p>
+  </div>
+</footer>
+
+<script type="module">
+import * as pdfjsLib from "/vendor/pdfjs-6.3.289/pdf.min.mjs";
+import {
+  parseQuery, findMatches, buildSnippet, chooseMatches, describeFailure, readPages
+} from "/tools/pdf-text.mjs";
+// Static, because it is 8 KB of pure functions and every sentence the results box shows comes
+// out of it. The ENGINE — ~6 MB of vendored worker, WebAssembly core and language model — is
+// a separate, LAZY import inside ensureWorker(), so page load fetches nothing under
+// /vendor/tesseract* and a reader who never ticks the box never pays for it.
+// Static and tiny, like pdf-text.mjs: pure bookkeeping plus one thin IndexedDB adapter, and
+// no engine behind it. Nothing here is fetched lazily because there is nothing to fetch —
+// the only thing this module can put on disk is one folder handle, and only on a click.
+import {
+  supportsFolderMemory, describeMemory, walkDirectory, classifyFolderError,
+  folderErrorLine, makeStore, indexedDBAdapter
+} from "/tools/folder-memory.mjs";
+import {
+  PDFJS_WASM, createOCRWorker, recognizeBitmap, mergeOCR, describeOCR, describeSkip,
+  describeEngineLoad, ocrProgressLine, engineFailureLine,
+  renderPageToCanvas, releaseCanvas
+} from "/tools/ocr.mjs";
+// `exportHeaderLine` is deliberately NOT in that list any more. It moved behind export.mjs in
+// WT3 — the export is its only caller — and an import kept "for symmetry" would say on the face
+// of this file that the page still builds the export header, which it no longer does. The other
+// direction of the same rule as the dead-flag checks in check-answers.sh: a name in scope that
+// nothing calls is a claim about the code that is not true of it.
+// The three forms a result leaves this page in. Static and dependency-free like the two above:
+// its only import is two pure sentence-builders out of ocr.mjs, whose ~6 MB engine is lazy, so
+// this costs page load nothing. It lives in a module rather than inline in this script because
+// the export is the one artefact of this page that outlives the tab — the thing handed to
+// somebody who cannot see which boxes were ticked — and until WT3 not one line of it was read
+// by any prover. `node tools/prove-export.mjs` runs exactly these functions.
+import { asText, csvDownloadText, exportFilename } from "/tools/export.mjs";
+
+// pdf.js parses in a worker, so a 400-page document does not freeze the tab. Same-origin,
+// like everything else this page loads — the CSP above forbids anything else.
+pdfjsLib.GlobalWorkerOptions.workerSrc = "/vendor/pdfjs-6.3.289/pdf.worker.min.mjs";
+
+/* ---- everything below is wiring ---- */
+
+const $ = (id) => document.getElementById(id);
+const el = {
+  drop: $("drop"), pickFiles: $("pick-files"), pickFolder: $("pick-folder"),
+  inputFiles: $("input-files"), inputFolder: $("input-folder"),
+  tally: $("tally"), fileList: $("file-list"), q: $("q"), go: $("go"), stop: $("stop"),
+  hint: $("hint"), progressWrap: $("progress-wrap"), progress: $("progress"), bar: $("bar"),
+  result: $("result"), headline: $("headline"), subhead: $("subhead"), hits: $("hits"),
+  skipped: $("skipped"), skippedTitle: $("skipped-title"), skippedList: $("skipped-list"),
+  exportRow: $("export-row"), copy: $("copy"), csv: $("csv"), txt: $("txt"),
+  copySaid: $("copy-said"),
+  ocr: $("ocr"), ocrNotice: $("ocr-notice"), ocrSaid: $("ocr-said"),
+  memoryRow: $("memory-row"), memorySaid: $("memory-said"), memoryOpen: $("memory-open"),
+  memoryForget: $("memory-forget"), memoryNote: $("memory-note"),
+  rememberRow: $("remember-row"), remember: $("remember")
+};
+
+let chosen = [];
+// A File picked through the File System Access API has NO webkitRelativePath — that property is
+// set only by <input webkitdirectory>. Both pickers feed the same results table, so the path has
+// to come from somewhere that works for both, or a handle-picked folder would list bare filenames
+// and two files called invoice.pdf in different sub-folders would be indistinguishable in the
+// results. A WeakMap rather than a property because File is not extensible in every browser.
+let chosenPaths = new WeakMap();
+const displayPath = (f) => chosenPaths.get(f) || f.webkitRelativePath || f.name;
+let running = false;
+let cancelled = false;
+let lastRun = null;
+
+// The OCR run's state. Reset at the top of every run, but module-scoped rather than local to
+// run(), because the Stop button's listener is registered once and has to reach into the run
+// in progress: terminating the worker is the only way to stop tesseract mid-page (recognize()
+// polls no flag), and resolving `stopped` is what unblocks the awaits inside the blank-page
+// hook. `stopped` here is that promise; `run.stopped` in render() is a boolean about a
+// finished run — different things, and only the property is ever read bare.
+let worker = null;
+let engineFailed = null;
+let stopped = null;
+let resolveStopped = null;
+
+const isPdf = (f) => /\.pdf$/i.test(f.name) || f.type === "application/pdf";
+
+function setFiles(fileList) {
+  chosen = Array.from(fileList).filter(isPdf);
+  const skippedKinds = Array.from(fileList).length - chosen.length;
+  el.tally.hidden = chosen.length === 0 && skippedKinds === 0;
+  let line = chosen.length === 1 ? "1 PDF chosen" : chosen.length + " PDFs chosen";
+  if (skippedKinds > 0) {
+    line += " · " + skippedKinds + (skippedKinds === 1 ? " other file ignored" : " other files ignored")
+          + " (this reads PDFs only)";
+  }
+  el.tally.textContent = line;
+  el.fileList.replaceChildren();
+  for (const f of chosen.slice(0, 200)) {
+    const li = document.createElement("li");
+    li.textContent = displayPath(f);
+    el.fileList.append(li);
+  }
+  if (chosen.length > 200) {
+    const li = document.createElement("li");
+    li.textContent = "…and " + (chosen.length - 200) + " more";
+    el.fileList.append(li);
+  }
+  el.fileList.hidden = chosen.length === 0;
+  refreshGo();
+}
+
+function refreshGo() {
+  const ready = chosen.length > 0 && parseQuery(el.q.value).length > 0 && !running;
+  el.go.disabled = !ready;
+  if (running) el.hint.textContent = "";
+  else if (chosen.length === 0) el.hint.textContent = "Choose at least one PDF and type a word.";
+  else if (parseQuery(el.q.value).length === 0) el.hint.textContent = "Type a word to look for.";
+  else el.hint.textContent = "";
+}
+
+el.pickFiles.addEventListener("click", () => el.inputFiles.click());
+el.pickFolder.addEventListener("click", () => el.inputFolder.click());
+el.inputFiles.addEventListener("change", (e) => setFiles(e.target.files));
+el.inputFolder.addEventListener("change", (e) => setFiles(e.target.files));
+el.q.addEventListener("input", refreshGo);
+
+for (const type of ["dragenter", "dragover"]) {
+  el.drop.addEventListener(type, (e) => { e.preventDefault(); el.drop.classList.add("is-over"); });
+}
+for (const type of ["dragleave", "drop"]) {
+  el.drop.addEventListener(type, (e) => { e.preventDefault(); el.drop.classList.remove("is-over"); });
+}
+el.drop.addEventListener("drop", (e) => {
+  if (e.dataTransfer && e.dataTransfer.files) setFiles(e.dataTransfer.files);
+});
+
+function showProgress(done, total, name, pageIndex, pageTotal) {
+  el.progressWrap.hidden = false;
+  el.progress.textContent = ocrProgressLine(done, total, name, pageIndex, pageTotal);
+  el.bar.style.width = Math.round((done / total) * 100) + "%";
+}
+
+// The engine is fetched on the first blank page of the first OCR run, and never before. This
+// is also where a failed load becomes a sentence instead of a hang: tesseract.js 7 reports a
+// failed load through `errorHandler` and NEVER settles the createWorker promise, so awaiting
+// that promise alone would leave the reader watching a progress line forever. Four outcomes
+// are raced: the worker, the error handler, Stop, and a 90 s ceiling.
+async function ensureWorker() {
+  if (worker || engineFailed) return;
+
+  let createWorker = null;
+  try {
+    // The ESM build of tesseract.js 7.0.0 has a DEFAULT export and no named ones — grepped in
+    // the vendored file, which ends `export { tesseract_min as default };` — so createWorker
+    // comes off `.default`. The named fallback is there only so a future vendor bump that adds
+    // named exports does not break this line silently.
+    const mod = await import("/vendor/tesseract.js-7.0.0/tesseract.esm.min.js");
+    createWorker = (mod.default && mod.default.createWorker) || mod.createWorker;
+    if (typeof createWorker !== "function") throw new Error("createWorker is not exported");
+  } catch (err) {
+    engineFailed = String((err && err.message) || err).slice(0, 120);
+    return;
+  }
+
+  let timer = null;
+  let rejectOnError = null;
+  const errored = new Promise((_, reject) => { rejectOnError = reject; });
+  const timedOut = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new Error("the OCR engine did not load within 90 seconds")), 90000);
+  });
+  const creating = createOCRWorker(createWorker, onEngineProgress, undefined,
+                                   (e) => rejectOnError(new Error(String((e && e.message) || e))));
+  // A promise that LOSES this race and rejects afterwards is an unhandled rejection in the
+  // reader's console — and the console is the one place a CSP or network problem on this page
+  // would show up, so noise there is not free. The no-op catches mark all three as handled
+  // without changing what the race sees. Stop is modelled as a resolved sentinel for the same
+  // reason: a throw from `stopped.then(…)` after the race had settled would be one more.
+  creating.catch(() => {});
+  errored.catch(() => {});
+  timedOut.catch(() => {});
+  const STOP = {};
+  try {
+    const settled = await Promise.race([creating, errored, timedOut, stopped.then(() => STOP)]);
+    // Stopping is not a failure, and must not be reported to the reader as one.
+    worker = settled === STOP ? null : settled;
+  } catch (err) {
+    worker = null;
+    if (!cancelled) engineFailed = String((err && err.message) || err).slice(0, 120);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function onEngineProgress(progress) {
+  const line = describeEngineLoad(progress);
+  if (!line) return;
+  el.progressWrap.hidden = false;
+  el.progress.textContent = line;
+}
+
+async function run() {
+  const needles = parseQuery(el.q.value);
+  if (!chosen.length || !needles.length) return;
+
+  running = true; cancelled = false;
+  el.go.disabled = true; el.stop.hidden = false;
+  el.result.hidden = true; el.copySaid.textContent = "";
+
+  const ocrOn = el.ocr.checked;
+  worker = null;
+  engineFailed = null;
+  stopped = new Promise((resolve) => { resolveStopped = resolve; });
+
+  const files = [];
+  const skipped = [];
+  let pagesRead = 0, pagesWithoutText = 0, matchCount = 0;
+  let ocrPages = 0, emptyOcrPages = 0;
+  // Files this run REACHED, as opposed to chosen.length, which is how many the reader picked. The
+  // two differ exactly when the loop below breaks early, and the difference is what every count in
+  // the result and the export has to be told about — see where it is incremented, one line down.
+  let filesRead = 0;
+
+  for (let i = 0; i < chosen.length; i++) {
+    if (cancelled) break;
+    // COUNTED HERE, AT THE TOP OF THE BODY, AND THE PLACEMENT IS THE WHOLE MEANING OF THE NUMBER.
+    // What this counts is files the run REACHED, not files it finished, because "reached" is the
+    // thing that is true of every file with a row in the output:
+    //   - a file that fails to open is pushed to `skipped` and `continue`s past everything below,
+    //     so counting at the END of the body would leave it out of the total while its NOT
+    //     SEARCHED row sat in the export — a file visibly present in the rows and absent from the
+    //     number above them;
+    //   - a file the Stop lands INSIDE still finishes its curtailed pass and reports itself
+    //     through describeSkip ("not read — the search was stopped"), so it too has a row.
+    // So every counted file is accounted for somewhere in the output, and the uncounted ones are
+    // exactly the files with no row anywhere — the ones nothing else in the export mentions. That
+    // equivalence is the point: the number is a promise that nothing was read and then dropped.
+    filesRead++;
+    const file = chosen[i];
+    const label = displayPath(file);
+    showProgress(i, chosen.length, label);
+    // Yield to the browser so the progress line actually paints.
+    await new Promise((r) => setTimeout(r, 0));
+
+    const ocrResults = new Map();
+    let fileEmptyOcr = 0;
+    // Pages OCR actually returned a result for, empty ones included. It is what tells a run
+    // that was STOPPED mid-file from one that read every scanned page: without it both arrive
+    // at describeSkip as "no empty pages, no engine failure" and the unread pages go unnamed.
+    let fileOcrRead = 0;
+
+    // Called by readPages for each page whose text layer is blank, while the page proxy is
+    // still live enough to render. ONE canvas per page, released the moment OCR is done with
+    // it: a 200 dpi A4 bitmap is ~24 MB of backing store, and a folder of scans would
+    // otherwise hold every one of them at once.
+    const onBlankPage = async (page, idx, total) => {
+      if (cancelled) return;
+      await ensureWorker();
+      if (!worker) return;
+      showProgress(i, chosen.length, label, idx, total);
+      const canvas = document.createElement("canvas");
+      try {
+        await renderPageToCanvas(page, canvas);
+        // Named so the losing side of the race can be marked handled — a terminate() from Stop
+        // rejects this, and an unhandled rejection in the console is noise on the one surface a
+        // real CSP or network problem would appear on.
+        const recognizing = recognizeBitmap(worker, canvas);
+        recognizing.catch(() => {});
+        const r = await Promise.race([recognizing, stopped.then(() => null)]);
+        releaseCanvas(canvas);
+        if (!r) return;                       // Stop won the race; this page was not read.
+        ocrResults.set(idx, r);
+        ocrPages++; fileOcrRead++;
+        if (!r.text) { emptyOcrPages++; fileEmptyOcr++; }
+      } catch (err) {
+        releaseCanvas(canvas);
+        // A page that could not be rendered or recognised is a page OCR produced nothing for,
+        // and the skipped list has to say so — unless the reader pressed Stop, in which case
+        // the result already says it is partial and "OCR found no text" would be a lie.
+        //
+        // fileOcrRead is incremented HERE TOO, and that is not bookkeeping pedantry: it is what
+        // OCR REACHED, not what OCR succeeded at. describeSkip derives "not read — the search
+        // was stopped" from blankPages minus this number, so a page that failed on its own
+        // merits would otherwise be reported as one the reader interrupted, which is a false
+        // account of a page nobody stopped. It failed; it is described by the empty-OCR
+        // sentence, which is true of it.
+        if (!cancelled) { emptyOcrPages++; fileEmptyOcr++; fileOcrRead++; }
+        console.warn("OCR failed on page " + (idx + 1) + " of " + label, err);
+      }
+    };
+    const onPageError = (err, idx) => {
+      console.warn("the OCR hook threw on page " + (idx + 1) + " of " + label, err);
+    };
+
+    let pages;
+    try {
+      // wasmUrl is handed over only on an OCR run: rendering decodes every image on the page
+      // (JBIG2, JPX — what scanners produce), and getTextContent never touches one. With OCR
+      // off this is the same three-argument call the other tools make.
+      pages = await readPages(pdfjsLib, file, () => cancelled,
+                              ocrOn ? { wasmUrl: PDFJS_WASM, onBlankPage, onPageError } : undefined);
+    } catch (err) {
+      skipped.push({ name: label, why: describeFailure(err) });
+      continue;
+    }
+
+    // Counted BEFORE the merge, and deliberately: blankPages is a fact about the TEXT LAYER,
+    // which is what decides whether the file needed OCR at all. After merging, a page OCR read
+    // is no longer blank, and the skipped list would lose the only number that can explain it.
+    let blankPages = 0;
+    for (const text of pages) if (!text.trim()) blankPages++;
+    pagesWithoutText += blankPages;
+
+    const merged = mergeOCR(pages, ocrResults);
+    const hits = [];
+    for (let p = 0; p < merged.length; p++) {
+      pagesRead++;
+      const text = merged[p].text;
+      if (!text.trim()) continue;
+      const found = findMatches(text, needles);
+      if (!found.length) continue;
+      matchCount += found.length;
+      hits.push({
+        page: p + 1,
+        total: found.length,
+        source: merged[p].source,
+        snippets: chooseMatches(found, 3).map((m) => buildSnippet(text, m))
+      });
+    }
+
+    const why = describeSkip({ totalPages: pages.length, blankPages, ocrOn,
+                               emptyOcrPages: fileEmptyOcr, ocrReadPages: fileOcrRead,
+                               hadHits: hits.length > 0, engineFailed });
+    if (why) skipped.push({ name: label, why });
+    if (hits.length) files.push({ name: label, hits: hits });
+  }
+
+  if (worker) {
+    try { await worker.terminate(); } catch (e) { /* already gone, or already terminated by Stop */ }
+    worker = null;
+  }
+
+  running = false;
+  el.stop.hidden = true;
+  el.progressWrap.hidden = true;
+  refreshGo();
+  render({ needles, files, skipped, matchCount, pagesRead, pagesWithoutText,
+           searched: chosen.length, filesRead, stopped: cancelled,
+           ocrOn, ocrPages, emptyOcrPages, engineFailed });
+}
+
+function render(run) {
+  lastRun = run;
+  el.hits.replaceChildren();
+
+  // What OCR did, in the honesty paragraph, and what it could not do, above the results.
+  el.ocrSaid.textContent = describeOCR(run);
+  if (run.ocrOn && run.engineFailed) {
+    el.ocrNotice.textContent = engineFailureLine(run.engineFailed);
+    el.ocrNotice.hidden = false;
+  } else {
+    el.ocrNotice.textContent = "";
+    el.ocrNotice.hidden = true;
+  }
+
+  const fileWord = (n) => n + (n === 1 ? " file" : " files");
+  // ⚠️ HOW MANY FILES THIS RUN IS ALLOWED TO CLAIM, computed ONCE for both branches below. It used
+  // to be `fileWord(run.searched)` in two places, and `searched` is the number of files the reader
+  // CHOSE rather than the number the loop reached — so a run stopped after 65 of 800 files said
+  // "Searched 800 files" on screen and "Searched 800 PDF file(s)" in the CSV, about 735 files it
+  // had never opened. On a run that finished the two numbers are equal and this collapses to the
+  // single-number wording the page has always shown, byte for byte; the "65 of 800" form appears
+  // only when there is genuinely a gap to report.
+  //
+  // ONE HELPER, NOT TWO COPIES OF THE ARITHMETIC, and that is not tidiness either: the reason the
+  // no-match branch below was the worse bug is precisely that it was a SECOND copy of this phrase,
+  // written once and then never kept in step with the first. A shared local cannot drift from
+  // itself.
+  const filesPhrase = run.filesRead !== undefined && run.filesRead !== run.searched
+    ? run.filesRead + " of " + run.searched + " files"
+    : fileWord(run.searched);
+  if (run.matchCount === 0) {
+    el.headline.textContent = "No matches";
+    // ⚠️ THE STOPPED-EARLY CLAUSE BELONGS HERE MOST OF ALL, and from the day this tool shipped
+    // (2026-09-08, db39dff) until 2026-09-12 it was only on the other branch. Measured in a walk:
+    // a run stopped after ~30 of 800 files displayed "No matches" / "Nothing in 800 files
+    // contains that word as a whole word." — a flat assertion of absence over 770 files nobody
+    // had looked in. This is the worst thing this page
+    // can say in its own terms: every other surface it owns exists to stop a reader mistaking "not
+    // looked at" for "not there", and the one branch that renders a bare absence was the one
+    // missing the qualifier. A partial search that found nothing has found nothing YET.
+    el.subhead.textContent = "Nothing in " + filesPhrase + " contains "
+      + (run.needles.length === 1 ? "that word" : "any of those words") + " as a whole word."
+      + (run.stopped ? " Stopped early, so this is a partial answer." : "");
+  } else {
+    el.headline.textContent = run.matchCount + (run.matchCount === 1 ? " match" : " matches")
+      + " in " + fileWord(run.files.length);
+    el.subhead.textContent = "Searched " + filesPhrase + ", "
+      + run.pagesRead + (run.pagesRead === 1 ? " page" : " pages") + "."
+      + (run.stopped ? " Stopped early, so this is a partial answer." : "");
+  }
+
+  for (const f of run.files) {
+    const box = document.createElement("div");
+    box.className = "hit-file";
+    const h = document.createElement("h3");
+    h.textContent = f.name;
+    const sub = document.createElement("p");
+    sub.className = "calc-sub";
+    const pages = f.hits.length;
+    const total = f.hits.reduce((n, h2) => n + h2.total, 0);
+    sub.textContent = total + (total === 1 ? " match" : " matches") + " on "
+      + pages + (pages === 1 ? " page" : " pages");
+    box.append(h, sub);
+    for (const hit of f.hits) {
+      for (const s of hit.snippets) {
+        const row = document.createElement("div");
+        row.className = "hit";
+        const pg = document.createElement("span");
+        pg.className = "page";
+        // The OCR label is the page's whole honesty about a match it cannot fully vouch for.
+        pg.textContent = "Page " + hit.page + (hit.source === "ocr" ? " · OCR" : "");
+        const snip = document.createElement("p");
+        snip.className = "snip";
+        const mark = document.createElement("mark");
+        mark.textContent = s.hit;
+        snip.append(document.createTextNode(s.before), mark, document.createTextNode(s.after));
+        row.append(pg, snip);
+        box.append(row);
+      }
+    }
+    el.hits.append(box);
+  }
+
+  el.skippedList.replaceChildren();
+  if (run.skipped.length) {
+    el.skipped.hidden = false;
+    el.skippedTitle.textContent = run.skipped.length === 1
+      ? "1 file was not fully searched" : run.skipped.length + " files were not fully searched";
+    for (const s of run.skipped) {
+      const li = document.createElement("li");
+      li.textContent = s.name + " — " + s.why;
+      el.skippedList.append(li);
+    }
+  } else {
+    el.skipped.hidden = true;
+  }
+
+  el.exportRow.hidden = run.matchCount === 0 && run.skipped.length === 0;
+  el.result.hidden = false;
+  el.result.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+// The export logic itself lives in /tools/export.mjs and NOT here. Everything below is the
+// part only a browser has: a Blob, an object URL, and a synthetic click. That split is the
+// point — the sentences the export carries are claims, and a claim written inline in a page's
+// <script> is a claim no prover ever reads (the 2026-09-08 lesson that produced pdf-text.mjs,
+// ocr.mjs and folder-memory.mjs). `node tools/prove-export.mjs` runs the module; the walk
+// proves this handful of lines, because Node cannot download a file.
+//
+// A download is silent by design in every browser — the save may be nothing but a chime, or a
+// row appearing in a shelf the reader is not looking at. So each of these sets #copy-said,
+// which is aria-live, and names the file. Without that the only difference between a working
+// button and a broken one is whether the reader goes looking in their Downloads folder.
+function downloadBlob(filename, blob) {
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  // Revoked on a timer rather than immediately: the click is asynchronous inside the browser,
+  // and revoking the URL in the same tick has been observed to cancel the download it names.
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+
+el.copy.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText(asText(lastRun));
+    el.copySaid.textContent = "Copied.";
+  } catch (e) {
+    el.copySaid.textContent = "Your browser would not let the page copy — select the results instead.";
+  }
+});
+
+el.csv.addEventListener("click", () => {
+  // csvDownloadText, not asCsv: the byte-order mark belongs to the FILE, and keeping it inside
+  // a named function is what lets the prover assert that the downloaded bytes carry one. Excel
+  // without it reads the file as the machine's legacy code page and turns every ellipsis and
+  // accent in a snippet into mojibake.
+  const name = exportFilename("csv", new Date());
+  downloadBlob(name, new Blob([csvDownloadText(lastRun)], { type: "text/csv;charset=utf-8" }));
+  el.copySaid.textContent = "Saved as " + name + ".";
+});
+
+el.txt.addEventListener("click", () => {
+  // The same thing the Copy button puts on the clipboard, saved instead. It exists because the
+  // clipboard is not always available — a refused permission, a locked-down browser, a reader
+  // who wants the result in a file rather than in whatever they paste into next — and because
+  // the text form is the one a person reads, where the CSV is the one a spreadsheet reads.
+  const name = exportFilename("txt", new Date());
+  downloadBlob(name, new Blob([asText(lastRun)], { type: "text/plain;charset=utf-8" }));
+  el.copySaid.textContent = "Saved as " + name + ".";
+});
+
+el.stop.addEventListener("click", () => {
+  cancelled = true;
+  // Two things the flag alone cannot stop. `stopped` unblocks whatever the blank-page hook is
+  // awaiting — a page load, the engine download, a recognition — and terminate() is the only
+  // way to interrupt tesseract mid-page, because recognize() polls nothing.
+  if (resolveStopped) resolveStopped();
+  if (worker) { try { worker.terminate(); } catch (e) { /* already gone */ } }
+  el.stop.disabled = true;
+  setTimeout(() => { el.stop.disabled = false; }, 500);
+});
+el.go.addEventListener("click", run);
+el.q.addEventListener("keydown", (e) => { if (e.key === "Enter" && !el.go.disabled) run(); });
+
+
+/* ---- the remembered folder ---------------------------------------------- */
+// WHAT IS STORED, and it is the whole list: one FileSystemDirectoryHandle, the folder's name,
+// and when it was saved. Not the file list, not a page of text, not an OCR result, not the
+// query. The page's copy says exactly that, check-answers.sh rule STORECAP reads that it says
+// it, and makeStore() builds the record field by field rather than spreading so that a future
+// caller cannot widen it by accident.
+//
+// CHROMIUM ONLY, AND SAID SO IN THE COPY. showDirectoryPicker() does not exist in Safari or
+// Firefox, and there is no polyfill — a page cannot be handed a folder it can reopen. So the
+// checkbox is not rendered there at all, rather than rendered and broken, and the honest-limits
+// list names the two browsers that have it. `memory` being null is the single switch for that.
+const memory = supportsFolderMemory(window)
+  ? makeStore(indexedDBAdapter(window.indexedDB))
+  : null;
+
+let currentHandle = null;   // the handle behind `chosen`, when it was picked by handle
+let currentRecord = null;   // what load() returned; null once forgotten
+
+function note(text) {
+  el.memoryNote.textContent = text || "";
+  el.memoryNote.hidden = !text;
+}
+
+function showMemory() {
+  const line = currentRecord ? describeMemory(currentRecord, new Date()) : null;
+  // textContent, never innerHTML: the folder name in here is a string the operating system
+  // gave us, by way of a name the reader typed, and it is rendered on a page that has just
+  // promised them nothing about their files escapes.
+  el.memorySaid.textContent = line ? "Last time: " + line + ". " : "";
+  el.memoryRow.hidden = !line;
+}
+
+// One place turns a thrown thing into a sentence, so a new call site cannot invent its own
+// wording for a case the module already classifies. "cancelled" renders NOTHING on purpose:
+// closing a file picker is an ordinary act, not a failure, and a page that apologises for it
+// teaches the reader that something broke.
+function showFolderError(err, name) {
+  const kind = classifyFolderError(err);
+  if (kind === "cancelled") { note(""); return; }
+  note(folderErrorLine(kind, name || (currentRecord && currentRecord.name) || ""));
+}
+
+// Walk a handle into the same shape the <input webkitdirectory> path produces, so everything
+// downstream — the tally, the file list, run(), the CSV — stays one code path.
+async function adoptHandle(handle) {
+  note("");
+  currentHandle = handle;
+  chosenPaths = new WeakMap();
+  const files = [];
+  for await (const entry of walkDirectory(handle, isPdf)) {
+    files.push(entry.file);
+    chosenPaths.set(entry.file, entry.path);
+  }
+  setFiles(files);
+  el.rememberRow.hidden = false;
+  // A folder that really does contain no PDFs is a legitimate answer and an invisible one:
+  // setFiles() hides the tally when the count is zero, so without this the reader clicks
+  // "Search it again" and the page changes in no way they can see. Say the boring thing.
+  if (files.length === 0) {
+    note("That folder has no PDFs in it — nothing here to search.");
+  }
+  // Reflect, do not assume: the box is ticked only if THIS folder is the remembered one.
+  // isSameEntry is the API's own identity test — comparing names would call two different
+  // folders both called "Invoices" the same folder.
+  let same = false;
+  if (currentRecord && currentRecord.handle && handle.isSameEntry) {
+    try { same = await handle.isSameEntry(currentRecord.handle); } catch { same = false; }
+  }
+  el.remember.checked = same;
+}
+
+el.pickFolder.addEventListener("click", async () => {
+  // Without the handle API this is the plain input, exactly as before WT2. A reader on Safari
+  // gets today's tool, unchanged and un-degraded.
+  if (!memory) { el.inputFolder.click(); return; }
+  try {
+    const handle = await window.showDirectoryPicker({ mode: "read", id: "docfind-tools" });
+    await adoptHandle(handle);
+  } catch (err) {
+    showFolderError(err);
+  }
+});
+
+// Files chosen one by one, or dropped, are not a folder — there is nothing to remember, so the
+// offer is withdrawn rather than left on screen doing nothing.
+function forgetCurrentHandle() {
+  currentHandle = null;
+  chosenPaths = new WeakMap();
+  el.rememberRow.hidden = true;
+  el.remember.checked = false;
+}
+el.inputFiles.addEventListener("change", forgetCurrentHandle);
+el.inputFolder.addEventListener("change", forgetCurrentHandle);
+el.drop.addEventListener("drop", forgetCurrentHandle);
+
+el.remember.addEventListener("change", async () => {
+  if (!memory || !currentHandle) return;
+  if (el.remember.checked) {
+    try {
+      await memory.save({ handle: currentHandle, name: currentHandle.name, savedAt: Date.now() });
+      currentRecord = await memory.load();
+      showMemory();
+      note("");
+    } catch (err) {
+      // A PRIVATE WINDOW REACHES HERE. Chrome offers showDirectoryPicker in incognito but
+      // refuses to structured-clone the handle into IndexedDB, so the save throws after the
+      // reader has already ticked the box. Untick it: a ticked box beside nothing stored is a
+      // lie the reader can see, and it is the one failure here they would otherwise act on.
+      el.remember.checked = false;
+      showFolderError(err, currentHandle.name);
+    }
+  } else {
+    try { await memory.forget(); } catch { /* nothing stored is the state we wanted */ }
+    currentRecord = null;
+    showMemory();
+    note("Forgotten. This page is not storing anything now.");
+  }
+});
+
+el.memoryOpen.addEventListener("click", async () => {
+  if (!memory || !currentRecord) return;
+  const handle = currentRecord.handle;
+  const name = currentRecord.name;
+  try {
+    // BOTH CALLS MUST STAY INSIDE THIS LISTENER. Chrome grants file-system permission only
+    // during a user gesture; moving requestPermission behind an await of anything slower than
+    // this click makes it reject with NotAllowedError and look like a refusal the reader never
+    // made. Permission is NOT persisted across visits even though the handle is — that is the
+    // design of the API, and it is why this button exists instead of a silent restore.
+    let perm = await handle.queryPermission({ mode: "read" });
+    if (perm !== "granted") perm = await handle.requestPermission({ mode: "read" });
+    if (perm !== "granted") { note(folderErrorLine("denied", name)); return; }
+    await adoptHandle(handle);
+    el.remember.checked = true;
+  } catch (err) {
+    // A folder that has been moved, renamed or deleted lands here. The record is kept, not
+    // silently dropped: it is the reader's to forget, and a pointer that vanishes on its own
+    // is indistinguishable from one that was never saved.
+    showFolderError(err, name);
+  }
+});
+
+el.memoryForget.addEventListener("click", async () => {
+  if (!memory) return;
+  try { await memory.forget(); } catch { /* see above */ }
+  currentRecord = null;
+  el.remember.checked = false;
+  showMemory();          // hides the row — which is why the confirmation goes in the note,
+  note("Forgotten. This page is not storing anything now.");   // not in the aria-live row.
+});
+
+(async function initMemory() {
+  if (!memory) return;   // no row, no checkbox, no promise made to a browser that cannot keep it
+  try { currentRecord = await memory.load(); } catch { currentRecord = null; }
+  showMemory();
+})();
+
+refreshGo();
+</script>
+
+</body>
+</html>
