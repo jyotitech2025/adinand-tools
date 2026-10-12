@@ -27,7 +27,7 @@ Website: https://adinandemail.com · App Store: https://apps.apple.com/app/adina
 
 ## Adinand Channel Sorter — YouTube subscription tool
 
-Adinand Channel Sorter (formerly SubSense) is an app for iPhone and Android that sorts the YouTube channels you follow into categories and shows which ones have gone quiet or flood your feed. It organises YouTube channel subscriptions; it does not track payments.
+Adinand Channel Sorter (formerly SubSense) is an app for iPhone and Android that sorts the YouTube channels you follow into categories and shows which ones have gone quiet or flood your feed. It works on YouTube channel subscriptions only.
 
 - Feed flood calculator — [live](https://channelsorter.com/tools/feed-flood-calculator/) · [code](channel-sorter/)
 
