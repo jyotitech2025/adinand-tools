@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # For every mirrored tool file in MANIFEST.tsv, fetch its live URL and compare sha256 with the
 # copy in this repository. Prints OK / DIFF / FETCH-ERROR per file; exits non-zero on any DIFF
-# or fetch error. For the SubSense page (kind astro-inline-css) the live page and its live
+# or fetch error. For the Adinand Channel Sorter page (kind astro-inline-css) the live page and its live
 # stylesheet are fetched and inlined the same way sync.sh does, then hashed.
 set -uo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"

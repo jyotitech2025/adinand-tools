@@ -36,4 +36,4 @@ Deliberately not fetched, as on the website: pdf.js's JavaScript-in-PDF sandbox 
 
 Licence identities were read on 26 September 2026 from the npm registry, the GitHub licence API, and the licence files shipped in each package.
 
-The SubSense page is built with Astro (MIT); Astro itself is not part of this repository.
+The Adinand Channel Sorter page is built with Astro (MIT); Astro itself is not part of this repository.

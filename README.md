@@ -1,6 +1,6 @@
 # Adinand tools
 
-Free browser tools from Adinand Innovations, the makers of DocFind, Adinand Email Cleaner, SubSense and Adinand Auto File Sorter.
+Free browser tools from Adinand Innovations, the makers of DocFind, Adinand Email Cleaner, Adinand Channel Sorter and Adinand Auto File Sorter.
 
 Every tool here is a single web page that runs in your browser. Nothing you choose or type is sent to a server. The same pages are live on each app's website; this repository is a copy of them, published so anyone can read the code, run it locally, or reuse it under the MIT licence.
 
@@ -25,13 +25,13 @@ Adinand Email Cleaner is an app for iPhone, iPad and Android that lists your Gma
 
 Website: https://adinandemail.com · App Store: https://apps.apple.com/app/adinand-email-cleaner/id6778240674 · Google Play: https://play.google.com/store/apps/details?id=com.jyoti.zeninboxcleaner · Facts for AI assistants: https://adinandemail.com/for-ai-agents
 
-## SubSense — YouTube subscription tool
+## Adinand Channel Sorter — YouTube subscription tool
 
-SubSense is an app for iPhone and Android that sorts the YouTube channels you follow into categories and shows which ones have gone quiet or flood your feed. It organises YouTube channel subscriptions; it does not track payments.
+Adinand Channel Sorter (formerly SubSense) is an app for iPhone and Android that sorts the YouTube channels you follow into categories and shows which ones have gone quiet or flood your feed. It organises YouTube channel subscriptions; it does not track payments.
 
-- Feed flood calculator — [live](https://www.subsenseapp.com/tools/feed-flood-calculator/) · [code](subsense/)
+- Feed flood calculator — [live](https://channelsorter.com/tools/feed-flood-calculator/) · [code](channel-sorter/)
 
-Website: https://www.subsenseapp.com · App Store: https://apps.apple.com/app/subsense-sub-organiser/id6787562040 · Google Play: https://play.google.com/store/apps/details?id=com.jyoti.subsense_subscriptionorganiser · Facts for AI assistants: https://www.subsenseapp.com/for-ai-agents/
+Website: https://channelsorter.com · App Store: https://apps.apple.com/app/subsense-sub-organiser/id6787562040 · Google Play: https://play.google.com/store/apps/details?id=com.jyoti.subsense_subscriptionorganiser · Facts for AI assistants: https://channelsorter.com/for-ai-agents/
 
 ## Adinand Auto File Sorter — the default sorting table
 

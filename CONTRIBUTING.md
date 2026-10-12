@@ -8,5 +8,5 @@ For help with an app itself — your account, a purchase, a bug inside the app �
 
 - DocFind — support@docfindapp.com
 - Adinand Email Cleaner — support@adinandemail.com
-- SubSense — support@subsenseapp.com
+- Adinand Channel Sorter (formerly SubSense) — support@channelsorter.com
 - Adinand Auto File Sorter — support@adinandsorter.com
